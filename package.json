@@ -21,12 +21,10 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
-    "@supabase/cli-windows-x64": "^2.121.0",
     "@types/react": "~19.2.2",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~57.0.2",
     "playwright": "^1.64.1",
-    "supabase": "^2.121.0",
     "typescript": "~6.0.3"
   },
   "scripts": {
