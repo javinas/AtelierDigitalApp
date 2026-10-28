@@ -468,7 +468,15 @@ export default function ContactoScreen() {
 
                             <View style={styles.infoRow}>
                                 <Text style={styles.infoLabel}>UBICACIÓN</Text>
-                                <Text style={styles.infoValue}>Barranquilla · Colombia</Text>
+                                <Text style={styles.infoValue}>
+                                    Villa Carolina · Barranquilla, Colombia (Atención previa cita)
+                                </Text>
+                            </View>
+
+                            <View style={styles.infoRow}>
+                                <Text style={styles.infoLabel}>CANALES DIRECTOS</Text>
+                                <Text style={styles.infoValue}>info@bykatherinecarroll.com</Text>
+                                <Text style={styles.infoValue}>+57 305 243 0400</Text>
                             </View>
 
                             <View style={styles.infoRow}>

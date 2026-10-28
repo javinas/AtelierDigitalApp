@@ -171,17 +171,18 @@ export default function LegalDocumentLayout({
                             </View>
                         </View>
 
-                        {/* Aviso de alcance jurídico (no asesoría externa / sujeto a revisión) */}
+                        {/* Aviso de alcance jurídico */}
                         <View style={styles.disclaimerSidebarBox}>
                             <Text style={styles.disclaimerSidebarTitle}>
-                                NOTA DE GOBERNANZA Y VALIDACIÓN
+                                MARCO NORMATIVO Y TRANSPARENCIA
                             </Text>
                             <Text style={styles.disclaimerSidebarText}>
                                 Este documento regula el uso informativo y contractual de{' '}
                                 <Text style={styles.boldDark}>Atelier Digital · By Katherine Carroll</Text>{' '}
-                                y ha sido estructurado observando la legislación colombiana vigente. Sus
-                                placeholders corporativos deben completarse y validarse por asesoría
-                                jurídica profesional antes de su publicación comercial definitiva.
+                                bajo la legislación colombiana vigente (Ley 1581 de 2012, Decreto 1074
+                                de 2015, Ley 527 de 1999 y Ley 1480 de 2011). Para atención directa al
+                                titular escriba a{' '}
+                                <Text style={styles.boldDark}>info@bykatherinecarroll.com</Text>.
                             </Text>
                         </View>
                     </View>

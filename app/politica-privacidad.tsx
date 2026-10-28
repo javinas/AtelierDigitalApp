@@ -21,7 +21,7 @@ const PRIVACY_SECTIONS: LegalSectionItem[] = [
             `Teléfono / Canal de Contacto Oficial: ${LEGAL_ENTITY_INFO.phonePlaceholder} · Formulario oficial en ${LEGAL_ENTITY_INFO.contactRoute}`,
         ],
         highlightNote:
-            'Nota de validación: Los campos identificados como [PENDIENTE DE COMPLETAR] corresponden a datos registrales y de contacto corporativo que deben ser diligenciados y verificados por el titular jurídico del Atelier antes de su entrada en operación comercial definitiva.',
+            'Canal directo de atención al titular: Cualquier solicitud relacionada con el ejercicio de derechos de Habeas Data (Ley 1581 de 2012) es atendida directamente a través de info@bykatherinecarroll.com, la línea +57 305 243 0400 o el formulario oficial en /contacto.',
     },
     {
         id: 'datos-tratados',

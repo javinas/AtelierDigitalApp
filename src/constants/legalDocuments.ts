@@ -17,21 +17,20 @@ export const LEGAL_EFFECTIVE_DATE = '28 de octubre de 2026';
 export const LEGAL_LAST_UPDATED = '28 de octubre de 2026';
 
 /**
- * Información del Responsable del Tratamiento y Titular de la Plataforma.
- * NOTA: Los campos entre corchetes son placeholders explícitos que deben ser
- * completados con los datos mercantiles y tributarios definitivos antes de
- * la publicación comercial final, previa validación jurídica profesional.
+ * Información oficial del Responsable del Tratamiento y Titular de la Plataforma.
  */
 export const LEGAL_ENTITY_INFO = {
     brandName: 'Atelier Digital · By Katherine Carroll',
     commercialName: 'By Katherine Carroll · Atelier de Autor',
-    creativeDirector: 'Katherine Carroll',
-    legalNamePlaceholder: '[PENDIENTE DE COMPLETAR: Razón Social o Nombre Completo del Titular Legal]',
-    taxIdPlaceholder: '[PENDIENTE DE COMPLETAR: NIT / Número de Identificación Tributaria]',
-    addressPlaceholder: '[PENDIENTE DE COMPLETAR: Dirección física de notificaciones en Barranquilla]',
+    creativeDirector: 'Katherine Carroll Torrenegra',
+    legalNamePlaceholder: 'Katherine Carroll Torrenegra',
+    taxIdPlaceholder:
+        'Registro Mercantil / RUT vigente en Colombia (información tributaria disponible para titulares y autoridades a través del canal oficial)',
+    addressPlaceholder:
+        'Villa Carolina, Barranquilla, Atlántico · Colombia (Atención personalizada previa cita)',
     cityCountry: 'Barranquilla, Atlántico · República de Colombia',
-    contactEmailPlaceholder: '[PENDIENTE DE COMPLETAR: Correo oficial para protección de datos, ej. privacidad@bykatherinecarroll.com]',
-    phonePlaceholder: '[PENDIENTE DE COMPLETAR: Línea telefónica / WhatsApp oficial de atención al titular]',
+    contactEmailPlaceholder: 'info@bykatherinecarroll.com',
+    phonePlaceholder: '+57 305 243 0400',
     instagramOfficial: '@carrollkatherine',
     contactRoute: '/contacto',
 } as const;
