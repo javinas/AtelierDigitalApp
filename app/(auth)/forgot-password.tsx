@@ -165,6 +165,22 @@ export default function ForgotPasswordScreen() {
                                             ← Regresar al inicio de sesión
                                         </Text>
                                     </TouchableOpacity>
+
+                                    <View style={styles.legalLinksRow}>
+                                        <TouchableOpacity
+                                            onPress={() => router.push('/politica-privacidad' as any)}
+                                            disabled={loading}
+                                        >
+                                            <Text style={styles.legalLinkText}>Política de Privacidad</Text>
+                                        </TouchableOpacity>
+                                        <Text style={styles.legalDot}>·</Text>
+                                        <TouchableOpacity
+                                            onPress={() => router.push('/contacto' as any)}
+                                            disabled={loading}
+                                        >
+                                            <Text style={styles.legalLinkText}>Soporte del Atelier</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </>
                             )}
                         </View>
@@ -400,5 +416,22 @@ const styles = StyleSheet.create({
         color: colors.textMuted,
         fontSize: 11,
         fontFamily: typography.sans,
+    },
+    legalLinksRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        marginTop: 10,
+    },
+    legalLinkText: {
+        color: colors.textMuted,
+        fontSize: 10.5,
+        fontFamily: typography.sans,
+        textDecorationLine: 'underline',
+    },
+    legalDot: {
+        color: colors.champagneGold,
+        fontSize: 10.5,
     },
 });

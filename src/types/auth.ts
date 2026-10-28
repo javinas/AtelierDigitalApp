@@ -1,5 +1,32 @@
-
 export type UserRole = 'admin' | 'designer' | 'client';
+
+export type ConsentType =
+    | 'TERMS_OF_SERVICE'
+    | 'PRIVACY_POLICY'
+    | 'AGE_CONFIRMATION'
+    | 'MARKETING_OPT_IN';
+
+export interface RegistrationConsents {
+    ageConfirmed: boolean;
+    termsAccepted: boolean;
+    privacyAccepted: boolean;
+    marketingOptIn: boolean;
+    termsVersion?: string;
+    privacyVersion?: string;
+    userAgent?: string;
+}
+
+export interface UserLegalConsentRecord {
+    id: string;
+    user_id: string;
+    consent_type: ConsentType;
+    document_version: string;
+    status: 'granted' | 'revoked';
+    ip_address: string | null;
+    user_agent: string | null;
+    accepted_at: string;
+    revoked_at: string | null;
+}
 
 export interface Profile {
     id: string;

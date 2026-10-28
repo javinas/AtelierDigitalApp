@@ -1,15 +1,16 @@
 import React from 'react';
 import {
-    ActivityIndicator,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
+import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '../../src/context/AuthContext';
 import { colors } from '../../src/theme/colors';
+import { LEGAL_DOCUMENT_VERSIONS } from '../../src/constants/legalDocuments';
 
 export default function ClientHomeScreen() {
     const { user, profile, signOut } = useAuth();
@@ -32,13 +33,22 @@ export default function ClientHomeScreen() {
                     <Text style={styles.brandSubtitle}>Espacio de Clienta</Text>
                 </View>
 
-                <TouchableOpacity
-                    style={styles.signOutButton}
-                    onPress={handleSignOut}
-                    activeOpacity={0.8}
-                >
-                    <Text style={styles.signOutButtonText}>Cerrar Sesión</Text>
-                </TouchableOpacity>
+                <View style={styles.topBarActions}>
+                    <TouchableOpacity
+                        style={styles.publicHomeButton}
+                        onPress={() => router.push('/diseno' as any)}
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.publicHomeButtonText}>Explorar Atelier</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.signOutButton}
+                        onPress={handleSignOut}
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.signOutButtonText}>Cerrar Sesión</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -92,6 +102,78 @@ export default function ClientHomeScreen() {
                         </Text>
                     </View>
                 </View>
+
+                {/* Tarjeta de Privacidad, Derechos ARCO y Transparencia Legal */}
+                <View style={styles.legalCard}>
+                    <View style={styles.legalHeaderRow}>
+                        <Text style={styles.legalEyebrow}>
+                            PRIVACIDAD, HABEAS DATA & TRANSPARENCIA · LEY 1581 DE 2012
+                        </Text>
+                        <Text style={styles.legalVersionBadge}>
+                            v{LEGAL_DOCUMENT_VERSIONS.PRIVACY_POLICY}
+                        </Text>
+                    </View>
+
+                    <Text style={styles.legalTitle}>
+                        Custodia de tus Datos y Derechos de Titular
+                    </Text>
+                    <Text style={styles.legalText}>
+                        Tus datos de contacto, fichas antropométricas y registros de confección se encuentran protegidos bajo políticas de seguridad por fila (Row Level Security). En cualquier momento puedes ejercer tus derechos a conocer, actualizar, rectificar o solicitar la supresión de tus datos, así como revocar autorizaciones opcionales.
+                    </Text>
+
+                    <View style={styles.legalPillsRow}>
+                        <TouchableOpacity
+                            style={styles.legalPill}
+                            onPress={() => router.push('/politica-privacidad' as any)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.legalPillText}>Política de Privacidad</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.legalPill}
+                            onPress={() => router.push('/terminos-condiciones' as any)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.legalPillText}>Términos de Uso</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.legalPill}
+                            onPress={() => router.push('/aviso-privacidad' as any)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.legalPillText}>Aviso de Privacidad</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.legalPill}
+                            onPress={() => router.push('/politica-cookies' as any)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.legalPillText}>Política de Cookies</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.legalPill}
+                            onPress={() => router.push('/ia-transparencia' as any)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.legalPillText}>Transparencia IA</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity
+                        style={styles.arcoActionButton}
+                        onPress={() =>
+                            router.push({
+                                pathname: '/contacto' as any,
+                                params: { servicio: 'proteccion-datos' },
+                            })
+                        }
+                        activeOpacity={0.85}
+                    >
+                        <Text style={styles.arcoActionButtonText}>
+                            RADICAR CONSULTA, RECTIFICACIÓN O SOLICITUD SOBRE MIS DATOS →
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
         </View>
     );
@@ -123,6 +205,23 @@ const styles = StyleSheet.create({
         color: colors.textSecondary,
         fontSize: 12,
         marginTop: 2,
+    },
+    topBarActions: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+    publicHomeButton: {
+        borderWidth: 1,
+        borderColor: colors.accent,
+        borderRadius: 6,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+    },
+    publicHomeButtonText: {
+        color: colors.accentDark,
+        fontSize: 12,
+        fontWeight: '600',
     },
     signOutButton: {
         borderWidth: 1,
@@ -198,6 +297,7 @@ const styles = StyleSheet.create({
         borderColor: colors.border,
         borderRadius: 8,
         padding: 24,
+        marginBottom: 24,
     },
     infoTitle: {
         color: colors.textPrimary,
@@ -242,5 +342,78 @@ const styles = StyleSheet.create({
         color: colors.textSecondary,
         fontSize: 12,
         lineHeight: 17,
+    },
+
+    /* Tarjeta Legal y Derechos ARCO */
+    legalCard: {
+        backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: colors.border,
+        borderRadius: 8,
+        padding: 24,
+    },
+    legalHeaderRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
+    legalEyebrow: {
+        color: colors.accent,
+        fontSize: 9.5,
+        fontWeight: '700',
+        letterSpacing: 1.5,
+    },
+    legalVersionBadge: {
+        color: colors.textMuted,
+        fontSize: 10,
+        fontWeight: '600',
+    },
+    legalTitle: {
+        color: colors.textPrimary,
+        fontSize: 17,
+        fontWeight: '600',
+        marginBottom: 8,
+    },
+    legalText: {
+        color: colors.textSecondary,
+        fontSize: 13,
+        lineHeight: 20,
+        marginBottom: 16,
+    },
+    legalPillsRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+        marginBottom: 18,
+    },
+    legalPill: {
+        backgroundColor: colors.surfaceSubtle,
+        borderWidth: 1,
+        borderColor: colors.border,
+        borderRadius: 4,
+        paddingVertical: 7,
+        paddingHorizontal: 12,
+    },
+    legalPillText: {
+        color: colors.textPrimary,
+        fontSize: 11.5,
+        fontWeight: '500',
+    },
+    arcoActionButton: {
+        backgroundColor: colors.atelierBlack,
+        borderWidth: 1,
+        borderColor: colors.champagneGold,
+        borderRadius: 4,
+        paddingVertical: 11,
+        paddingHorizontal: 14,
+        alignItems: 'center',
+    },
+    arcoActionButtonText: {
+        color: colors.ivoryWarm,
+        fontSize: 11,
+        fontWeight: '700',
+        letterSpacing: 1,
+        textAlign: 'center',
     },
 });

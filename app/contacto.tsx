@@ -18,6 +18,10 @@ import PublicFooter from '../src/components/PublicFooter';
 import { colors } from '../src/theme/colors';
 import { typography } from '../src/theme/typography';
 import { SERVICES } from '../src/data/servicesData';
+import {
+    LegalConsentCheckbox,
+    PrivacyNoticeBanner,
+} from '../src/components/PrivacyNoticeBanner';
 
 export default function ContactoScreen() {
     const { width } = useWindowDimensions();
@@ -32,12 +36,14 @@ export default function ContactoScreen() {
         params.servicio || 'alta-costura'
     );
     const [descripcion, setDescripcion] = useState('');
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
     // Error states
     const [errors, setErrors] = useState<{
         nombre?: string;
         email?: string;
         descripcion?: string;
+        privacidad?: string;
     }>({});
 
     // Submission states
@@ -77,6 +83,11 @@ export default function ContactoScreen() {
             newErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.';
         }
 
+        if (!privacyAccepted) {
+            newErrors.privacidad =
+                'Debes autorizar el tratamiento de tus datos conforme a la Política de Privacidad para enviar la consulta.';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -87,8 +98,10 @@ export default function ContactoScreen() {
         setIsSubmitting(true);
 
         const currentService =
-            SERVICES.find((s) => s.id === servicioSeleccionado)?.title ||
-            servicioSeleccionado;
+            servicioSeleccionado === 'proteccion-datos'
+                ? 'Solicitud de Protección de Datos Personales (Habeas Data · Ley 1581)'
+                : SERVICES.find((s) => s.id === servicioSeleccionado)?.title ||
+                  servicioSeleccionado;
 
         // Simulamos el procesamiento local del formulario validado
         setTimeout(() => {
@@ -109,6 +122,7 @@ export default function ContactoScreen() {
         setEmail('');
         setTelefono('');
         setDescripcion('');
+        setPrivacyAccepted(false);
         setErrors({});
         setIsSubmitted(false);
         setSubmittedData(null);
@@ -328,6 +342,27 @@ export default function ContactoScreen() {
                                                 </TouchableOpacity>
                                             );
                                         })}
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.serviceChip,
+                                                servicioSeleccionado === 'proteccion-datos' &&
+                                                    styles.serviceChipSelected,
+                                            ]}
+                                            onPress={() =>
+                                                setServicioSeleccionado('proteccion-datos')
+                                            }
+                                            activeOpacity={0.8}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.serviceChipText,
+                                                    servicioSeleccionado === 'proteccion-datos' &&
+                                                        styles.serviceChipTextSelected,
+                                                ]}
+                                            >
+                                                Habeas Data / Protección de Datos (Ley 1581)
+                                            </Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
 
@@ -355,6 +390,45 @@ export default function ContactoScreen() {
                                     />
                                     {errors.descripcion && (
                                         <Text style={styles.errorMessage}>{errors.descripcion}</Text>
+                                    )}
+                                </View>
+
+                                {/* Aviso de Privacidad y Consentimiento en Formulario de Contacto */}
+                                <PrivacyNoticeBanner compact />
+
+                                <View style={styles.fieldGroup}>
+                                    <LegalConsentCheckbox
+                                        checked={privacyAccepted}
+                                        onToggle={() => {
+                                            const nextVal = !privacyAccepted;
+                                            setPrivacyAccepted(nextVal);
+                                            if (nextVal && errors.privacidad) {
+                                                setErrors({ ...errors, privacidad: undefined });
+                                            }
+                                        }}
+                                        required
+                                        testID="contact-privacy-checkbox"
+                                    >
+                                        Autorizo de manera previa, expresa e informada a Atelier
+                                        Digital · By Katherine Carroll para tratar los datos
+                                        suministrados en este formulario con el fin de atender mi
+                                        consulta o solicitud, conforme a la{' '}
+                                        <Text
+                                            style={{
+                                                color: colors.bronze,
+                                                fontWeight: '600',
+                                                textDecorationLine: 'underline',
+                                            }}
+                                            onPress={() =>
+                                                router.push('/politica-privacidad' as any)
+                                            }
+                                        >
+                                            Política de Tratamiento de Datos Personales
+                                        </Text>
+                                        .
+                                    </LegalConsentCheckbox>
+                                    {errors.privacidad && (
+                                        <Text style={styles.errorMessage}>{errors.privacidad}</Text>
                                     )}
                                 </View>
 

@@ -179,6 +179,29 @@ export default function LoginScreen() {
                                         ← Regresar a la portada del atelier
                                     </Text>
                                 </TouchableOpacity>
+
+                                <View style={styles.legalLinksRow}>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/politica-privacidad' as any)}
+                                        disabled={loading}
+                                    >
+                                        <Text style={styles.legalLinkText}>Privacidad</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.legalDot}>·</Text>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/terminos-condiciones' as any)}
+                                        disabled={loading}
+                                    >
+                                        <Text style={styles.legalLinkText}>Términos</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.legalDot}>·</Text>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/aviso-privacidad' as any)}
+                                        disabled={loading}
+                                    >
+                                        <Text style={styles.legalLinkText}>Aviso de Datos</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -400,5 +423,22 @@ const styles = StyleSheet.create({
         color: colors.textMuted,
         fontSize: 11,
         fontFamily: typography.sans,
+    },
+    legalLinksRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        marginTop: 4,
+    },
+    legalLinkText: {
+        color: colors.textMuted,
+        fontSize: 10.5,
+        fontFamily: typography.sans,
+        textDecorationLine: 'underline',
+    },
+    legalDot: {
+        color: colors.champagneGold,
+        fontSize: 10.5,
     },
 });

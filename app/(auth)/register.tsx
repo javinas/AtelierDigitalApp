@@ -17,6 +17,11 @@ import { colors } from '../../src/theme/colors';
 import { typography } from '../../src/theme/typography';
 import { FormInput } from '../../src/components/FormInput';
 import { FormButton } from '../../src/components/FormButton';
+import {
+    LegalConsentCheckbox,
+    PrivacyNoticeBanner,
+} from '../../src/components/PrivacyNoticeBanner';
+import { LEGAL_DOCUMENT_VERSIONS } from '../../src/constants/legalDocuments';
 
 export default function RegisterScreen() {
     const { signUp } = useAuth();
@@ -27,6 +32,13 @@ export default function RegisterScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    // Estados de consentimiento granular (ninguna casilla viene premarcada)
+    const [ageConfirmed, setAgeConfirmed] = useState(false);
+    const [termsAccepted, setTermsAccepted] = useState(false);
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
+    const [marketingOptIn, setMarketingOptIn] = useState(false);
+
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [confirmationSent, setConfirmationSent] = useState(false);
@@ -54,11 +66,40 @@ export default function RegisterScreen() {
             return;
         }
 
+        if (!ageConfirmed) {
+            setErrorMessage(
+                'El registro en Atelier Digital está reservado a mayores de 18 años. Por favor confirme su mayoría de edad.',
+            );
+            return;
+        }
+
+        if (!termsAccepted) {
+            setErrorMessage(
+                'Debe leer y aceptar los Términos y Condiciones de Uso para crear su cuenta.',
+            );
+            return;
+        }
+
+        if (!privacyAccepted) {
+            setErrorMessage(
+                'Debe autorizar el tratamiento de sus datos personales conforme a la Política de Privacidad (Ley 1581 de 2012) para continuar.',
+            );
+            return;
+        }
+
         setLoading(true);
         const { error, needsEmailConfirmation } = await signUp(
             email,
             password,
             fullName,
+            {
+                ageConfirmed,
+                termsAccepted,
+                privacyAccepted,
+                marketingOptIn,
+                termsVersion: LEGAL_DOCUMENT_VERSIONS.TERMS_OF_SERVICE,
+                privacyVersion: LEGAL_DOCUMENT_VERSIONS.PRIVACY_POLICY,
+            },
         );
         setLoading(false);
 
@@ -112,6 +153,14 @@ export default function RegisterScreen() {
                             <Text style={styles.brandFootnote}>
                                 ALTA COSTURA · EXCLUSIVIDAD
                             </Text>
+
+                            <View style={styles.trustPanelBox}>
+                                <Text style={styles.trustPanelTitle}>CUSTODIA Y PRIVACIDAD</Text>
+                                <Text style={styles.trustPanelText}>
+                                    Sus datos de contacto y futuras fichas antropométricas se
+                                    protegen bajo estricta reserva y conforme a la Ley 1581 de 2012.
+                                </Text>
+                            </View>
                         </View>
                     </View>
 
@@ -120,7 +169,7 @@ export default function RegisterScreen() {
                         <View style={styles.formPanelInner}>
                             <View style={styles.headerBlock}>
                                 <Text style={styles.formEyebrow}>
-                                    REGISTRO DE CLIENTA
+                                    REGISTRO DE CLIENTA · +18 AÑOS
                                 </Text>
                                 <Text style={styles.formTitle}>
                                     Crear Cuenta
@@ -137,13 +186,15 @@ export default function RegisterScreen() {
                                         <Text style={styles.successIconText}>✓</Text>
                                     </View>
                                     <Text style={styles.successTitle}>
-                                        Registro Recibido con Éxito
+                                        Registro y Autorización Recibidos
                                     </Text>
                                     <Text style={styles.successText}>
                                         Hemos enviado un mensaje de confirmación a{' '}
-                                        <Text style={styles.boldText}>{email}</Text>.
-                                        Por favor abra el enlace recibido en su bandeja de entrada
-                                        para activar su cuenta antes de iniciar sesión.
+                                        <Text style={styles.boldText}>{email}</Text> y registrado la
+                                        trazabilidad de su consentimiento legal (v
+                                        {LEGAL_DOCUMENT_VERSIONS.PRIVACY_POLICY}). Por favor abra el
+                                        enlace recibido en su bandeja de entrada para activar su
+                                        cuenta antes de iniciar sesión.
                                     </Text>
 
                                     <FormButton
@@ -195,6 +246,105 @@ export default function RegisterScreen() {
                                         secureTextEntry
                                         editable={!loading}
                                     />
+
+                                    {/* AVISO DE PRIVACIDAD BREVE VISIBLE */}
+                                    <PrivacyNoticeBanner compact />
+
+                                    {/* SECCIÓN DE CONSENTIMIENTOS GRANULARES */}
+                                    <View style={styles.consentsContainer}>
+                                        <Text style={styles.consentsTitle}>
+                                            DECLARACIONES Y AUTORIZACIONES LEGALES
+                                        </Text>
+
+                                        {/* 1. Mayoría de edad (+18) */}
+                                        <LegalConsentCheckbox
+                                            checked={ageConfirmed}
+                                            onToggle={() => setAgeConfirmed(!ageConfirmed)}
+                                            required
+                                            disabled={loading}
+                                            testID="checkbox-age-confirmation"
+                                        >
+                                            Declaro que soy{' '}
+                                            <Text style={styles.boldText}>
+                                                mayor de dieciocho (18) años
+                                            </Text>{' '}
+                                            y cuento con capacidad legal para registrarme en la
+                                            plataforma (Ley 27 de 1977). Si encargo prendas para
+                                            menores de edad, actúo como su representante legal.
+                                        </LegalConsentCheckbox>
+
+                                        {/* 2. Términos y Condiciones */}
+                                        <LegalConsentCheckbox
+                                            checked={termsAccepted}
+                                            onToggle={() => setTermsAccepted(!termsAccepted)}
+                                            required
+                                            disabled={loading}
+                                            testID="checkbox-terms-acceptance"
+                                        >
+                                            He leído y acepto los{' '}
+                                            <Text
+                                                style={styles.inlineLink}
+                                                onPress={() =>
+                                                    router.push('/terminos-condiciones' as any)
+                                                }
+                                            >
+                                                Términos y Condiciones de Uso
+                                            </Text>{' '}
+                                            (v{LEGAL_DOCUMENT_VERSIONS.TERMS_OF_SERVICE}) y la{' '}
+                                            <Text
+                                                style={styles.inlineLink}
+                                                onPress={() =>
+                                                    router.push('/ia-transparencia' as any)
+                                                }
+                                            >
+                                                Política de Transparencia en IA
+                                            </Text>
+                                            .
+                                        </LegalConsentCheckbox>
+
+                                        {/* 3. Política de Tratamiento de Datos Personales */}
+                                        <LegalConsentCheckbox
+                                            checked={privacyAccepted}
+                                            onToggle={() => setPrivacyAccepted(!privacyAccepted)}
+                                            required
+                                            disabled={loading}
+                                            testID="checkbox-privacy-acceptance"
+                                        >
+                                            Autorizo de manera previa, expresa e informada el
+                                            tratamiento de mis datos personales conforme a la{' '}
+                                            <Text
+                                                style={styles.inlineLink}
+                                                onPress={() =>
+                                                    router.push('/politica-privacidad' as any)
+                                                }
+                                            >
+                                                Política de Tratamiento de Datos Personales
+                                            </Text>{' '}
+                                            (v{LEGAL_DOCUMENT_VERSIONS.PRIVACY_POLICY}) y el{' '}
+                                            <Text
+                                                style={styles.inlineLink}
+                                                onPress={() =>
+                                                    router.push('/aviso-privacidad' as any)
+                                                }
+                                            >
+                                                Aviso de Privacidad
+                                            </Text>
+                                            .
+                                        </LegalConsentCheckbox>
+
+                                        {/* 4. Consentimiento comercial separado (Opcional, no premarcado) */}
+                                        <LegalConsentCheckbox
+                                            checked={marketingOptIn}
+                                            onToggle={() => setMarketingOptIn(!marketingOptIn)}
+                                            required={false}
+                                            disabled={loading}
+                                            testID="checkbox-marketing-optin"
+                                        >
+                                            Deseo recibir invitaciones a lanzamientos de colección,
+                                            eventos de alta costura y novedades editoriales de By
+                                            Katherine Carroll.
+                                        </LegalConsentCheckbox>
+                                    </View>
 
                                     <View style={styles.securityNotice}>
                                         <Text style={styles.securityNoticeText}>
@@ -258,7 +408,7 @@ const styles = StyleSheet.create({
     },
     editorialFrame: {
         width: '100%',
-        maxWidth: 440,
+        maxWidth: 460,
         backgroundColor: '#FFFFFF',
         borderRadius: 2,
         borderWidth: 1,
@@ -271,9 +421,9 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     desktopFrame: {
-        maxWidth: 900,
+        maxWidth: 980,
         flexDirection: 'row',
-        minHeight: 560,
+        minHeight: 620,
     },
 
     /* ================= PANEL DE IDENTIDAD ================= */
@@ -285,7 +435,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     brandPanelDesktop: {
-        flex: 1,
+        flex: 0.95,
         paddingHorizontal: 36,
         paddingVertical: 48,
         borderRightWidth: 1,
@@ -347,6 +497,31 @@ const styles = StyleSheet.create({
         letterSpacing: 2,
         fontWeight: '600',
         fontFamily: typography.sans,
+        marginBottom: 24,
+    },
+    trustPanelBox: {
+        backgroundColor: 'rgba(255, 255, 255, 0.03)',
+        borderWidth: 1,
+        borderColor: 'rgba(167, 131, 80, 0.25)',
+        borderRadius: 3,
+        padding: 14,
+        maxWidth: 280,
+    },
+    trustPanelTitle: {
+        color: colors.champagneGold,
+        fontSize: 9,
+        fontWeight: '700',
+        letterSpacing: 1.8,
+        fontFamily: typography.sans,
+        marginBottom: 4,
+        textAlign: 'center',
+    },
+    trustPanelText: {
+        color: '#9C9185',
+        fontSize: 11,
+        lineHeight: 16,
+        fontFamily: typography.sans,
+        textAlign: 'center',
     },
 
     /* ================= PANEL DE FORMULARIO ================= */
@@ -358,13 +533,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     formPanelDesktop: {
-        flex: 1.25,
+        flex: 1.35,
         paddingHorizontal: 44,
         paddingVertical: 44,
     },
     formPanelInner: {
         width: '100%',
-        maxWidth: 380,
+        maxWidth: 440,
     },
     headerBlock: {
         alignItems: 'center',
@@ -414,6 +589,27 @@ const styles = StyleSheet.create({
         lineHeight: 17,
         textAlign: 'center',
         fontFamily: typography.sans,
+    },
+    consentsContainer: {
+        backgroundColor: '#FFFFFF',
+        borderWidth: 1,
+        borderColor: colors.sand,
+        borderRadius: 3,
+        padding: 14,
+        marginBottom: 16,
+    },
+    consentsTitle: {
+        color: colors.atelierBlack,
+        fontSize: 10,
+        fontWeight: '700',
+        letterSpacing: 1.5,
+        fontFamily: typography.sans,
+        marginBottom: 12,
+    },
+    inlineLink: {
+        color: colors.bronze,
+        fontWeight: '600',
+        textDecorationLine: 'underline',
     },
     securityNotice: {
         backgroundColor: colors.surfaceSubtle,

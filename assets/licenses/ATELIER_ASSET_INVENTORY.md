@@ -78,3 +78,15 @@ Este inventario documenta el origen, la pertinencia anatómica/técnica, los der
 | `assets/creation/toile_muslin.jpg` | Cuaderno de Fitting / Toile | Toile de prueba en retor de algodón sobre maniquí de atelier. | Atelier Digital Studio / Propiedad Editorial Atelier Katherine Carroll |
 | `assets/creation/atelier_clients_satisfaction.jpg` | Flujo C Entrada / Selector de Clientas | Fotografía editorial cinematográfica de clientas radiantes en salón de atelier probándose prendas de alta costura a medida con satisfacción y elegancia. | Generada por IA de alta definición / Propiedad Editorial Atelier Katherine Carroll |
 
+---
+
+### 6. ACTIVOS EDITORIALES DE TRANSPARENCIA LEGAL, PRIVACIDAD Y GOBERNANZA IA
+
+| Archivo Local | Página / Sección Asignada | Descripción Visual | Transparencia de Origen / Licencia |
+| :--- | :--- | :--- | :--- |
+| `assets/editorial/legal_atelier_workspace.jpg` | `/terminos-condiciones` y Portada (`app/index.tsx`) | Mesa de trabajo de alta costura en madera de roble con bocetos en papel de algodón, muestras de seda marfil y oro champagne, tijeras sastre de latón y tableta con líneas geométricas de patronaje. | Imagen editorial ilustrativa generada con asistencia de IA · Dirección creativa Atelier By Katherine Carroll |
+| `assets/editorial/legal_privacy_custody.jpg` | `/politica-privacidad`, `/aviso-privacidad` y Portada (`app/index.tsx`) | Expediente confidencial de clienta encuadernado en lino arena con cinta de seda champagne, cinta métrica de sastrería y sello de bronce sobre mesa de atelier. | Imagen editorial ilustrativa generada con asistencia de IA · Dirección creativa Atelier By Katherine Carroll |
+| `assets/editorial/legal_ai_craftsmanship.jpg` | `/ia-transparencia` | Maniquí Stockman en lino con drapeado de organza de seda marfil en estudio iluminado por luz natural junto a moodboard arquitectónico. | Imagen editorial ilustrativa generada con asistencia de IA · Dirección creativa Atelier By Katherine Carroll |
+| `assets/editorial/legal_editorial_archive.jpg` | `/politica-cookies` | Estantería de archivo de alta costura con muestrarios textiles encuadernados en lino, rollos de papel de patronaje y cajas de custodia en bronce. | Imagen editorial ilustrativa generada con asistencia de IA · Dirección creativa Atelier By Katherine Carroll |
+
+

@@ -82,6 +82,29 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
             return;
         }
 
+        // 4. Páginas públicas editoriales y documentos legales:
+        // Accesibles libremente tanto para visitantes como para usuarios autenticados.
+        const inPublicRoute =
+            currentGroup === 'terminos-condiciones' ||
+            currentGroup === 'politica-privacidad' ||
+            currentGroup === 'aviso-privacidad' ||
+            currentGroup === 'politica-cookies' ||
+            currentGroup === 'ia-transparencia' ||
+            currentGroup === 'diseno' ||
+            currentGroup === 'creacion' ||
+            currentGroup === 'exclusividad' ||
+            currentGroup === 'servicios' ||
+            currentGroup === 'contacto' ||
+            pathname === '/terminos-condiciones' ||
+            pathname === '/politica-privacidad' ||
+            pathname === '/aviso-privacidad' ||
+            pathname === '/politica-cookies' ||
+            pathname === '/ia-transparencia';
+
+        if (inPublicRoute) {
+            return;
+        }
+
         if (!session) {
             if (
                 inDesignerGroup ||

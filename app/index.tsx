@@ -298,6 +298,27 @@ export default function HomeScreen() {
                                     <Text style={styles.secondaryButtonText}>CREAR CUENTA</Text>
                                     <Text style={styles.secondaryButtonArrow}>→</Text>
                                 </TouchableOpacity>
+
+                                <View style={styles.heroLegalLinksRow}>
+                                    <Text style={styles.heroLegalNote}>Acceso +18 años · </Text>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/terminos-condiciones' as any)}
+                                    >
+                                        <Text style={styles.heroLegalLink}>Términos</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.heroLegalNote}> · </Text>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/politica-privacidad' as any)}
+                                    >
+                                        <Text style={styles.heroLegalLink}>Privacidad</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.heroLegalNote}> · </Text>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/ia-transparencia' as any)}
+                                    >
+                                        <Text style={styles.heroLegalLink}>Transparencia IA</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         )}
 
@@ -467,6 +488,128 @@ export default function HomeScreen() {
                         </Text>
                         <Text style={styles.viewAllButtonArrow}>→</Text>
                     </TouchableOpacity>
+                </View>
+            </View>
+
+            {/* SECCIÓN EDITORIAL DE CONFIDENCIALIDAD, PRIVACIDAD Y TRANSPARENCIA IA */}
+            <View style={styles.trustGovernanceSection}>
+                <View style={styles.trustGovernanceContainer}>
+                    <View style={styles.featuredHeader}>
+                        <Text style={styles.sectionOverline}>
+                            ÉTICA DE ATELIER · LEY 1581 DE 2012 & TRANSPARENCIA TECNOLÓGICA
+                        </Text>
+                        <Text style={styles.featuredSectionTitle}>
+                            Confidencialidad artesanal e innovación responsable
+                        </Text>
+                        <Text style={styles.featuredSectionSubtitle}>
+                            Cada prenda nace de una relación de confianza. Protegemos rigurosamente
+                            sus datos personales y medidas antropométricas, integrando tecnología
+                            bajo la supervisión artística directa de Katherine Carroll.
+                        </Text>
+                    </View>
+
+                    <View style={[styles.trustGrid, isDesktop && styles.trustGridDesktop]}>
+                        {/* Tarjeta 1: Custodia de Datos y Medidas */}
+                        <View style={[styles.trustCard, isDesktop && styles.trustCardDesktop]}>
+                            <View style={styles.trustImageWrapper}>
+                                <Image
+                                    source={require('../assets/editorial/legal_privacy_custody.jpg')}
+                                    style={styles.trustImage}
+                                    resizeMode="cover"
+                                />
+                                <View style={styles.trustAiCaption}>
+                                    <Text style={styles.trustAiCaptionText}>
+                                        ✦ Fotografía editorial ilustrativa asistida con IA · Atelier By Katherine Carroll
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.trustCardBody}>
+                                <Text style={styles.trustCardEyebrow}>
+                                    PROTECCIÓN DE DATOS PERSONALES · COLOMBIA
+                                </Text>
+                                <Text style={styles.trustCardTitle}>
+                                    Custodia Reservada de su Expediente y Medidas
+                                </Text>
+                                <View style={styles.cardGoldLine} />
+                                <Text style={styles.trustCardText}>
+                                    Las fichas antropométricas, fotografías técnicas de fitting y
+                                    datos de contacto se resguardan bajo control de acceso por roles
+                                    y políticas Row Level Security (RLS). El registro de cuentas es
+                                    exclusivo para mayores de 18 años, garantizando en todo momento
+                                    sus derechos de conocer, actualizar, rectificar y suprimir su
+                                    información.
+                                </Text>
+                                <View style={styles.trustLinksRow}>
+                                    <TouchableOpacity
+                                        style={styles.trustLinkBtn}
+                                        onPress={() => router.push('/politica-privacidad' as any)}
+                                    >
+                                        <Text style={styles.trustLinkBtnText}>
+                                            Política de Privacidad →
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.trustLinkBtn}
+                                        onPress={() => router.push('/aviso-privacidad' as any)}
+                                    >
+                                        <Text style={styles.trustLinkBtnText}>
+                                            Aviso de Privacidad →
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+
+                        {/* Tarjeta 2: Transparencia en IA y Términos de Servicio */}
+                        <View style={[styles.trustCard, isDesktop && styles.trustCardDesktop]}>
+                            <View style={styles.trustImageWrapper}>
+                                <Image
+                                    source={require('../assets/editorial/legal_atelier_workspace.jpg')}
+                                    style={styles.trustImage}
+                                    resizeMode="cover"
+                                />
+                                <View style={styles.trustAiCaption}>
+                                    <Text style={styles.trustAiCaptionText}>
+                                        ✦ Fotografía editorial ilustrativa asistida con IA · Atelier By Katherine Carroll
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.trustCardBody}>
+                                <Text style={styles.trustCardEyebrow}>
+                                    DIRECCIÓN HUMANA & GOBERNANZA IA
+                                </Text>
+                                <Text style={styles.trustCardTitle}>
+                                    El Oficio de Alta Costura Apoyado por Tecnología
+                                </Text>
+                                <View style={styles.cardGoldLine} />
+                                <Text style={styles.trustCardText}>
+                                    Declaramos con total transparencia el uso de recursos visuales
+                                    ilustrativos asistidos por IA y de nuestro copiloto local de
+                                    validación geométrica. Ninguna decisión creativa o de calce es
+                                    automatizada, ni compartimos fotografías o medidas de clientas
+                                    para entrenar modelos externos.
+                                </Text>
+                                <View style={styles.trustLinksRow}>
+                                    <TouchableOpacity
+                                        style={styles.trustLinkBtn}
+                                        onPress={() => router.push('/ia-transparencia' as any)}
+                                    >
+                                        <Text style={styles.trustLinkBtnText}>
+                                            Política de Transparencia IA →
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.trustLinkBtn}
+                                        onPress={() => router.push('/terminos-condiciones' as any)}
+                                    >
+                                        <Text style={styles.trustLinkBtnText}>
+                                            Términos y Condiciones →
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
                 </View>
             </View>
 
@@ -837,6 +980,25 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontWeight: '600',
     },
+    heroLegalLinksRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 2,
+    },
+    heroLegalNote: {
+        color: '#968A7E',
+        fontSize: 10.5,
+        fontFamily: typography.sans,
+    },
+    heroLegalLink: {
+        color: '#7A6046',
+        fontSize: 10.5,
+        fontWeight: '600',
+        textDecorationLine: 'underline',
+        fontFamily: typography.sans,
+    },
     loadingBox: {
         paddingVertical: 20,
         alignItems: 'center',
@@ -1162,6 +1324,104 @@ const styles = StyleSheet.create({
         color: colors.champagneGold,
         fontSize: 13,
         fontWeight: '700',
+    },
+
+    /* ================= SECCIÓN CONFIDENCIALIDAD Y GOBERNANZA IA ================= */
+    trustGovernanceSection: {
+        backgroundColor: '#14110E',
+        paddingVertical: 56,
+        paddingHorizontal: 24,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(167, 131, 80, 0.22)',
+    },
+    trustGovernanceContainer: {
+        maxWidth: 1200,
+        marginHorizontal: 'auto',
+        width: '100%',
+    },
+    trustGrid: {
+        flexDirection: 'column',
+        gap: 24,
+    },
+    trustGridDesktop: {
+        flexDirection: 'row',
+    },
+    trustCard: {
+        backgroundColor: '#1B1713',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: 'rgba(167, 131, 80, 0.25)',
+        overflow: 'hidden',
+    },
+    trustCardDesktop: {
+        flex: 1,
+    },
+    trustImageWrapper: {
+        height: 210,
+        backgroundColor: '#0F0D0B',
+        position: 'relative',
+    },
+    trustImage: {
+        width: '100%',
+        height: '100%',
+    },
+    trustAiCaption: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(23, 20, 17, 0.85)',
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(167, 131, 80, 0.35)',
+    },
+    trustAiCaptionText: {
+        color: '#D4C8B8',
+        fontSize: 10,
+        fontStyle: 'italic',
+        fontFamily: typography.sans,
+    },
+    trustCardBody: {
+        padding: 24,
+    },
+    trustCardEyebrow: {
+        color: colors.champagneGold,
+        fontSize: 9.5,
+        fontWeight: '700',
+        letterSpacing: 2,
+        marginBottom: 6,
+        fontFamily: typography.sans,
+    },
+    trustCardTitle: {
+        color: '#FFFFFF',
+        fontSize: 19,
+        lineHeight: 25,
+        fontFamily: typography.serif,
+        fontWeight: '600',
+        marginBottom: 10,
+    },
+    trustCardText: {
+        color: '#D4C8B8',
+        fontSize: 13,
+        lineHeight: 20,
+        fontFamily: typography.sans,
+        marginBottom: 18,
+    },
+    trustLinksRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 16,
+    },
+    trustLinkBtn: {
+        paddingVertical: 4,
+    },
+    trustLinkBtnText: {
+        color: colors.champagneGold,
+        fontSize: 11.5,
+        fontWeight: '700',
+        letterSpacing: 0.8,
+        fontFamily: typography.sans,
     },
 
     /* ================= BANNER FINAL HOME ================= */

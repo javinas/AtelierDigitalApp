@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Image,
     Linking,
-    Platform,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -91,15 +90,49 @@ export default function PublicFooter() {
                         </View>
 
                         <View style={styles.column}>
+                            <Text style={styles.columnTitle}>LEGAL & TRANSPARENCIA</Text>
+                            <TouchableOpacity
+                                onPress={() => router.push('/terminos-condiciones' as any)}
+                                style={styles.linkItem}
+                            >
+                                <Text style={styles.linkText}>Términos y Condiciones</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => router.push('/politica-privacidad' as any)}
+                                style={styles.linkItem}
+                            >
+                                <Text style={styles.linkText}>Política de Privacidad</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => router.push('/aviso-privacidad' as any)}
+                                style={styles.linkItem}
+                            >
+                                <Text style={styles.linkText}>Aviso de Privacidad</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => router.push('/politica-cookies' as any)}
+                                style={styles.linkItem}
+                            >
+                                <Text style={styles.linkText}>Política de Cookies</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => router.push('/ia-transparencia' as any)}
+                                style={styles.linkItem}
+                            >
+                                <Text style={styles.linkText}>Transparencia en IA</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.column}>
                             <Text style={styles.columnTitle}>ATELIER DIGITAL</Text>
                             <TouchableOpacity onPress={() => router.push('/(auth)/login')} style={styles.linkItem}>
                                 <Text style={styles.linkText}>Iniciar Sesión</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/(auth)/register')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Registro de Clientas</Text>
+                                <Text style={styles.linkText}>Registro de Clientas (+18)</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/contacto')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Solicitar Cotización</Text>
+                                <Text style={styles.linkText}>Solicitar Cotización / ARCO</Text>
                             </TouchableOpacity>
 
                             <View style={styles.instagramBlock}>
@@ -128,11 +161,30 @@ export default function PublicFooter() {
                     <View style={styles.dividerLine} />
                 </View>
 
-                {/* Bottom Bar: Copyright & Location */}
+                {/* Bottom Bar: Copyright, Legal Quick Links & Location */}
                 <View style={[styles.bottomBar, isDesktop && styles.bottomBarDesktop]}>
                     <Text style={styles.copyrightText}>
                         © {new Date().getFullYear()} By Katherine Carroll · Atelier de Autor. Todos los derechos reservados.
                     </Text>
+
+                    <View style={styles.bottomLegalLinks}>
+                        <TouchableOpacity onPress={() => router.push('/politica-privacidad' as any)}>
+                            <Text style={styles.bottomLegalLinkText}>Privacidad</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.bottomLegalDot}>·</Text>
+                        <TouchableOpacity onPress={() => router.push('/terminos-condiciones' as any)}>
+                            <Text style={styles.bottomLegalLinkText}>Términos</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.bottomLegalDot}>·</Text>
+                        <TouchableOpacity onPress={() => router.push('/politica-cookies' as any)}>
+                            <Text style={styles.bottomLegalLinkText}>Cookies</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.bottomLegalDot}>·</Text>
+                        <TouchableOpacity onPress={() => router.push('/ia-transparencia' as any)}>
+                            <Text style={styles.bottomLegalLinkText}>IA</Text>
+                        </TouchableOpacity>
+                    </View>
+
                     <Text style={styles.locationText}>
                         BARRANQUILLA · COLOMBIA
                     </Text>
@@ -189,6 +241,7 @@ const styles = StyleSheet.create({
     linksGridDesktop: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        flexWrap: 'wrap',
         flex: 1,
     },
     column: {
@@ -276,6 +329,23 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: typography.sans,
         textAlign: 'center',
+    },
+    bottomLegalLinks: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+    },
+    bottomLegalLinkText: {
+        color: '#9C9185',
+        fontSize: 11.5,
+        fontFamily: typography.sans,
+        textDecorationLine: 'underline',
+    },
+    bottomLegalDot: {
+        color: colors.champagneGold,
+        fontSize: 11,
     },
     locationText: {
         color: colors.champagneGold,

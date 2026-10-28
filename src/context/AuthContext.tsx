@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../supabase';
-import { Profile, UserRole } from '../types/auth';
+import { Profile, RegistrationConsents, UserRole } from '../types/auth';
+import { LEGAL_DOCUMENT_VERSIONS } from '../constants/legalDocuments';
 
 interface AuthContextType {
     user: User | null;
@@ -15,6 +16,7 @@ interface AuthContextType {
         email: string,
         password: string,
         fullName: string,
+        consents?: RegistrationConsents,
     ) => Promise<{ error: string | null; needsEmailConfirmation: boolean }>;
     signOut: () => Promise<{ error: string | null }>;
     resetPassword: (email: string) => Promise<{ error: string | null }>;
@@ -192,14 +194,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: string,
         password: string,
         fullName: string,
+        consents?: RegistrationConsents,
     ) => {
         try {
+            if (consents) {
+                if (!consents.ageConfirmed) {
+                    return {
+                        error: 'Debe confirmar que es mayor de 18 años para crear una cuenta en Atelier Digital.',
+                        needsEmailConfirmation: false,
+                    };
+                }
+                if (!consents.termsAccepted) {
+                    return {
+                        error: 'Debe aceptar los Términos y Condiciones de Uso para registrarse.',
+                        needsEmailConfirmation: false,
+                    };
+                }
+                if (!consents.privacyAccepted) {
+                    return {
+                        error: 'Debe autorizar la Política de Tratamiento de Datos Personales para continuar.',
+                        needsEmailConfirmation: false,
+                    };
+                }
+            }
+
+            const acceptedAtIso = new Date().toISOString();
+            const resolvedUserAgent =
+                consents?.userAgent ||
+                (typeof navigator !== 'undefined' ? navigator.userAgent : 'AtelierDigitalApp');
+            const termsVer = consents?.termsVersion || LEGAL_DOCUMENT_VERSIONS.TERMS_OF_SERVICE;
+            const privacyVer = consents?.privacyVersion || LEGAL_DOCUMENT_VERSIONS.PRIVACY_POLICY;
+
             const { data, error } = await supabase.auth.signUp({
                 email: email.trim(),
                 password,
                 options: {
                     data: {
                         full_name: fullName.trim(),
+                        age_confirmed: consents?.ageConfirmed ?? true,
+                        terms_accepted: consents?.termsAccepted ?? true,
+                        terms_version: termsVer,
+                        privacy_accepted: consents?.privacyAccepted ?? true,
+                        privacy_version: privacyVer,
+                        marketing_opt_in: consents?.marketingOptIn ?? false,
+                        consent_accepted_at: acceptedAtIso,
+                        user_agent: resolvedUserAgent,
                     },
                 },
             });
@@ -209,6 +248,64 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     error: translateAuthError(error.message),
                     needsEmailConfirmation: false,
                 };
+            }
+
+            // Si hay sesión activa inmediata y el trigger aún no registró algún consentimiento,
+            // intentamos registrar de forma tolerante a fallos en public.user_legal_consents.
+            if (data?.user && data?.session && consents) {
+                try {
+                    const consentRows: {
+                        user_id: string;
+                        consent_type: string;
+                        document_version: string;
+                        status: string;
+                        user_agent: string;
+                        accepted_at: string;
+                    }[] = [
+                        {
+                            user_id: data.user.id,
+                            consent_type: 'AGE_CONFIRMATION',
+                            document_version: LEGAL_DOCUMENT_VERSIONS.AGE_CONFIRMATION,
+                            status: 'granted',
+                            user_agent: resolvedUserAgent,
+                            accepted_at: acceptedAtIso,
+                        },
+                        {
+                            user_id: data.user.id,
+                            consent_type: 'TERMS_OF_SERVICE',
+                            document_version: termsVer,
+                            status: 'granted',
+                            user_agent: resolvedUserAgent,
+                            accepted_at: acceptedAtIso,
+                        },
+                        {
+                            user_id: data.user.id,
+                            consent_type: 'PRIVACY_POLICY',
+                            document_version: privacyVer,
+                            status: 'granted',
+                            user_agent: resolvedUserAgent,
+                            accepted_at: acceptedAtIso,
+                        },
+                    ];
+
+                    if (consents.marketingOptIn) {
+                        consentRows.push({
+                            user_id: data.user.id,
+                            consent_type: 'MARKETING_OPT_IN',
+                            document_version: LEGAL_DOCUMENT_VERSIONS.MARKETING_OPT_IN,
+                            status: 'granted',
+                            user_agent: resolvedUserAgent,
+                            accepted_at: acceptedAtIso,
+                        });
+                    }
+
+                    await supabase.from('user_legal_consents').insert(consentRows);
+                } catch (consentErr) {
+                    console.warn(
+                        '[Atelier Auth] Los consentimientos iniciales fueron delegados al trigger de base de datos:',
+                        consentErr,
+                    );
+                }
             }
 
             // Si Supabase tiene confirmación de correo activa y no devolvió sesión
