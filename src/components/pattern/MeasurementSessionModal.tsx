@@ -6,7 +6,7 @@
 // comprensibles en español, validación anatómica de rangos y cambio de unidad.
 // ==============================================================================
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
@@ -87,23 +87,88 @@ interface StandardTraceabilityState {
     baseMeasurementsCm: Record<string, number>;
 }
 
+const EMPTY_INITIAL_VALUES: Record<string, number> = {};
+
+function computeInitialSessionValues(
+    previousSession: MeasurementSession | null,
+    initialValuesMm: Record<string, number>,
+    unit: MeasurementUnit
+): { values: Record<string, string>; notes: string; errorMessage: string | null } {
+    const init: Record<string, string> = {};
+    const sourceValues: Record<string, number> = {};
+
+    if (previousSession) {
+        if (previousSession.values && Object.keys(previousSession.values).length > 0) {
+            for (const [code, item] of Object.entries(previousSession.values)) {
+                const numVal = typeof item === 'number' ? item : (item as any)?.value_mm;
+                if (typeof numVal === 'number' && Number.isFinite(numVal) && numVal > 0) {
+                    sourceValues[code] = numVal;
+                }
+            }
+        }
+        if (initialValuesMm) {
+            for (const [code, val] of Object.entries(initialValuesMm)) {
+                if (!sourceValues[code] && typeof val === 'number' && Number.isFinite(val) && val > 0) {
+                    sourceValues[code] = val;
+                }
+            }
+        }
+        for (const [code, valMm] of Object.entries(sourceValues)) {
+            let targetVal = valMm;
+            if (unit === 'cm') targetVal = mmToCm(valMm);
+            else if (unit === 'in') targetVal = mmToInch(valMm);
+            else if (unit === 'mm') targetVal = valMm;
+
+            init[code] = roundTo(targetVal, 1).toString();
+        }
+
+        return {
+            values: init,
+            notes: previousSession.notes ? `Rectificación: ${previousSession.notes}` : '',
+            errorMessage: Object.keys(sourceValues).length === 0
+                ? 'La sesión previa seleccionada no contiene medidas registradas. Puede usar la "Guía de Medidas y Tallas" para autocompletarlas o ingresarlas manualmente.'
+                : null,
+        };
+    }
+
+    return {
+        values: {},
+        notes: '',
+        errorMessage: null,
+    };
+}
+
 export function MeasurementSessionModal({
     visible,
     client,
     person = null,
-    initialValuesMm = {},
+    initialValuesMm = EMPTY_INITIAL_VALUES,
     previousSession = null,
     onClose,
     onSessionCreated,
 }: MeasurementSessionModalProps) {
     const [unit, setUnit] = useState<MeasurementUnit>('cm');
     const [activeTab, setActiveTab] = useState<MeasurementCategory>('torso_body');
-    const [values, setValues] = useState<Record<string, string>>({});
-    const [notes, setNotes] = useState<string>('');
+
+    const initialData = useMemo(() => {
+        return computeInitialSessionValues(previousSession, initialValuesMm, 'cm');
+    }, [previousSession?.id]);
+
+    const [values, setValues] = useState<Record<string, string>>(() => initialData.values);
+    const [notes, setNotes] = useState<string>(() => initialData.notes);
     const [saving, setSaving] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(() => initialData.errorMessage);
     const [expandedInfoCode, setExpandedInfoCode] = useState<string | null>(null);
     const [showAsymmetryMap, setShowAsymmetryMap] = useState<Record<string, boolean>>({});
+
+    // Sincronizar si cambia la sesión previa mientras el modal está abierto
+    const prevSessionIdRef = useRef(previousSession?.id);
+    if (prevSessionIdRef.current !== previousSession?.id) {
+        prevSessionIdRef.current = previousSession?.id;
+        setValues(initialData.values);
+        setNotes(initialData.notes);
+        setErrorMessage(initialData.errorMessage);
+    }
 
     // Estados para la Guía de Medidas y Tallas Estándar de Referencia
     const [showStandardGuide, setShowStandardGuide] = useState<boolean>(false);
@@ -123,59 +188,6 @@ export function MeasurementSessionModal({
     });
     const [showTemplateSelector, setShowTemplateSelector] = useState<boolean>(false);
     const [filterOnlyTemplate, setFilterOnlyTemplate] = useState<boolean>(true);
-
-    // Sincronizar y precargar automáticamente las medidas existentes al abrir el modal para rectificación
-    useEffect(() => {
-        if (!visible) return;
-
-        const init: Record<string, string> = {};
-        const sourceValues: Record<string, number> = {};
-
-        if (previousSession) {
-            // Prioridad 1: Valores de la sesión previa
-            if (previousSession.values && Object.keys(previousSession.values).length > 0) {
-                for (const [code, item] of Object.entries(previousSession.values)) {
-                    const numVal = typeof item === 'number' ? item : (item as any)?.value_mm;
-                    if (typeof numVal === 'number' && Number.isFinite(numVal) && numVal > 0) {
-                        sourceValues[code] = numVal;
-                    }
-                }
-            }
-            // Prioridad 2: Medidas activas del estado de taller
-            if (initialValuesMm) {
-                for (const [code, val] of Object.entries(initialValuesMm)) {
-                    if (!sourceValues[code] && typeof val === 'number' && Number.isFinite(val) && val > 0) {
-                        sourceValues[code] = val;
-                    }
-                }
-            }
-
-            // Convertir a la unidad actual del modal
-            for (const [code, valMm] of Object.entries(sourceValues)) {
-                let targetVal = valMm;
-                if (unit === 'cm') targetVal = mmToCm(valMm);
-                else if (unit === 'in') targetVal = mmToInch(valMm);
-                else if (unit === 'mm') targetVal = valMm;
-
-                init[code] = roundTo(targetVal, 1).toString();
-            }
-
-            setValues(init);
-            setNotes(previousSession.notes ? `Rectificación: ${previousSession.notes}` : '');
-            if (Object.keys(sourceValues).length === 0) {
-                setErrorMessage('La sesión previa seleccionada no contiene medidas registradas. Puede usar la "Guía de Medidas y Tallas" para autocompletarlas o ingresarlas manualmente.');
-            }
-        } else {
-            // Nueva medición desde cero
-            setValues({});
-            setNotes('');
-            setStandardRefMeta(null);
-        }
-
-        if (!previousSession || Object.keys(sourceValues).length > 0) {
-            setErrorMessage(null);
-        }
-    }, [visible, previousSession, initialValuesMm, unit]);
 
     // Modalidad de uso activa: A (Solo Talla), B (Talla + Ajustes), C (Medidas Manuales)
     const usageMode = useMemo<MeasurementUsageMode>(() => {
@@ -542,7 +554,7 @@ export function MeasurementSessionModal({
                             {currentMeasurements.length === 0 ? (
                                 <View style={styles.emptyCategoryInTemplate}>
                                     <Text style={styles.emptyCategoryInTemplateTitle}>
-                                        Sin medidas requeridas en esta sección para "{selectedTemplate?.name}"
+                                        Sin medidas requeridas en esta sección para «{selectedTemplate?.name}»
                                     </Text>
                                     <Text style={styles.emptyCategoryInTemplateDesc}>
                                         Esta plantilla curada contiene {selectedTemplate?.measurement_codes.length} medidas distribuidas en otras áreas anatómicas.

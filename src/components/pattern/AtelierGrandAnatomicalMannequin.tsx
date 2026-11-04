@@ -73,6 +73,8 @@ interface AtelierGrandAnatomicalMannequinProps {
     headerSubtitle?: string;
     headerEyebrow?: string;
     badgeVersionText?: string;
+    compact?: boolean;
+    compactHeight?: number;
 }
 
 const REAL_MANNEQUIN_IMAGES: Record<BodyDemographicType, any> = {
@@ -107,32 +109,54 @@ export function AtelierGrandAnatomicalMannequin({
     headerSubtitle,
     headerEyebrow,
     badgeVersionText,
+    compact = false,
+    compactHeight = 440,
 }: AtelierGrandAnatomicalMannequinProps) {
     const [selectedCategory, setSelectedCategory] = useState<AnatomicalDisplayGroup>('all');
-    const [internalDemographic, setInternalDemographic] = useState<BodyDemographicType>('woman');
-    const demographic = demographicProp !== undefined ? demographicProp : internalDemographic;
+    const [internalDemographic, setInternalDemographic] = useState<BodyDemographicType>(demographicProp || 'woman');
+    useEffect(() => {
+        if (demographicProp !== undefined) {
+            setInternalDemographic(demographicProp);
+        }
+    }, [demographicProp]);
+    const demographic = internalDemographic;
     const setDemographic = (d: BodyDemographicType) => {
         setInternalDemographic(d);
         onDemographicChange?.(d);
     };
 
     const [stageScale, setStageScale] = useState(1);
-    const [internalViewMode, setInternalViewMode] = useState<'full_body' | 'torso'>('torso');
-    const mannequinViewMode = viewModeProp !== undefined ? viewModeProp : internalViewMode;
+    const [internalViewMode, setInternalViewMode] = useState<'full_body' | 'torso'>(viewModeProp || 'torso');
+    useEffect(() => {
+        if (viewModeProp !== undefined) {
+            setInternalViewMode(viewModeProp);
+        }
+    }, [viewModeProp]);
+    const mannequinViewMode = internalViewMode;
     const setMannequinViewMode = (mode: 'full_body' | 'torso') => {
         setInternalViewMode(mode);
         onViewModeChange?.(mode);
     };
 
-    const [internalDensityMode, setInternalDensityMode] = useState<'summary' | 'all'>('all'); // VISTA 'TODAS LAS COTAS' PREDETERMINADA
-    const densityMode = densityModeProp !== undefined ? densityModeProp : internalDensityMode;
+    const [internalDensityMode, setInternalDensityMode] = useState<'summary' | 'all'>(densityModeProp || 'all');
+    useEffect(() => {
+        if (densityModeProp !== undefined) {
+            setInternalDensityMode(densityModeProp);
+        }
+    }, [densityModeProp]);
+    const densityMode = internalDensityMode;
     const setDensityMode = (mode: 'summary' | 'all') => {
         setInternalDensityMode(mode);
         onDensityModeChange?.(mode);
     };
 
-    const [internalPerspective, setInternalPerspective] = useState<AnatomicalPerspective>('front'); // VISTA FRONTAL PREDETERMINADA
-    const viewPerspective = perspectiveProp !== undefined ? perspectiveProp : internalPerspective;
+    const [internalPerspective, setInternalPerspective] = useState<AnatomicalPerspective>(perspectiveProp || 'front');
+    useEffect(() => {
+        if (perspectiveProp !== undefined) {
+            setInternalPerspective(perspectiveProp);
+        }
+    }, [perspectiveProp]);
+    const viewPerspective = internalPerspective;
     const setViewPerspective = (persp: AnatomicalPerspective) => {
         setInternalPerspective(persp);
         onPerspectiveChange?.(persp);
@@ -667,6 +691,9 @@ export function AtelierGrandAnatomicalMannequin({
                                     mannequinViewMode === 'torso' && styles.archetypeBtnActive,
                                 ]}
                                 onPress={() => {
+                                    if (selectedMeasureCode && TORSO_EXCLUDED_COTA_CODES.has(selectedMeasureCode)) {
+                                        onSelectMeasureCode?.(null);
+                                    }
                                     setMannequinViewMode('torso');
                                     setViewPerspective('front');
                                     if (selectedCategory === 'arms' || selectedCategory === 'lower') {

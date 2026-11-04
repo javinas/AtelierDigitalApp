@@ -6,12 +6,13 @@
 // con diseño de alta costura Atelier, individualmente o en lote completo.
 // ==============================================================================
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     Modal,
     ScrollView,
     StyleSheet,
     Text,
+    TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -45,6 +46,40 @@ export function PrintableMeasurementSheetModal({
     const [selectedPersonId, setSelectedPersonId] = useState<string>(
         participants.length > 0 ? (participants[0].person?.id || participants[0].person_id) : ''
     );
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredParticipants = useMemo(() => {
+        if (!searchQuery.trim()) return participants;
+        const q = searchQuery.toLowerCase().trim();
+        return participants.filter((p) => {
+            const name = p.person?.full_name?.toLowerCase() || '';
+            const ref = p.person?.reference_id?.toLowerCase() || '';
+            const size = p.standard_size?.toLowerCase() || '';
+            return name.includes(q) || ref.includes(q) || size.includes(q);
+        });
+    }, [participants, searchQuery]);
+
+    const currentParticipantIndex = useMemo(() => {
+        return participants.findIndex((p) => (p.person?.id || p.person_id) === selectedPersonId);
+    }, [participants, selectedPersonId]);
+
+    const handlePrevPerson = () => {
+        if (participants.length === 0) return;
+        const newIdx = currentParticipantIndex <= 0 ? participants.length - 1 : currentParticipantIndex - 1;
+        const nextP = participants[newIdx];
+        if (nextP) {
+            setSelectedPersonId(nextP.person?.id || nextP.person_id);
+        }
+    };
+
+    const handleNextPerson = () => {
+        if (participants.length === 0) return;
+        const newIdx = currentParticipantIndex >= participants.length - 1 ? 0 : currentParticipantIndex + 1;
+        const nextP = participants[newIdx];
+        if (nextP) {
+            setSelectedPersonId(nextP.person?.id || nextP.person_id);
+        }
+    };
 
     if (!visible) return null;
 
@@ -99,57 +134,124 @@ export function PrintableMeasurementSheetModal({
 
                 {/* Barra de Control de Impresión */}
                 <View style={styles.controlBar}>
-                    <View style={styles.modeToggleGroup}>
-                        <TouchableOpacity
-                            style={[styles.toggleBtn, printMode === 'batch' && styles.toggleBtnActive]}
-                            onPress={() => setPrintMode('batch')}
-                            activeOpacity={0.8}
-                        >
-                            <Text style={[styles.toggleBtnText, printMode === 'batch' && styles.toggleBtnTextActive]}>
-                                📚 Paquete Completo ({participants.length} Fichas)
-                            </Text>
-                        </TouchableOpacity>
+                    <View style={styles.controlBarTopRow}>
+                        <View style={styles.modeToggleGroup}>
+                            <TouchableOpacity
+                                style={[styles.toggleBtn, printMode === 'batch' && styles.toggleBtnActive]}
+                                onPress={() => setPrintMode('batch')}
+                                activeOpacity={0.8}
+                            >
+                                <Text style={[styles.toggleBtnText, printMode === 'batch' && styles.toggleBtnTextActive]}>
+                                    📚 Paquete Completo ({participants.length} Fichas)
+                                </Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity
-                            style={[styles.toggleBtn, printMode === 'single' && styles.toggleBtnActive]}
-                            onPress={() => setPrintMode('single')}
-                            activeOpacity={0.8}
-                        >
-                            <Text style={[styles.toggleBtnText, printMode === 'single' && styles.toggleBtnTextActive]}>
-                                👤 Ficha Individual
+                            <TouchableOpacity
+                                style={[styles.toggleBtn, printMode === 'single' && styles.toggleBtnActive]}
+                                onPress={() => setPrintMode('single')}
+                                activeOpacity={0.8}
+                            >
+                                <Text style={[styles.toggleBtnText, printMode === 'single' && styles.toggleBtnTextActive]}>
+                                    👤 Ficha Individual
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <TouchableOpacity style={styles.printActionBtn} onPress={handlePrint} activeOpacity={0.85}>
+                            <Text style={styles.printActionBtnText}>
+                                🖨️ {printMode === 'batch' ? `Imprimir Paquete (${participants.length} Páginas)` : 'Imprimir Ficha Individual'}
                             </Text>
                         </TouchableOpacity>
                     </View>
 
                     {printMode === 'single' && (
-                        <ScrollView
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={styles.personSelectorStrip}
-                        >
-                            {participants.map((p) => {
-                                const pid = p.person?.id || p.person_id;
-                                const isSelected = pid === selectedPersonId;
-                                return (
-                                    <TouchableOpacity
-                                        key={pid}
-                                        style={[styles.personChip, isSelected && styles.personChipSelected]}
-                                        onPress={() => setSelectedPersonId(pid)}
-                                    >
-                                        <Text style={[styles.personChipText, isSelected && styles.personChipTextSelected]}>
-                                            {p.person?.full_name || 'Sin nombre'}
-                                        </Text>
-                                    </TouchableOpacity>
-                                );
-                            })}
-                        </ScrollView>
-                    )}
+                        <View style={styles.singlePersonSelectorRow}>
+                            {/* Barra de Búsqueda y Navegación Secuencial */}
+                            <View style={styles.searchAndNavRow}>
+                                <View style={styles.searchInputWrap}>
+                                    <Text style={styles.searchIcon}>🔍</Text>
+                                    <TextInput
+                                        style={styles.searchInput}
+                                        placeholder="Buscar persona por nombre o código..."
+                                        placeholderTextColor="#9A8E82"
+                                        value={searchQuery}
+                                        onChangeText={setSearchQuery}
+                                    />
+                                    {searchQuery.length > 0 && (
+                                        <TouchableOpacity onPress={() => setSearchQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                                            <Text style={styles.clearSearchText}>✕</Text>
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
 
-                    <TouchableOpacity style={styles.printActionBtn} onPress={handlePrint} activeOpacity={0.85}>
-                        <Text style={styles.printActionBtnText}>
-                            🖨️ {printMode === 'batch' ? `Imprimir Paquete (${participants.length} Páginas)` : 'Imprimir Ficha Individual'}
-                        </Text>
-                    </TouchableOpacity>
+                                {/* Controles Secuenciales Anterior / Siguiente */}
+                                <View style={styles.navControlsGroup}>
+                                    <TouchableOpacity
+                                        style={styles.navArrowBtn}
+                                        onPress={handlePrevPerson}
+                                        activeOpacity={0.7}
+                                    >
+                                        <Text style={styles.navArrowBtnText}>← Anterior</Text>
+                                    </TouchableOpacity>
+
+                                    <View style={styles.personCounterBadge}>
+                                        <Text style={styles.personCounterText}>
+                                            {currentParticipantIndex >= 0 ? `${currentParticipantIndex + 1}` : '1'} / {participants.length}
+                                        </Text>
+                                    </View>
+
+                                    <TouchableOpacity
+                                        style={styles.navArrowBtn}
+                                        onPress={handleNextPerson}
+                                        activeOpacity={0.7}
+                                    >
+                                        <Text style={styles.navArrowBtnText}>Siguiente →</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+                            {/* Tira Deslizable de Personas con chips enriquecidos */}
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={true}
+                                contentContainerStyle={styles.personSelectorStrip}
+                            >
+                                {filteredParticipants.map((p, idx) => {
+                                    const pid = p.person?.id || p.person_id;
+                                    const isSelected = pid === selectedPersonId;
+                                    const origIndex = participants.findIndex((orig) => (orig.person?.id || orig.person_id) === pid);
+                                    return (
+                                        <TouchableOpacity
+                                            key={pid}
+                                            style={[styles.personChip, isSelected && styles.personChipSelected]}
+                                            onPress={() => setSelectedPersonId(pid)}
+                                            activeOpacity={0.8}
+                                        >
+                                            <Text style={[styles.personIndexTag, isSelected && styles.personIndexTagSelected]}>
+                                                #{origIndex >= 0 ? origIndex + 1 : idx + 1}
+                                            </Text>
+                                            <Text
+                                                style={[styles.personChipText, isSelected && styles.personChipTextSelected]}
+                                                numberOfLines={1}
+                                            >
+                                                {p.person?.full_name || 'Sin nombre'}
+                                            </Text>
+                                            {p.person?.reference_id ? (
+                                                <Text style={[styles.personRefTag, isSelected && styles.personRefTagSelected]}>
+                                                    {p.person.reference_id}
+                                                </Text>
+                                            ) : null}
+                                        </TouchableOpacity>
+                                    );
+                                })}
+                                {filteredParticipants.length === 0 && (
+                                    <Text style={styles.emptySearchText}>
+                                        Ninguna persona coincide con «{searchQuery}»
+                                    </Text>
+                                )}
+                            </ScrollView>
+                        </View>
+                    )}
                 </View>
 
                 {/* Vista Previa Editorial en Pantalla */}
@@ -207,11 +309,11 @@ export function PrintableMeasurementSheetModal({
                         <View style={styles.tableBox}>
                             <View style={styles.tableHeaderRow}>
                                 <Text style={[styles.thText, { width: 36, textAlign: 'center' }]}>#</Text>
-                                <Text style={[styles.thText, { width: 90 }]}>CÓDIGO</Text>
+                                <Text style={[styles.thText, { width: 145 }]}>CÓDIGO</Text>
                                 <Text style={[styles.thText, { flex: 1 }]}>PUNTO ANATÓMICO</Text>
                                 <Text style={[styles.thText, { width: 85, textAlign: 'center' }]}>REF. ESTÁNDAR</Text>
-                                <Text style={[styles.thText, { width: 140, textAlign: 'center' }]}>VALOR TOMADO</Text>
-                                <Text style={[styles.thText, { width: 50, textAlign: 'center' }]}>OK</Text>
+                                <Text style={[styles.thText, { width: 110, textAlign: 'center' }]}>VALOR TOMADO</Text>
+                                <Text style={[styles.thText, { width: 36, textAlign: 'center' }]}>OK</Text>
                             </View>
 
                             {measurementItems.map((item, idx) => {
@@ -221,20 +323,20 @@ export function PrintableMeasurementSheetModal({
                                         <Text style={[styles.tdText, { width: 36, textAlign: 'center', color: '#999' }]}>
                                             {idx + 1}
                                         </Text>
-                                        <Text style={[styles.tdText, { width: 90, fontFamily: 'monospace', fontWeight: '700', color: colors.champagneGold }]}>
+                                        <Text style={[styles.tdText, { width: 145, fontFamily: 'monospace', fontWeight: '700', fontSize: 10.5, color: colors.champagneGold }]} numberOfLines={1}>
                                             {item.code}
                                         </Text>
                                         <View style={{ flex: 1, paddingRight: 8 }}>
                                             <Text style={[styles.tdText, { fontWeight: '600' }]}>{item.name}</Text>
-                                            <Text style={styles.tdHintText} numberOfLines={1}>{item.instructions || ''}</Text>
+                                            <Text style={styles.tdHintText} numberOfLines={2}>{item.instructions || ''}</Text>
                                         </View>
                                         <Text style={[styles.tdText, { width: 85, textAlign: 'center', color: stdVal ? '#333' : '#bbb' }]}>
                                             {stdVal ? `${stdVal} ${campaign.unit_system}` : '—'}
                                         </Text>
-                                        <View style={[styles.handwritingBox, { width: 140 }]}>
-                                            <Text style={styles.dottedLine}>......................................</Text>
+                                        <View style={[styles.handwritingBox, { width: 110 }]}>
+                                            <Text style={styles.dottedLine}>................................</Text>
                                         </View>
-                                        <View style={{ width: 50, alignItems: 'center', justifyContent: 'center' }}>
+                                        <View style={{ width: 36, alignItems: 'center', justifyContent: 'center' }}>
                                             <View style={styles.checkboxBox} />
                                         </View>
                                     </View>
@@ -320,13 +422,93 @@ const styles = StyleSheet.create({
     controlBar: {
         backgroundColor: '#FFFFFF',
         paddingHorizontal: 24,
-        paddingVertical: 14,
+        paddingVertical: 12,
         borderBottomWidth: 1,
         borderBottomColor: colors.sand,
+        gap: 10,
+    },
+    controlBarTopRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    singlePersonSelectorRow: {
+        width: '100%',
+        gap: 8,
+        paddingTop: 8,
+        borderTopWidth: 1,
+        borderTopColor: '#F5EFE6',
+    },
+    searchAndNavRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         gap: 12,
+        flexWrap: 'wrap',
+    },
+    searchInputWrap: {
+        flex: 1,
+        minWidth: 260,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: colors.ivoryWarm,
+        borderWidth: 1,
+        borderColor: colors.sand,
+        borderRadius: 20,
+        paddingHorizontal: 12,
+        height: 36,
+    },
+    searchIcon: {
+        fontSize: 13,
+        marginRight: 6,
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 12,
+        color: colors.atelierBlack,
+        paddingVertical: 0,
+    },
+    clearSearchText: {
+        fontSize: 12,
+        color: '#9A8E82',
+        fontWeight: '700',
+        paddingHorizontal: 4,
+    },
+    navControlsGroup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+    },
+    navArrowBtn: {
+        backgroundColor: colors.ivoryWarm,
+        borderWidth: 1,
+        borderColor: colors.sand,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 4,
+    },
+    navArrowBtnText: {
+        fontSize: 11,
+        fontWeight: '600',
+        color: colors.atelierBlack,
+    },
+    personCounterBadge: {
+        backgroundColor: colors.atelierBlack,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 4,
+    },
+    personCounterText: {
+        fontSize: 11,
+        fontWeight: '700',
+        color: colors.champagneGold,
+    },
+    selectorLabel: {
+        fontSize: 10,
+        fontWeight: '700',
+        color: colors.champagneGold,
+        letterSpacing: 0.8,
     },
     modeToggleGroup: {
         flexDirection: 'row',
@@ -356,9 +538,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 8,
         alignItems: 'center',
+        paddingVertical: 2,
     },
     personChip: {
-        paddingHorizontal: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
         paddingVertical: 6,
         borderRadius: 16,
         backgroundColor: colors.ivoryWarm,
@@ -369,6 +554,15 @@ const styles = StyleSheet.create({
         backgroundColor: colors.champagneGold,
         borderColor: colors.champagneGold,
     },
+    personIndexTag: {
+        fontSize: 9.5,
+        fontWeight: '700',
+        color: '#8A7E75',
+        marginRight: 5,
+    },
+    personIndexTagSelected: {
+        color: '#FFFFFF',
+    },
     personChipText: {
         fontSize: 11,
         color: colors.atelierBlack,
@@ -376,6 +570,26 @@ const styles = StyleSheet.create({
     personChipTextSelected: {
         color: '#FFFFFF',
         fontWeight: '700',
+    },
+    personRefTag: {
+        fontSize: 9,
+        fontWeight: '700',
+        color: '#8C6826',
+        backgroundColor: '#EAE1D2',
+        paddingHorizontal: 5,
+        paddingVertical: 1,
+        borderRadius: 2,
+        marginLeft: 6,
+    },
+    personRefTagSelected: {
+        backgroundColor: 'rgba(255,255,255,0.25)',
+        color: '#FFFFFF',
+    },
+    emptySearchText: {
+        fontSize: 12,
+        fontStyle: 'italic',
+        color: colors.textMuted,
+        paddingVertical: 6,
     },
     printActionBtn: {
         marginLeft: 'auto',

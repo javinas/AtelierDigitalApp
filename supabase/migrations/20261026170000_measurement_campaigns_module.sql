@@ -7,6 +7,8 @@
 -- bajo un cliente responsable, utilizando las plantillas de MeasurementTemplate.
 -- ==============================================================================
 
+BEGIN;
+
 -- 1. TABLA: JORNADAS DE MEDICIÓN (measurement_campaigns)
 CREATE TABLE IF NOT EXISTS public.measurement_campaigns (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -72,6 +74,13 @@ CREATE TRIGGER set_measurement_campaign_participants_updated_at
 ALTER TABLE public.measurement_campaigns ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.measurement_campaign_participants ENABLE ROW LEVEL SECURITY;
 
+REVOKE ALL ON TABLE public.measurement_campaigns FROM PUBLIC, anon;
+REVOKE ALL ON TABLE public.measurement_campaign_participants FROM PUBLIC, anon;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.measurement_campaigns TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.measurement_campaign_participants TO authenticated;
+GRANT ALL ON TABLE public.measurement_campaigns, public.measurement_campaign_participants TO service_role, postgres;
+
 DROP POLICY IF EXISTS "campaigns_admin_designer_all" ON public.measurement_campaigns;
 CREATE POLICY "campaigns_admin_designer_all"
     ON public.measurement_campaigns
@@ -87,3 +96,5 @@ CREATE POLICY "camp_participants_admin_designer_all"
     TO authenticated
     USING (public.is_admin_or_designer())
     WITH CHECK (public.is_admin_or_designer());
+
+COMMIT;

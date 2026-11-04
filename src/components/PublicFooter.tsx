@@ -11,10 +11,13 @@ import {
 import { router } from 'expo-router';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
+import { useLandingLanguage } from '../context/LandingLanguageContext';
 
 export default function PublicFooter() {
     const { width } = useWindowDimensions();
     const isDesktop = width >= 860;
+    const { t } = useLandingLanguage();
+    const f = t.footer;
 
     const openInstagram = () => {
         Linking.openURL('https://www.instagram.com/carrollkatherine/').catch((err) =>
@@ -34,109 +37,107 @@ export default function PublicFooter() {
                             resizeMode="contain"
                         />
                         <Text style={styles.brandMotto}>
-                            «La creatividad detrás de cada creación»
+                            {f.motto}
                         </Text>
                         <Text style={styles.brandDescription}>
-                            Atelier de alta costura, diseño a medida y confección textil en
-                            Barranquilla, Colombia. Propuestas concebidas con atención al
-                            detalle, telas seleccionadas y dedicación artesanal.
+                            {f.brandDesc}
                         </Text>
                     </View>
 
                     {/* Navigation Columns */}
                     <View style={[styles.linksGrid, isDesktop && styles.linksGridDesktop]}>
                         <View style={styles.column}>
-                            <Text style={styles.columnTitle}>EXPLORAR</Text>
+                            <Text style={styles.columnTitle}>{f.col1Title}</Text>
                             <TouchableOpacity onPress={() => router.push('/')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Inicio</Text>
+                                <Text style={styles.linkText}>{f.home}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/diseno')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Diseño</Text>
+                                <Text style={styles.linkText}>{f.design}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/creacion')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Creación</Text>
+                                <Text style={styles.linkText}>{f.creation}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/exclusividad')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Exclusividad</Text>
+                                <Text style={styles.linkText}>{f.exclusivity}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/servicios')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Servicios</Text>
+                                <Text style={styles.linkText}>{f.services}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/contacto')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Contacto</Text>
+                                <Text style={styles.linkText}>{f.contact}</Text>
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.column}>
-                            <Text style={styles.columnTitle}>LÍNEAS</Text>
+                            <Text style={styles.columnTitle}>{f.col2Title}</Text>
                             <TouchableOpacity onPress={() => router.push('/servicios')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Alta Costura & Gala</Text>
+                                <Text style={styles.linkText}>{f.line1}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/servicios')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Primera Comunión & Pajecitos</Text>
+                                <Text style={styles.linkText}>{f.line2}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/servicios')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Disfraces & Comparsas</Text>
+                                <Text style={styles.linkText}>{f.line3}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/servicios')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Carnaval de Barranquilla</Text>
+                                <Text style={styles.linkText}>{f.line4}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/servicios')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Uniformes & Dotaciones</Text>
+                                <Text style={styles.linkText}>{f.line5}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/servicios')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Textiles para el Hogar</Text>
+                                <Text style={styles.linkText}>{f.line6}</Text>
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.column}>
-                            <Text style={styles.columnTitle}>LEGAL & TRANSPARENCIA</Text>
+                            <Text style={styles.columnTitle}>{f.col3Title}</Text>
                             <TouchableOpacity
                                 onPress={() => router.push('/terminos-condiciones' as any)}
                                 style={styles.linkItem}
                             >
-                                <Text style={styles.linkText}>Términos y Condiciones</Text>
+                                <Text style={styles.linkText}>{f.terms}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => router.push('/politica-privacidad' as any)}
                                 style={styles.linkItem}
                             >
-                                <Text style={styles.linkText}>Política de Privacidad</Text>
+                                <Text style={styles.linkText}>{f.privacyPolicy}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => router.push('/aviso-privacidad' as any)}
                                 style={styles.linkItem}
                             >
-                                <Text style={styles.linkText}>Aviso de Privacidad</Text>
+                                <Text style={styles.linkText}>{f.privacyNotice}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => router.push('/politica-cookies' as any)}
                                 style={styles.linkItem}
                             >
-                                <Text style={styles.linkText}>Política de Cookies</Text>
+                                <Text style={styles.linkText}>{f.cookiePolicy}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => router.push('/ia-transparencia' as any)}
                                 style={styles.linkItem}
                             >
-                                <Text style={styles.linkText}>Transparencia en IA</Text>
+                                <Text style={styles.linkText}>{f.aiTransparency}</Text>
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.column}>
-                            <Text style={styles.columnTitle}>ATELIER DIGITAL</Text>
+                            <Text style={styles.columnTitle}>{f.col4Title}</Text>
                             <TouchableOpacity onPress={() => router.push('/(auth)/login')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Iniciar Sesión</Text>
+                                <Text style={styles.linkText}>{f.login}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/(auth)/register')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Registro de Clientas (+18)</Text>
+                                <Text style={styles.linkText}>{f.register}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/contacto')} style={styles.linkItem}>
-                                <Text style={styles.linkText}>Solicitar Cotización / ARCO</Text>
+                                <Text style={styles.linkText}>{f.quoteArco}</Text>
                             </TouchableOpacity>
 
                             <View style={styles.instagramBlock}>
-                                <Text style={styles.socialTitle}>REDES OFICIALES</Text>
+                                <Text style={styles.socialTitle}>{f.socialTitle}</Text>
                                 <TouchableOpacity
                                     style={styles.instagramButton}
                                     onPress={openInstagram}
@@ -164,29 +165,29 @@ export default function PublicFooter() {
                 {/* Bottom Bar: Copyright, Legal Quick Links & Location */}
                 <View style={[styles.bottomBar, isDesktop && styles.bottomBarDesktop]}>
                     <Text style={styles.copyrightText}>
-                        © {new Date().getFullYear()} By Katherine Carroll · Atelier de Autor. Todos los derechos reservados.
+                        {f.copyright}
                     </Text>
 
                     <View style={styles.bottomLegalLinks}>
                         <TouchableOpacity onPress={() => router.push('/politica-privacidad' as any)}>
-                            <Text style={styles.bottomLegalLinkText}>Privacidad</Text>
+                            <Text style={styles.bottomLegalLinkText}>{f.privacyPolicy}</Text>
                         </TouchableOpacity>
                         <Text style={styles.bottomLegalDot}>·</Text>
                         <TouchableOpacity onPress={() => router.push('/terminos-condiciones' as any)}>
-                            <Text style={styles.bottomLegalLinkText}>Términos</Text>
+                            <Text style={styles.bottomLegalLinkText}>{f.terms}</Text>
                         </TouchableOpacity>
                         <Text style={styles.bottomLegalDot}>·</Text>
                         <TouchableOpacity onPress={() => router.push('/politica-cookies' as any)}>
-                            <Text style={styles.bottomLegalLinkText}>Cookies</Text>
+                            <Text style={styles.bottomLegalLinkText}>{f.cookiePolicy}</Text>
                         </TouchableOpacity>
                         <Text style={styles.bottomLegalDot}>·</Text>
                         <TouchableOpacity onPress={() => router.push('/ia-transparencia' as any)}>
-                            <Text style={styles.bottomLegalLinkText}>IA</Text>
+                            <Text style={styles.bottomLegalLinkText}>{f.aiTransparency}</Text>
                         </TouchableOpacity>
                     </View>
 
                     <Text style={styles.locationText}>
-                        BARRANQUILLA · COLOMBIA
+                        {f.location}
                     </Text>
                 </View>
             </View>

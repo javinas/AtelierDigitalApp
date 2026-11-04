@@ -39,3 +39,12 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+## Continuidad y Eficiencia de Tokens (Obligatorio)
+
+1. **Protocolo de Continuidad:** Al iniciar sesión o recibir solicitudes de seguimiento, leer primero `ANTIGRAVITY_CONTINUITY.md` y `PROJECT_INDEX.md`. NUNCA realizar escaneos globales ni re-auditar el código desde cero si el estado ya está documentado.
+2. **Actualización Obligatoria:** Actualizar siempre `ANTIGRAVITY_CONTINUITY.md` al finalizar cada tarea técnica, indicando archivos modificados y estado de validación (`tsc`/`lint`).
+3. **Entorno Windows (PowerShell/CMD):** No usar operadores bash (`&&`, `&`). Usar `;` o comandos independientes. Si PowerShell bloquea scripts por ExecutionPolicy, ejecutar comandos Node con `cmd /c npx <comando>`.
+4. **Lecturas Acotadas:** Los archivos de este proyecto superan las 3,000 líneas. NUNCA leer archivos completos de golpe; utilizar `StartLine` y `EndLine` (bloques ≤ 150 líneas) o búsquedas selectivas (`Select-String`).
+5. **No Destructividad:** No alterar flujos existentes ni lógica de negocio aprobada sin autorización expresa.
+

@@ -36,21 +36,48 @@ export async function fetchClientPersons(clientId: string): Promise<MeasuredPers
             return Array.from(localPersonsStore.values()).filter((p) => p.client_id === clientId);
         }
 
-        // Consultar sesiones para asociar última sesión y conteo
-        const personsList: MeasuredPerson[] = [...data];
-        for (const person of personsList) {
-            const { data: sessData } = await supabase
-                .from('measurement_sessions')
-                .select('id, session_date, version_number, status')
-                .eq('person_id', person.id)
-                .order('version_number', { ascending: false })
-                .limit(1);
+        if (data.length === 0) {
+            return [];
+        }
 
-            if (sessData && sessData.length > 0) {
-                person.last_session_id = sessData[0].id;
-                person.last_session_date = sessData[0].session_date;
-                person.last_session_version = sessData[0].version_number;
-                person.last_session_status = sessData[0].status;
+        const personsList: MeasuredPerson[] = [...data];
+        const personIds = personsList.map((p) => p.id);
+
+        // Optimización H-03: Consulta agrupada en lote para todas las personas (evita N+1 de red)
+        const { data: allSessions, error: sessError } = await supabase
+            .from('measurement_sessions')
+            .select('id, person_id, session_date, version_number, status, created_at')
+            .in('person_id', personIds)
+            .order('version_number', { ascending: false })
+            .order('created_at', { ascending: false });
+
+        if (allSessions && !sessError) {
+            const latestSessionByPerson = new Map<
+                string,
+                {
+                    id: string;
+                    session_date: string;
+                    version_number: number;
+                    status: string;
+                }
+            >();
+
+            for (const sess of allSessions) {
+                if (!sess.person_id) continue;
+                // El primer resultado encontrado para cada person_id es su última sesión por version_number DESC
+                if (!latestSessionByPerson.has(sess.person_id)) {
+                    latestSessionByPerson.set(sess.person_id, sess);
+                }
+            }
+
+            for (const person of personsList) {
+                const latest = latestSessionByPerson.get(person.id);
+                if (latest) {
+                    person.last_session_id = latest.id;
+                    person.last_session_date = latest.session_date;
+                    person.last_session_version = latest.version_number;
+                    person.last_session_status = latest.status;
+                }
             }
         }
 

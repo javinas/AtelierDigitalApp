@@ -10,7 +10,7 @@
 // Marfil #F8F2E9 · Negro #171411 · Champagne #A78350 · Arena #E6D9C8
 // ==============================================================================
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
@@ -52,6 +52,7 @@ interface PersonCreationCadWizardModalProps {
     client: Client;
     person: MeasuredPerson | null;
     initialGarmentKey?: string;
+    initialSessionId?: string | null;
     onCadExecutionGenerated?: (creation: Creation, execution: PatternExecution) => void;
 }
 
@@ -61,13 +62,33 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
     client,
     person,
     initialGarmentKey = 'shirt',
+    initialSessionId = null,
     onCadExecutionGenerated,
 }) => {
+    // Sujeto efectivo (persona beneficiaria o titular del expediente)
+    const effectivePerson: MeasuredPerson = useMemo(() => {
+        if (person) return person;
+        return {
+            id: `titular-${client.id}`,
+            client_id: client.id,
+            full_name: `${client.full_name} (Titular)`,
+            demographic_category: 'woman',
+            reference_id: 'TITULAR',
+            is_active: true,
+            created_at: client.created_at || new Date().toISOString(),
+            updated_at: (client as any).updated_at || client.created_at || new Date().toISOString(),
+        };
+    }, [person, client]);
+
+    const subjectName = person ? person.full_name : `${client.full_name} (Titular)`;
+    const subjectCategory = effectivePerson.demographic_category;
+    const subjectLabel = DEMOGRAPHIC_LABELS[subjectCategory] || 'Adulto';
+
     // Estados del Asistente
     const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
     const [loadingSessions, setLoadingSessions] = useState<boolean>(true);
     const [availableSessions, setAvailableSessions] = useState<MeasurementSession[]>([]);
-    const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+    const [selectedSessionId, setSelectedSessionId] = useState<string | null>(initialSessionId || null);
     const [selectedGarmentKey, setSelectedGarmentKey] = useState<string>(initialGarmentKey);
 
     // Formulario de Creación
@@ -83,35 +104,43 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
 
     // Cargar sesiones al abrir modal
     useEffect(() => {
-        if (visible && person) {
+        if (visible) {
             loadSessions();
             setStep(1);
             setGenerationError(null);
             setCreatedCreation(null);
             setCreatedExecution(null);
         }
-    }, [visible, person?.id]);
+    }, [visible, person?.id, client.id]);
 
     const loadSessions = async () => {
-        if (!person) return;
         setLoadingSessions(true);
         try {
             const allSessions = await fetchClientMeasurementSessions(client.id, true);
-            // Filtrar estrictamente sesiones de esta persona
-            const personSessions = allSessions.filter((s) => s.person_id === person.id);
-            setAvailableSessions(personSessions);
+            // Filtrar estrictamente sesiones de este sujeto (persona beneficiaria o titular si person_id es null)
+            const subjectSessions = person
+                ? allSessions.filter((s) => s.person_id === person.id)
+                : allSessions.filter((s) => !s.person_id);
+            setAvailableSessions(subjectSessions);
 
-            // Resolver sesión por prioridad (más reciente válida)
-            const resolved = resolvePersonMeasurementSession(person, personSessions, null);
-            if (resolved.selectedSession) {
-                setSelectedSessionId(resolved.selectedSession.id);
+            // Si se suministró initialSessionId y pertenece a este sujeto, respetarla
+            if (initialSessionId && subjectSessions.some((s) => s.id === initialSessionId)) {
+                setSelectedSessionId(initialSessionId);
             } else {
-                setSelectedSessionId(null);
+                // Resolver sesión por prioridad (más reciente válida)
+                const resolved = resolvePersonMeasurementSession(effectivePerson, subjectSessions, null);
+                if (resolved.selectedSession) {
+                    setSelectedSessionId(resolved.selectedSession.id);
+                } else if (subjectSessions.length > 0) {
+                    setSelectedSessionId(subjectSessions[0].id);
+                } else {
+                    setSelectedSessionId(null);
+                }
             }
 
             // Inicializar nombre sugerido de creación
             const defaultGarment = CAD_GARMENTS_CATALOG.find((g) => g.key === selectedGarmentKey);
-            setCreationName(`${defaultGarment?.name || 'Prenda'} — ${person.full_name}`);
+            setCreationName(`${defaultGarment?.name || 'Prenda'} — ${subjectName}`);
         } catch (err) {
             console.warn('[PersonCadWizard] Error cargando sesiones:', err);
         } finally {
@@ -119,33 +148,31 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
         }
     };
 
-    if (!person) return null;
-
-    const isBaby = person.demographic_category === 'baby';
+    const isBaby = subjectCategory === 'baby';
 
     // Sesión activa seleccionada
     const currentSession = availableSessions.find((s) => s.id === selectedSessionId) || null;
 
     // Diagnóstico en tiempo real
     const diagnostic: CadPreparationDiagnostic = prepareCadGenerationDiagnostic({
-        person,
+        person: effectivePerson,
         garmentKey: selectedGarmentKey,
         session: currentSession,
     });
 
     const handleSelectGarment = (garment: CadGarmentEditorialItem) => {
-        const check = validateDemographicGarmentCompatibility(garment.key, person.demographic_category);
+        const check = validateDemographicGarmentCompatibility(garment.key, subjectCategory);
         if (!check.isCompatible) {
             alert(check.errorMessage || INCOMPATIBLE_MORPHOLOGY_MESSAGE);
             return;
         }
         setSelectedGarmentKey(garment.key);
-        setCreationName(`${garment.name} — ${person.full_name}`);
+        setCreationName(`${garment.name} — ${subjectName}`);
     };
 
     const handleGeneratePattern = async () => {
         if (!currentSession) {
-            setGenerationError('Debe seleccionar una sesión de medidas válida para la persona.');
+            setGenerationError('Debe seleccionar una sesión de medidas válida para el sujeto.');
             return;
         }
 
@@ -158,11 +185,11 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
         setGenerationError(null);
 
         try {
-            // 1. Crear la Creación vinculada a client_id, person_id y session_id
-            const creationTitle = creationName.trim() || `${diagnostic.prenda.name} — ${person.full_name}`;
+            // 1. Crear la Creación vinculada a client_id, person_id (o null si titular) y session_id
+            const creationTitle = creationName.trim() || `${diagnostic.prenda.name} — ${subjectName}`;
             const { data: newCreation, error: creationErr } = await createCreation({
                 client_id: client.id,
-                person_id: person.id,
+                person_id: person ? person.id : null,
                 session_id: currentSession.id,
                 name: creationTitle,
                 occasion: creationOccasion.trim() || 'Encargo de Alta Costura',
@@ -206,7 +233,7 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
                 designParameters: { seam_allowance_default_mm: 10, hem_allowance_mm: 35 },
                 geometryResult: engineResult.geometryResult,
                 validationResults: engineResult.validationResult,
-                notes: `Patrón CAD inicial generado para ${person.full_name} (${DEMOGRAPHIC_LABELS[person.demographic_category]}).`,
+                notes: `Patrón CAD inicial generado para ${subjectName} (${subjectLabel}).`,
             });
 
             if (!saveRes.success || !saveRes.execution) {
@@ -238,7 +265,7 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
                             <Text style={styles.brandTag}>ATELIER DIGITAL · MÓDULO 02 · FASE 4</Text>
                             <Text style={styles.modalTitle}>Integración de Medidas, Creación y CAD</Text>
                             <Text style={styles.modalSubtitle}>
-                                Sujeto: <Text style={styles.boldText}>{person.full_name}</Text> ({DEMOGRAPHIC_LABELS[person.demographic_category]}) · Responsable: <Text style={styles.boldText}>{client.full_name}</Text>
+                                Sujeto: <Text style={styles.boldText}>{subjectName}</Text> ({subjectLabel}) · Responsable: <Text style={styles.boldText}>{client.full_name}</Text>
                             </Text>
                         </View>
                         <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
@@ -299,7 +326,7 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
                                         <View style={styles.stepSectionHeader}>
                                             <Text style={styles.stepSectionTitle}>1. Selección de Medición Corporal</Text>
                                             <Text style={styles.stepSectionDesc}>
-                                                Se muestran exclusivamente las sesiones pertenecientes a {person.full_name}.
+                                                Se muestran exclusivamente las sesiones pertenecientes a {subjectName}.
                                                 Por regla de alta costura, se prioriza la sesión más reciente válida.
                                             </Text>
                                         </View>
@@ -398,14 +425,14 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
                                             <Text style={styles.stepSectionTitle}>2. Catálogo Oficial de Prendas CAD</Text>
                                             <Text style={styles.stepSectionDesc}>
                                                 Seleccione la prenda o variante de alta costura a patronar.
-                                                El sistema valida en tiempo real la compatibilidad con la morfología {DEMOGRAPHIC_LABELS[person.demographic_category]}.
+                                                El sistema valida en tiempo real la compatibilidad con la morfología {subjectLabel}.
                                             </Text>
                                         </View>
 
                                         <View style={styles.garmentsGrid}>
                                             {CAD_GARMENTS_CATALOG.map((g) => {
                                                 const isSelected = g.key === selectedGarmentKey;
-                                                const check = validateDemographicGarmentCompatibility(g.key, person.demographic_category);
+                                                const check = validateDemographicGarmentCompatibility(g.key, subjectCategory);
                                                 const isCompatible = check.isCompatible;
                                                 const imageSource = GARMENT_IMAGES[g.imageKey] || GARMENT_IMAGES.jacket;
 
@@ -616,7 +643,7 @@ export const PersonCreationCadWizardModal: React.FC<PersonCreationCadWizardModal
                                         </Text>
 
                                         <View style={styles.lineageFlowBox}>
-                                            <Text style={styles.lineageNode}>👤 PERSONA: <Text style={styles.boldText}>{person.full_name}</Text></Text>
+                                            <Text style={styles.lineageNode}>👤 SUJETO: <Text style={styles.boldText}>{subjectName}</Text></Text>
                                             <Text style={styles.lineageArrow}>↓</Text>
                                             <Text style={styles.lineageNode}>📐 MEDICIÓN: <Text style={styles.boldText}>Sesión v{currentSession?.version_number} ({currentSession?.session_date})</Text></Text>
                                             <Text style={styles.lineageArrow}>↓</Text>

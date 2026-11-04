@@ -16,12 +16,18 @@ import { useAuth } from '../src/context/AuthContext';
 import { colors } from '../src/theme/colors';
 import { typography } from '../src/theme/typography';
 import PublicFooter from '../src/components/PublicFooter';
-import { SERVICES } from '../src/data/servicesData';
+import { SERVICES, ServiceItem } from '../src/data/servicesData';
+import {
+    LandingLanguageProvider,
+    useLandingLanguage,
+} from '../src/context/LandingLanguageContext';
+import { LanguageSelector } from '../src/components/LanguageSelector';
 
-export default function HomeScreen() {
+function HomeScreenContent() {
     const { session, role, loading, signOut } = useAuth();
     const { width, height: windowHeight } = useWindowDimensions();
     const isDesktop = width >= 940;
+    const { t } = useLandingLanguage();
 
     const handleContinue = () => {
         if (role === 'designer') {
@@ -38,6 +44,41 @@ export default function HomeScreen() {
         SERVICES.find((s) => s.id === 'uniformes')!,
         SERVICES.find((s) => s.id === 'hogar')!,
     ];
+
+    const getServiceCopy = (idx: number, service: ServiceItem) => {
+        switch (idx) {
+            case 0:
+                return {
+                    title: t.featuredServices.service1Title,
+                    subtitle: t.featuredServices.service1Subtitle,
+                    desc: t.featuredServices.service1Desc,
+                };
+            case 1:
+                return {
+                    title: t.featuredServices.service2Title,
+                    subtitle: t.featuredServices.service2Subtitle,
+                    desc: t.featuredServices.service2Desc,
+                };
+            case 2:
+                return {
+                    title: t.featuredServices.service3Title,
+                    subtitle: t.featuredServices.service3Subtitle,
+                    desc: t.featuredServices.service3Desc,
+                };
+            case 3:
+                return {
+                    title: t.featuredServices.service4Title,
+                    subtitle: t.featuredServices.service4Subtitle,
+                    desc: t.featuredServices.service4Desc,
+                };
+            default:
+                return {
+                    title: service.title,
+                    subtitle: service.subtitle,
+                    desc: service.shortDescription,
+                };
+        }
+    };
 
     // En escritorio bloqueamos la altura del hero exactamente al alto de pantalla (100vh)
     const heroHeight = isDesktop
@@ -81,7 +122,7 @@ export default function HomeScreen() {
 
                     {/* Capa de contenido editorial sobre el fondo oscuro */}
                     <View style={styles.leftContent}>
-                        {/* Cabecera superior: Logotipo + Navegación editorial */}
+                        {/* Cabecera superior: Logotipo + Navegación editorial + Selector de Idioma */}
                         <View style={styles.topHeader}>
                             <View style={styles.brandBox}>
                                 <View style={styles.logoPlaque}>
@@ -91,46 +132,50 @@ export default function HomeScreen() {
                                         resizeMode="contain"
                                     />
                                 </View>
-                                <Text style={styles.brandSubtitle}>ATELIER DIGITAL</Text>
+                                <Text style={styles.brandSubtitle}>{t.nav.brandSubtitle}</Text>
                             </View>
 
-                            {/* Navegación editorial idéntica al diseño de referencia */}
-                            <View style={styles.topNav}>
-                                <TouchableOpacity
-                                    onPress={() => router.push('/diseno')}
-                                    activeOpacity={0.7}
-                                    style={styles.navTouch}
-                                >
-                                    <Text style={styles.topNavText}>Diseño</Text>
-                                </TouchableOpacity>
-                                <Text style={styles.topNavBullet}>·</Text>
-                                <TouchableOpacity
-                                    onPress={() => router.push('/creacion')}
-                                    activeOpacity={0.7}
-                                    style={styles.navTouch}
-                                >
-                                    <Text style={styles.topNavText}>Creación</Text>
-                                </TouchableOpacity>
-                                <Text style={styles.topNavBullet}>·</Text>
-                                <TouchableOpacity
-                                    onPress={() => router.push('/exclusividad')}
-                                    activeOpacity={0.7}
-                                    style={styles.navTouch}
-                                >
-                                    <Text style={styles.topNavText}>Exclusividad</Text>
-                                </TouchableOpacity>
+                            <View style={styles.headerRightGroup}>
+                                {/* Navegación editorial */}
+                                <View style={styles.topNav}>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/diseno')}
+                                        activeOpacity={0.7}
+                                        style={styles.navTouch}
+                                    >
+                                        <Text style={styles.topNavText}>{t.nav.design}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.topNavBullet}>·</Text>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/creacion')}
+                                        activeOpacity={0.7}
+                                        style={styles.navTouch}
+                                    >
+                                        <Text style={styles.topNavText}>{t.nav.creation}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.topNavBullet}>·</Text>
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/exclusividad')}
+                                        activeOpacity={0.7}
+                                        style={styles.navTouch}
+                                    >
+                                        <Text style={styles.topNavText}>{t.nav.exclusivity}</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                {/* Selector bilingüe ES / EN */}
+                                <LanguageSelector compact={!isDesktop} />
                             </View>
                         </View>
 
                         {/* Titular Principal y Mensaje de Marca */}
                         <View style={styles.heroTextContainer}>
                             <Text style={styles.mainHeadline}>
-                                La creatividad{'\n'}detrás de cada creación.
+                                {t.hero.headline}
                             </Text>
 
                             <Text style={styles.mainDescription}>
-                                Un espacio digital para diseñar, crear y acompañar cada prenda
-                                con la esencia y el sello de By Katherine Carroll.
+                                {t.hero.description}
                             </Text>
 
                             {/* Separador de ornamento dorado */}
@@ -158,7 +203,7 @@ export default function HomeScreen() {
                                     resizeMode="contain"
                                 />
                                 <Text style={styles.specialtyLabel}>
-                                    Alta Costura y{'\n'}Vestidos de Ocasión
+                                    {t.hero.specialty1}
                                 </Text>
                             </TouchableOpacity>
 
@@ -175,7 +220,7 @@ export default function HomeScreen() {
                                     resizeMode="contain"
                                 />
                                 <Text style={styles.specialtyLabel}>
-                                    Diseño Exclusivo{'\n'}Mujer y Niña
+                                    {t.hero.specialty2}
                                 </Text>
                             </TouchableOpacity>
 
@@ -192,7 +237,7 @@ export default function HomeScreen() {
                                     resizeMode="contain"
                                 />
                                 <Text style={styles.specialtyLabel}>
-                                    Detalles de Autor &{'\n'}Textiles Finos
+                                    {t.hero.specialty3}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -201,7 +246,7 @@ export default function HomeScreen() {
                         <View style={styles.leftFooter}>
                             <View style={styles.leftFooterLine} />
                             <Text style={styles.leftFooterText}>
-                                BARRANQUILLA  ·  COLOMBIA      |      @CARROLLKATHERINE
+                                {t.hero.locationBar}
                             </Text>
                         </View>
                     </View>
@@ -224,12 +269,11 @@ export default function HomeScreen() {
                 <View style={[styles.rightPanel, isDesktop && styles.rightPanelDesktop]}>
                     <View style={styles.rightContent}>
                         <Text style={styles.welcomeTitle}>
-                            Bienvenida a{'\n'}nuestro Atelier Digital
+                            {t.accessCard.welcomeTitle}
                         </Text>
 
                         <Text style={styles.welcomeSubtitle}>
-                            Un espacio exclusivo donde la moda, el diseño y la creatividad
-                            se encuentran para hacer realidad tus ideas.
+                            {t.accessCard.welcomeSubtitle}
                         </Text>
 
                         {/* Separador de ornamento dorado */}
@@ -247,13 +291,13 @@ export default function HomeScreen() {
                         {loading ? (
                             <View style={styles.loadingBox}>
                                 <ActivityIndicator color={colors.champagneGold} size="small" />
-                                <Text style={styles.loadingText}>Conectando con el atelier...</Text>
+                                <Text style={styles.loadingText}>{t.accessCard.connecting}</Text>
                             </View>
                         ) : session ? (
                             <View style={styles.authContainer}>
                                 <View style={styles.sessionBox}>
                                     <Text style={styles.sessionRole}>
-                                        SESIÓN ACTIVA · {role === 'designer' ? 'DISEÑADORA' : 'CLIENTA'}
+                                        {t.accessCard.sessionActive} · {role === 'designer' ? t.accessCard.designerRole : t.accessCard.clientRole}
                                     </Text>
                                     <Text style={styles.sessionEmail}>{session.user.email}</Text>
                                 </View>
@@ -265,8 +309,8 @@ export default function HomeScreen() {
                                 >
                                     <Text style={styles.primaryButtonText}>
                                         {role === 'designer'
-                                            ? 'CONTINUAR AL ATELIER'
-                                            : 'IR A MI ESPACIO DE CLIENTA'}
+                                            ? t.accessCard.continueDesigner
+                                            : t.accessCard.continueClient}
                                     </Text>
                                     <Text style={styles.buttonArrow}>→</Text>
                                 </TouchableOpacity>
@@ -276,7 +320,7 @@ export default function HomeScreen() {
                                     onPress={() => signOut()}
                                     activeOpacity={0.7}
                                 >
-                                    <Text style={styles.logoutLinkText}>Cerrar sesión activa</Text>
+                                    <Text style={styles.logoutLinkText}>{t.accessCard.logout}</Text>
                                 </TouchableOpacity>
                             </View>
                         ) : (
@@ -286,7 +330,7 @@ export default function HomeScreen() {
                                     onPress={() => router.push('/(auth)/login')}
                                     activeOpacity={0.88}
                                 >
-                                    <Text style={styles.primaryButtonText}>INICIAR SESIÓN</Text>
+                                    <Text style={styles.primaryButtonText}>{t.accessCard.login}</Text>
                                     <Text style={styles.buttonArrow}>→</Text>
                                 </TouchableOpacity>
 
@@ -295,28 +339,28 @@ export default function HomeScreen() {
                                     onPress={() => router.push('/(auth)/register')}
                                     activeOpacity={0.88}
                                 >
-                                    <Text style={styles.secondaryButtonText}>CREAR CUENTA</Text>
+                                    <Text style={styles.secondaryButtonText}>{t.accessCard.register}</Text>
                                     <Text style={styles.secondaryButtonArrow}>→</Text>
                                 </TouchableOpacity>
 
                                 <View style={styles.heroLegalLinksRow}>
-                                    <Text style={styles.heroLegalNote}>Acceso +18 años · </Text>
+                                    <Text style={styles.heroLegalNote}>{t.accessCard.ageNotice}</Text>
                                     <TouchableOpacity
                                         onPress={() => router.push('/terminos-condiciones' as any)}
                                     >
-                                        <Text style={styles.heroLegalLink}>Términos</Text>
+                                        <Text style={styles.heroLegalLink}>{t.accessCard.termsLink}</Text>
                                     </TouchableOpacity>
                                     <Text style={styles.heroLegalNote}> · </Text>
                                     <TouchableOpacity
                                         onPress={() => router.push('/politica-privacidad' as any)}
                                     >
-                                        <Text style={styles.heroLegalLink}>Privacidad</Text>
+                                        <Text style={styles.heroLegalLink}>{t.accessCard.privacyLink}</Text>
                                     </TouchableOpacity>
                                     <Text style={styles.heroLegalNote}> · </Text>
                                     <TouchableOpacity
                                         onPress={() => router.push('/ia-transparencia' as any)}
                                     >
-                                        <Text style={styles.heroLegalLink}>Transparencia IA</Text>
+                                        <Text style={styles.heroLegalLink}>{t.accessCard.aiTransparencyLink}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -339,14 +383,12 @@ export default function HomeScreen() {
             {/* ============================================================== */}
             <View style={styles.editorialIntroSection}>
                 <View style={styles.editorialIntroContent}>
-                    <Text style={styles.sectionOverline}>ATELIER DE AUTOR · BARRANQUILLA, COLOMBIA</Text>
+                    <Text style={styles.sectionOverline}>{t.editorialIntro.overline}</Text>
                     <Text style={styles.editorialHeadline}>
-                        Moda, confección y soluciones textiles a medida
+                        {t.editorialIntro.headline}
                     </Text>
                     <Text style={styles.editorialLeadText}>
-                        En By Katherine Carroll, el diseño no se limita a vestidos de gala: abarca un
-                        universo creativo que acompaña momentos de vida, celebraciones familiares,
-                        la magia del Carnaval, la identidad corporativa de empresas y la calidez del hogar.
+                        {t.editorialIntro.leadText}
                     </Text>
 
                     <View style={styles.flourishRowCenter}>
@@ -367,54 +409,51 @@ export default function HomeScreen() {
                     {/* Pilar 1: Diseño */}
                     <View style={[styles.pillarBox, isDesktop && styles.pillarBoxDesktop]}>
                         <Text style={styles.pillarNumber}>01</Text>
-                        <Text style={styles.pillarTitle}>Diseño</Text>
+                        <Text style={styles.pillarTitle}>{t.pillars.pillar1Title}</Text>
                         <View style={styles.pillarGoldLine} />
                         <Text style={styles.pillarText}>
-                            Creatividad, asesoría personalizada y propuestas adaptadas a cada silueta y
-                            necesidad particular, dando forma a piezas llenas de identidad.
+                            {t.pillars.pillar1Text}
                         </Text>
                         <TouchableOpacity
                             style={styles.pillarLink}
                             onPress={() => router.push('/diseno')}
                             activeOpacity={0.7}
                         >
-                            <Text style={styles.pillarLinkText}>Descubrir Diseño →</Text>
+                            <Text style={styles.pillarLinkText}>{t.pillars.pillar1Link}</Text>
                         </TouchableOpacity>
                     </View>
 
                     {/* Pilar 2: Creación */}
                     <View style={[styles.pillarBox, isDesktop && styles.pillarBoxDesktop]}>
                         <Text style={styles.pillarNumber}>02</Text>
-                        <Text style={styles.pillarTitle}>Creación</Text>
+                        <Text style={styles.pillarTitle}>{t.pillars.pillar2Title}</Text>
                         <View style={styles.pillarGoldLine} />
                         <Text style={styles.pillarText}>
-                            Confección y elaboración minuciosa de prendas, accesorios y productos textiles
-                            con técnicas artesanales y estrictos controles de calidad.
+                            {t.pillars.pillar2Text}
                         </Text>
                         <TouchableOpacity
                             style={styles.pillarLink}
                             onPress={() => router.push('/creacion')}
                             activeOpacity={0.7}
                         >
-                            <Text style={styles.pillarLinkText}>Descubrir Creación →</Text>
+                            <Text style={styles.pillarLinkText}>{t.pillars.pillar2Link}</Text>
                         </TouchableOpacity>
                     </View>
 
                     {/* Pilar 3: Exclusividad */}
                     <View style={[styles.pillarBox, isDesktop && styles.pillarBoxDesktop]}>
                         <Text style={styles.pillarNumber}>03</Text>
-                        <Text style={styles.pillarTitle}>Exclusividad</Text>
+                        <Text style={styles.pillarTitle}>{t.pillars.pillar3Title}</Text>
                         <View style={styles.pillarGoldLine} />
                         <Text style={styles.pillarText}>
-                            Atención al detalle, selección rigurosa de materiales y propuestas para distintas
-                            ocasiones con un proceso creativo guiado de principio a fin.
+                            {t.pillars.pillar3Text}
                         </Text>
                         <TouchableOpacity
                             style={styles.pillarLink}
                             onPress={() => router.push('/exclusividad')}
                             activeOpacity={0.7}
                         >
-                            <Text style={styles.pillarLinkText}>Descubrir Exclusividad →</Text>
+                            <Text style={styles.pillarLinkText}>{t.pillars.pillar3Link}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -423,57 +462,59 @@ export default function HomeScreen() {
             {/* SECCIÓN DE SERVICIOS DESTACADOS */}
             <View style={styles.featuredSection}>
                 <View style={styles.featuredHeader}>
-                    <Text style={styles.sectionOverline}>PROPUESTAS DESTACADAS</Text>
+                    <Text style={styles.sectionOverline}>{t.featuredServices.overline}</Text>
                     <Text style={styles.featuredSectionTitle}>
-                        Conoce nuestras líneas de trabajo
+                        {t.featuredServices.title}
                     </Text>
                     <Text style={styles.featuredSectionSubtitle}>
-                        Desde piezas de alta costura y tradición cultural hasta confección empresarial y
-                        textiles para el hogar.
+                        {t.featuredServices.subtitle}
                     </Text>
                 </View>
 
                 <View style={[styles.featuredGrid, isDesktop && styles.featuredGridDesktop]}>
-                    {featuredServices.map((service, idx) => (
-                        <View
-                            key={service.id}
-                            style={[styles.featuredCard, isDesktop && styles.featuredCardDesktop]}
-                        >
-                            <View style={styles.featuredImageWrapper}>
-                                <Image
-                                    source={service.image}
-                                    style={styles.featuredImage}
-                                    resizeMode="cover"
-                                />
-                                <View style={styles.featuredImageTag}>
-                                    <Text style={styles.featuredImageTagText}>0{idx + 1}</Text>
+                    {featuredServices.map((service, idx) => {
+                        const sText = getServiceCopy(idx, service);
+                        return (
+                            <View
+                                key={service.id}
+                                style={[styles.featuredCard, isDesktop && styles.featuredCardDesktop]}
+                            >
+                                <View style={styles.featuredImageWrapper}>
+                                    <Image
+                                        source={service.image}
+                                        style={styles.featuredImage}
+                                        resizeMode="cover"
+                                    />
+                                    <View style={styles.featuredImageTag}>
+                                        <Text style={styles.featuredImageTagText}>0{idx + 1}</Text>
+                                    </View>
+                                </View>
+
+                                <View style={styles.featuredBody}>
+                                    <Text style={styles.featuredCardTitle}>{sText.title}</Text>
+                                    {sText.subtitle ? (
+                                        <Text style={styles.featuredCardSubtitle}>{sText.subtitle}</Text>
+                                    ) : null}
+                                    <View style={styles.cardGoldLine} />
+                                    <Text style={styles.featuredCardDesc}>{sText.desc}</Text>
+
+                                    <TouchableOpacity
+                                        style={styles.featuredCta}
+                                        onPress={() =>
+                                            router.push({
+                                                pathname: '/contacto',
+                                                params: { servicio: service.id },
+                                            })
+                                        }
+                                        activeOpacity={0.88}
+                                    >
+                                        <Text style={styles.featuredCtaText}>{t.featuredServices.ctaCard}</Text>
+                                        <Text style={styles.featuredCtaArrow}>→</Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
-
-                            <View style={styles.featuredBody}>
-                                <Text style={styles.featuredCardTitle}>{service.title}</Text>
-                                {service.subtitle && (
-                                    <Text style={styles.featuredCardSubtitle}>{service.subtitle}</Text>
-                                )}
-                                <View style={styles.cardGoldLine} />
-                                <Text style={styles.featuredCardDesc}>{service.shortDescription}</Text>
-
-                                <TouchableOpacity
-                                    style={styles.featuredCta}
-                                    onPress={() =>
-                                        router.push({
-                                            pathname: '/contacto',
-                                            params: { servicio: service.id },
-                                        })
-                                    }
-                                    activeOpacity={0.88}
-                                >
-                                    <Text style={styles.featuredCtaText}>CONSULTAR ESTE SERVICIO</Text>
-                                    <Text style={styles.featuredCtaArrow}>→</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    ))}
+                        );
+                    })}
                 </View>
 
                 {/* Botón para ver el catálogo completo */}
@@ -484,7 +525,7 @@ export default function HomeScreen() {
                         activeOpacity={0.88}
                     >
                         <Text style={styles.viewAllButtonText}>
-                            EXPLORAR TODOS LOS SERVICIOS (8 LÍNEAS)
+                            {t.featuredServices.viewAllBtn}
                         </Text>
                         <Text style={styles.viewAllButtonArrow}>→</Text>
                     </TouchableOpacity>
@@ -496,15 +537,13 @@ export default function HomeScreen() {
                 <View style={styles.trustGovernanceContainer}>
                     <View style={styles.featuredHeader}>
                         <Text style={styles.sectionOverline}>
-                            ÉTICA DE ATELIER · LEY 1581 DE 2012 & TRANSPARENCIA TECNOLÓGICA
+                            {t.trustGovernance.overline}
                         </Text>
                         <Text style={styles.featuredSectionTitle}>
-                            Confidencialidad artesanal e innovación responsable
+                            {t.trustGovernance.sectionTitle}
                         </Text>
                         <Text style={styles.featuredSectionSubtitle}>
-                            Cada prenda nace de una relación de confianza. Protegemos rigurosamente
-                            sus datos personales y medidas antropométricas, integrando tecnología
-                            bajo la supervisión artística directa de Katherine Carroll.
+                            {t.trustGovernance.sectionSubtitle}
                         </Text>
                     </View>
 
@@ -519,25 +558,20 @@ export default function HomeScreen() {
                                 />
                                 <View style={styles.trustAiCaption}>
                                     <Text style={styles.trustAiCaptionText}>
-                                        ✦ Fotografía editorial ilustrativa asistida con IA · Atelier By Katherine Carroll
+                                        {t.trustGovernance.aiPhotoCaption}
                                     </Text>
                                 </View>
                             </View>
                             <View style={styles.trustCardBody}>
                                 <Text style={styles.trustCardEyebrow}>
-                                    PROTECCIÓN DE DATOS PERSONALES · COLOMBIA
+                                    {t.trustGovernance.card1Eyebrow}
                                 </Text>
                                 <Text style={styles.trustCardTitle}>
-                                    Custodia Reservada de su Expediente y Medidas
+                                    {t.trustGovernance.card1Title}
                                 </Text>
                                 <View style={styles.cardGoldLine} />
                                 <Text style={styles.trustCardText}>
-                                    Las fichas antropométricas, fotografías técnicas de fitting y
-                                    datos de contacto se resguardan bajo control de acceso por roles
-                                    y políticas Row Level Security (RLS). El registro de cuentas es
-                                    exclusivo para mayores de 18 años, garantizando en todo momento
-                                    sus derechos de conocer, actualizar, rectificar y suprimir su
-                                    información.
+                                    {t.trustGovernance.card1Text}
                                 </Text>
                                 <View style={styles.trustLinksRow}>
                                     <TouchableOpacity
@@ -545,7 +579,7 @@ export default function HomeScreen() {
                                         onPress={() => router.push('/politica-privacidad' as any)}
                                     >
                                         <Text style={styles.trustLinkBtnText}>
-                                            Política de Privacidad →
+                                            {t.trustGovernance.card1PrivacyLink}
                                         </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
@@ -553,7 +587,7 @@ export default function HomeScreen() {
                                         onPress={() => router.push('/aviso-privacidad' as any)}
                                     >
                                         <Text style={styles.trustLinkBtnText}>
-                                            Aviso de Privacidad →
+                                            {t.trustGovernance.card1NoticeLink}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -570,24 +604,20 @@ export default function HomeScreen() {
                                 />
                                 <View style={styles.trustAiCaption}>
                                     <Text style={styles.trustAiCaptionText}>
-                                        ✦ Fotografía editorial ilustrativa asistida con IA · Atelier By Katherine Carroll
+                                        {t.trustGovernance.aiPhotoCaption}
                                     </Text>
                                 </View>
                             </View>
                             <View style={styles.trustCardBody}>
                                 <Text style={styles.trustCardEyebrow}>
-                                    DIRECCIÓN HUMANA & GOBERNANZA IA
+                                    {t.trustGovernance.card2Eyebrow}
                                 </Text>
                                 <Text style={styles.trustCardTitle}>
-                                    El Oficio de Alta Costura Apoyado por Tecnología
+                                    {t.trustGovernance.card2Title}
                                 </Text>
                                 <View style={styles.cardGoldLine} />
                                 <Text style={styles.trustCardText}>
-                                    Declaramos con total transparencia el uso de recursos visuales
-                                    ilustrativos asistidos por IA y de nuestro copiloto local de
-                                    validación geométrica. Ninguna decisión creativa o de calce es
-                                    automatizada, ni compartimos fotografías o medidas de clientas
-                                    para entrenar modelos externos.
+                                    {t.trustGovernance.card2Text}
                                 </Text>
                                 <View style={styles.trustLinksRow}>
                                     <TouchableOpacity
@@ -595,7 +625,7 @@ export default function HomeScreen() {
                                         onPress={() => router.push('/ia-transparencia' as any)}
                                     >
                                         <Text style={styles.trustLinkBtnText}>
-                                            Política de Transparencia IA →
+                                            {t.trustGovernance.card2AiPolicyLink}
                                         </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
@@ -603,7 +633,7 @@ export default function HomeScreen() {
                                         onPress={() => router.push('/terminos-condiciones' as any)}
                                     >
                                         <Text style={styles.trustLinkBtnText}>
-                                            Términos y Condiciones →
+                                            {t.trustGovernance.card2TermsLink}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -617,18 +647,17 @@ export default function HomeScreen() {
             <View style={styles.finalHomeBanner}>
                 <View style={styles.finalHomeContent}>
                     <Text style={styles.finalHomeTitle}>
-                        ¿Planeas un evento o requieres confección a medida?
+                        {t.contactBanner.title}
                     </Text>
                     <Text style={styles.finalHomeDesc}>
-                        Conversa directamente con el atelier para estructurar tu idea, conocer opciones
-                        de telas y recibir una asesoría personalizada.
+                        {t.contactBanner.description}
                     </Text>
                     <TouchableOpacity
                         style={styles.finalHomeBtn}
                         onPress={() => router.push('/contacto')}
                         activeOpacity={0.88}
                     >
-                        <Text style={styles.finalHomeBtnText}>CONTACTAR AL ATELIER</Text>
+                        <Text style={styles.finalHomeBtnText}>{t.contactBanner.cta}</Text>
                         <Text style={styles.finalHomeBtnArrow}>→</Text>
                     </TouchableOpacity>
                 </View>
@@ -637,6 +666,14 @@ export default function HomeScreen() {
             {/* PIE DE PÁGINA EDITORIAL COMPARTIDO */}
             <PublicFooter />
         </ScrollView>
+    );
+}
+
+export default function HomeScreen() {
+    return (
+        <LandingLanguageProvider>
+            <HomeScreenContent />
+        </LandingLanguageProvider>
     );
 }
 
@@ -737,9 +774,16 @@ const styles = StyleSheet.create({
         marginLeft: 4,
         fontFamily: typography.sans,
     },
+    headerRightGroup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 14,
+        paddingTop: 8,
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+    },
     topNav: {
-        paddingTop: 12,
-        paddingRight: 8,
+        paddingRight: 4,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,

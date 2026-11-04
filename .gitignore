@@ -47,6 +47,10 @@ scratch/
 playwright-report/
 test-results/
 ~$*
+*.tmp
+*.bak
+*.docx
+*.zip
 supabase/.temp/
 
 

@@ -478,7 +478,10 @@ export function ClientsModule({
                     if (onNavigateToCreations) {
                         onNavigateToCreations(creationId);
                     } else {
-                        router.push('/(designer)/creations');
+                        router.push({
+                            pathname: '/(designer)/creations',
+                            params: { creation_id: creationId },
+                        });
                     }
                 }}
             />

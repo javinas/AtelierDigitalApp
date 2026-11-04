@@ -36,6 +36,7 @@ import {
     updateCreationStatus,
 } from '../../services/creationService';
 import { fetchClientMeasurementSessions } from '../../services/measurementService';
+import { fetchClientPersons } from '../../services/personGroupService';
 import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
 import { Client } from '../../types/client';
@@ -46,6 +47,7 @@ import {
     CreationType,
     CreateCreationDTO,
 } from '../../types/creation';
+import { MeasuredPerson } from '../../types/personGroup';
 import { MeasurementSession } from '../../types/pattern/measurement';
 import { GarmentType, PatternExecution } from '../../types/pattern/pattern';
 import { PatternModule } from '../pattern/PatternModule';
@@ -244,6 +246,10 @@ export function CreationsModule({
 
     // Formulario de nueva / edición de creación
     const [formClientId, setFormClientId] = useState<string>('');
+    const [clientPersons, setClientPersons] = useState<MeasuredPerson[]>([]);
+    const [loadingPersons, setLoadingPersons] = useState<boolean>(false);
+    const [personsError, setPersonsError] = useState<string | null>(null);
+    const [formPersonId, setFormPersonId] = useState<string | null>(null);
     const [formName, setFormName] = useState<string>('');
     const [formDescription, setFormDescription] = useState<string>('');
     const [formCreationType, setFormCreationType] = useState<CreationType>('bespoke');
@@ -254,6 +260,46 @@ export function CreationsModule({
     const [formStatus, setFormStatus] = useState<CreationStatus>('draft');
     const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
     const [createModalError, setCreateModalError] = useState<string | null>(null);
+
+    // Cargar personas asociadas al cambiar la clienta seleccionada en el formulario
+    useEffect(() => {
+        if (!isCreateModalOpen) return;
+        if (!formClientId) {
+            setClientPersons([]);
+            setFormPersonId(null);
+            setPersonsError(null);
+            setLoadingPersons(false);
+            return;
+        }
+
+        let isMounted = true;
+        setLoadingPersons(true);
+        setPersonsError(null);
+        setFormPersonId(null); // Limpiar selección previa obligatoriamente al cambiar de clienta
+
+        fetchClientPersons(formClientId)
+            .then((persons) => {
+                if (isMounted) {
+                    setClientPersons(persons || []);
+                }
+            })
+            .catch((err: any) => {
+                if (isMounted) {
+                    console.warn('[CreationsModule] Error cargando personas de clienta:', err);
+                    setPersonsError('No se pudieron cargar las personas asociadas.');
+                    setClientPersons([]);
+                }
+            })
+            .finally(() => {
+                if (isMounted) {
+                    setLoadingPersons(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [formClientId, isCreateModalOpen]);
 
     // Auto-cierre de toasts
     useEffect(() => {
@@ -339,6 +385,9 @@ export function CreationsModule({
     const handleOpenCreateModal = () => {
         setCreateModalError(null);
         setFormClientId(clients.length > 0 ? clients[0].id : '');
+        setFormPersonId(null);
+        setClientPersons([]);
+        setPersonsError(null);
         setFormName('');
         setFormDescription('');
         setFormCreationType('bespoke');
@@ -374,6 +423,7 @@ export function CreationsModule({
 
             const payload: CreateCreationDTO = {
                 client_id: formClientId,
+                person_id: formPersonId || null,
                 name: formName.trim(),
                 description: formDescription.trim() || undefined,
                 creation_type: formCreationType,
@@ -1513,6 +1563,72 @@ export function CreationsModule({
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
+
+                            {/* Selector opcional: ¿Para quién es la prenda? (Personas asociadas a la clienta) */}
+                            <View style={styles.personSelectorSection}>
+                                <Text style={styles.formLabel}>¿Para quién es la prenda? (Opcional)</Text>
+                                {loadingPersons ? (
+                                    <View style={styles.personLoadingRow}>
+                                        <ActivityIndicator size="small" color={colors.champagneGold} />
+                                        <Text style={styles.personLoadingText}>Cargando personas asociadas...</Text>
+                                    </View>
+                                ) : personsError ? (
+                                    <Text style={styles.personErrorText}>{personsError}</Text>
+                                ) : (
+                                    <ScrollView
+                                        horizontal
+                                        showsHorizontalScrollIndicator={false}
+                                        contentContainerStyle={styles.clientSelectorScroll}
+                                    >
+                                        {/* Opción 1: Clienta Titular / Sin persona específica */}
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.personSelectChip,
+                                                formPersonId === null && styles.personSelectChipActive,
+                                            ]}
+                                            onPress={() => setFormPersonId(null)}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.personSelectChipText,
+                                                    formPersonId === null && styles.personSelectChipTextActive,
+                                                ]}
+                                            >
+                                                👤 Para la Clienta Titular
+                                            </Text>
+                                        </TouchableOpacity>
+
+                                        {/* Opción 2..N: Personas físicas registradas bajo esta clienta */}
+                                        {clientPersons.map((p) => {
+                                            const isSelected = formPersonId === p.id;
+                                            return (
+                                                <TouchableOpacity
+                                                    key={p.id}
+                                                    style={[
+                                                        styles.personSelectChip,
+                                                        isSelected && styles.personSelectChipActive,
+                                                    ]}
+                                                    onPress={() => setFormPersonId(p.id)}
+                                                >
+                                                    <Text
+                                                        style={[
+                                                            styles.personSelectChipText,
+                                                            isSelected && styles.personSelectChipTextActive,
+                                                        ]}
+                                                    >
+                                                        {p.full_name} ({p.demographic_category})
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            );
+                                        })}
+                                    </ScrollView>
+                                )}
+                                {!loadingPersons && clientPersons.length === 0 && !personsError && (
+                                    <Text style={styles.personEmptyHint}>
+                                        Sin personas adicionales registradas para esta clienta. Se asignará directamente a su perfil titular.
+                                    </Text>
+                                )}
+                            </View>
 
                             {/* Nombre / Título de la creación */}
                             <Text style={styles.formLabel}>Nombre del Encargo / Creación *</Text>
@@ -3351,6 +3467,53 @@ const styles = StyleSheet.create({
     },
     clientSelectChipTextActive: {
         color: '#FFFFFF',
+    },
+    personSelectorSection: {
+        marginTop: 4,
+        marginBottom: 6,
+    },
+    personLoadingRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    personLoadingText: {
+        fontSize: 12,
+        color: colors.textSecondary,
+        marginLeft: 8,
+        fontStyle: 'italic',
+    },
+    personErrorText: {
+        fontSize: 12,
+        color: '#DC2626',
+        paddingVertical: 6,
+    },
+    personSelectChip: {
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: colors.sand,
+        backgroundColor: colors.surface,
+        marginRight: 6,
+    },
+    personSelectChipActive: {
+        backgroundColor: colors.champagneGold,
+        borderColor: colors.champagneGold,
+    },
+    personSelectChipText: {
+        fontSize: 12,
+        fontWeight: '600',
+        color: colors.textSecondary,
+    },
+    personSelectChipTextActive: {
+        color: '#FFFFFF',
+    },
+    personEmptyHint: {
+        fontSize: 11,
+        color: colors.textMuted,
+        fontStyle: 'italic',
+        marginTop: 4,
     },
     formChipsRow: {
         flexDirection: 'row',

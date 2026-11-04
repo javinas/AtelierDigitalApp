@@ -29,6 +29,9 @@ interface AtelierMannequinDisplayProps {
     referenceProfileLabel?: string;
     associatedCreationName?: string;
     isMeasurementOnly?: boolean;
+    compact?: boolean;
+    selectedMeasureCode?: string | null;
+    onSelectMeasureCode?: (code: string) => void;
     onNewSession?: () => void;
     onCorrectSession?: () => void;
     onSelectGarmentType?: (type: GarmentType) => void;
@@ -55,6 +58,9 @@ export function AtelierMannequinDisplay({
     referenceProfileLabel,
     associatedCreationName,
     isMeasurementOnly = false,
+    compact = false,
+    selectedMeasureCode,
+    onSelectMeasureCode,
     onNewSession,
     onCorrectSession,
     onSelectGarmentType,
@@ -72,6 +78,59 @@ export function AtelierMannequinDisplay({
             return (Number.isInteger(cm) ? cm.toFixed(0) : cm.toFixed(1)) + ' cm';
         }
         return 'No registrada';
+    };
+
+    const renderCallout = (
+        code: string,
+        label: string,
+        val: string,
+        isHighlight = false,
+        extraBadge?: string
+    ) => {
+        const isSelected = selectedMeasureCode === code;
+        const isCaptured = val !== 'No registrada';
+        return (
+            <TouchableOpacity
+                style={[
+                    styles.calloutBadge,
+                    compact && styles.calloutBadgeCompact,
+                    isHighlight && styles.calloutHighlightGold,
+                    isSelected && styles.calloutBadgeActiveFocus,
+                ]}
+                onPress={() => onSelectMeasureCode?.(code)}
+                activeOpacity={onSelectMeasureCode ? 0.7 : 1}
+                disabled={!onSelectMeasureCode}
+            >
+                <View style={styles.labelRowWithBadge}>
+                    <Text
+                        style={[
+                            styles.calloutLabel,
+                            compact && styles.calloutLabelCompact,
+                            (isHighlight || isSelected) && styles.calloutLabelHighlight,
+                        ]}
+                    >
+                        {label}
+                    </Text>
+                    {extraBadge && (
+                        <View style={styles.starBadgeTC}>
+                            <Text style={styles.starBadgeTCText}>{extraBadge}</Text>
+                        </View>
+                    )}
+                    {isCaptured && onSelectMeasureCode && (
+                        <Text style={styles.calloutCapturedCheck}>✓</Text>
+                    )}
+                </View>
+                <Text
+                    style={[
+                        styles.calloutValue,
+                        compact && styles.calloutValueCompact,
+                        (isHighlight || isSelected) && styles.calloutValueHighlight,
+                    ]}
+                >
+                    {val}
+                </Text>
+            </TouchableOpacity>
+        );
     };
 
     const registeredCount = Object.values(measurementsMm).filter(
@@ -128,18 +187,18 @@ export function AtelierMannequinDisplay({
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, compact && styles.containerCompact]}>
             {/* Cabecera del Maniquí con Estado de Sesión en Gema Esmeralda */}
-            <View style={styles.headerRow}>
+            <View style={[styles.headerRow, compact && styles.headerRowCompact]}>
                 <View style={styles.headerLeft}>
-                    <Text style={styles.title}>ANATOMÍA & MEDIDAS</Text>
-                    <Text style={styles.subtitleMain}>
+                    <Text style={[styles.title, compact && { fontSize: 8.5 }]}>ANATOMÍA & MEDIDAS</Text>
+                    <Text style={[styles.subtitleMain, compact && { fontSize: 15, lineHeight: 18 }]} numberOfLines={1}>
                         {clientName || (referenceProfileLabel ? referenceProfileLabel.toUpperCase() : 'Busto de Sastre')}
                     </Text>
-                    <Text style={styles.subtitleSecondary}>
+                    <Text style={[styles.subtitleSecondary, compact && { fontSize: 11, lineHeight: 14 }]} numberOfLines={1}>
                         {session ? `Sesión v${versionNum} · ${formatSessionDate(session?.session_date)}` : (referenceProfileLabel || 'Alta Costura')}
                     </Text>
-                    {associatedCreationName && (
+                    {associatedCreationName && !compact && (
                         <Text style={styles.associatedCreationSub}>
                             CREACIÓN ASOCIADA: {associatedCreationName}
                         </Text>
@@ -147,11 +206,11 @@ export function AtelierMannequinDisplay({
                 </View>
 
                 {/* Placa Gema Esmeralda Luminosa */}
-                <View style={styles.emeraldGemBadge}>
-                    <Text style={styles.emeraldGemVersion}>
+                <View style={[styles.emeraldGemBadge, compact && { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 }]}>
+                    <Text style={[styles.emeraldGemVersion, compact && { fontSize: 14 }]}>
                         {versionNum ? `v${versionNum}` : (referenceProfileLabel || 'Libre')}
                     </Text>
-                    <Text style={styles.emeraldGemStatus}>
+                    <Text style={[styles.emeraldGemStatus, compact && { fontSize: 7.5 }]}>
                         {session?.status === 'completed'
                             ? 'FINALIZADA'
                             : session?.status === 'verified'
@@ -205,53 +264,50 @@ export function AtelierMannequinDisplay({
             )}
 
             {/* Cabecera explicativa explícita de Sesión Utilizada / Perfil Anatómico */}
-            <View style={styles.sessionActiveBanner}>
+            <View style={[styles.sessionActiveBanner, compact && styles.sessionActiveBannerCompact]}>
                 <View style={styles.sessionActiveBannerLeft}>
-                    <Text style={styles.sessionActiveLabel}>
+                    <Text style={[styles.sessionActiveLabel, compact && { fontSize: 8, letterSpacing: 0.8 }]} numberOfLines={1} ellipsizeMode="tail">
                         {session ? 'SESIÓN UTILIZADA' : (referenceProfileLabel ? 'PERFIL ANATÓMICO' : 'SESIÓN UTILIZADA')}
                     </Text>
-                    <Text style={styles.sessionActiveTitle}>
+                    <Text style={[styles.sessionActiveTitle, compact && { fontSize: 11.5, lineHeight: 14 }]} numberOfLines={1} ellipsizeMode="tail">
                         {session
                             ? `v${versionNum} · ${formatSessionDate(session?.session_date)}${clientName ? ` · ${clientName}` : ''}`
                             : (referenceProfileLabel ? referenceProfileLabel.toUpperCase() : (registeredCount === 0 ? 'Sin datos anatómicos suficientes' : 'Sin sesión'))}
                     </Text>
-                    <Text style={styles.sessionActiveClientText}>
+                    <Text style={[styles.sessionActiveClientText, compact && { fontSize: 9.5, lineHeight: 12 }]} numberOfLines={1} ellipsizeMode="tail">
                         {session
                             ? `CLIENTA: ${clientName || 'Sin clienta'}`
                             : (referenceProfileLabel ? 'PATRÓN LIBRE · BANCO GLOBAL' : (clientName ? `CLIENTA: ${clientName}` : 'Sin clienta'))}
                     </Text>
                 </View>
                 <View style={styles.sessionActiveBannerRight}>
-                    <View style={styles.registeredCountBadge}>
-                        <Text style={styles.registeredCountBadgeText}>
+                    <View style={[styles.registeredCountBadge, compact && { paddingHorizontal: 6, paddingVertical: 3 }]}>
+                        <Text style={[styles.registeredCountBadgeText, compact && { fontSize: 9.5 }]} numberOfLines={1}>
                             {registeredCount > 0
-                                ? `✓ ${registeredCount} medidas anatómicas activas`
-                                : 'Sin datos anatómicos suficientes'}
+                                ? `✓ ${registeredCount} cotas`
+                                : 'Sin datos'}
                         </Text>
                     </View>
                 </View>
             </View>
 
             {/* Escenario del Maniquí con Relación de Aspecto Proporcional y Cotas Alineadas */}
-            <View style={styles.stage}>
+            <View style={[styles.stage, compact && styles.stageCompact]}>
                 {/* Maniquí Central de Alta Definición */}
                 <View style={styles.mannequinBackgroundWrap} pointerEvents="none">
                     <Image
                         source={realisticMannequinAsset}
-                        style={styles.mannequinImage}
+                        style={[styles.mannequinImage, compact && styles.mannequinImageCompact]}
                         resizeMode="contain"
                     />
                 </View>
 
                 {/* COTAS DEL LADO IZQUIERDO */}
                 <View style={styles.leftCotasLayer} pointerEvents="box-none">
-                    {/* HOMBRO (Bodice, Dress, Sleeve, Blouse, Shirt, Corset, Jacket, Coat, o Full) */}
+                    {/* HOMBRO */}
                     {(viewMode === 'full' || isGarmentIn('bodice', 'dress', 'sleeve', 'blouse', 'shirt', 'corset', 'jacket', 'coat')) && (
                         <View style={[styles.cotaItemLeft, { top: 78 }]}>
-                            <View style={styles.calloutBadge}>
-                                <Text style={styles.calloutLabel}>HOMBRO</Text>
-                                <Text style={styles.calloutValue}>{shoulderVal}</Text>
-                            </View>
+                            {renderCallout('largo_hombro', 'HOMBRO', shoulderVal)}
                             <View style={styles.pointerGroupLeft}>
                                 <View style={styles.pointerLineLeft} />
                                 <View style={styles.pointerDot} />
@@ -259,13 +315,10 @@ export function AtelierMannequinDisplay({
                         </View>
                     )}
 
-                    {/* BUSTO (Bodice, Dress, Blouse, Shirt, Corset, Jacket, Coat, o Full) — DESTACADO EN ORO CÁLIDO */}
+                    {/* BUSTO — DESTACADO EN ORO CÁLIDO */}
                     {(viewMode === 'full' || isGarmentIn('bodice', 'dress', 'blouse', 'shirt', 'corset', 'jacket', 'coat')) && (
                         <View style={[styles.cotaItemLeft, { top: 154 }]}>
-                            <View style={[styles.calloutBadge, styles.calloutHighlightGold]}>
-                                <Text style={[styles.calloutLabel, styles.calloutLabelHighlight]}>BUSTO</Text>
-                                <Text style={[styles.calloutValue, styles.calloutValueHighlight]}>{bustVal}</Text>
-                            </View>
+                            {renderCallout('contorno_busto', 'BUSTO', bustVal, true)}
                             <View style={styles.pointerGroupLeft}>
                                 <View style={[styles.pointerLineLeft, styles.pointerLineHighlight]} />
                                 <View style={[styles.pointerDot, styles.pointerDotHighlight]} />
@@ -276,10 +329,7 @@ export function AtelierMannequinDisplay({
                     {/* CINTURA EN LADO IZQUIERDO PARA FALDA Y PANTALÓN */}
                     {viewMode === 'garment' && isGarmentIn('skirt', 'pants') && (
                         <View style={[styles.cotaItemLeft, { top: 228 }]}>
-                            <View style={[styles.calloutBadge, styles.calloutHighlightGold]}>
-                                <Text style={[styles.calloutLabel, styles.calloutLabelHighlight]}>CINTURA</Text>
-                                <Text style={[styles.calloutValue, styles.calloutValueHighlight]}>{waistVal}</Text>
-                            </View>
+                            {renderCallout('contorno_cintura', 'CINTURA', waistVal, true)}
                             <View style={styles.pointerGroupLeft}>
                                 <View style={[styles.pointerLineLeft, styles.pointerLineHighlight]} />
                                 <View style={[styles.pointerDot, styles.pointerDotHighlight]} />
@@ -287,13 +337,10 @@ export function AtelierMannequinDisplay({
                         </View>
                     )}
 
-                    {/* CADERA (Skirts, Pants, Dress, Jacket, Coat, o Full) */}
+                    {/* CADERA */}
                     {(viewMode === 'full' || isGarmentIn('skirt', 'pants', 'dress', 'jacket', 'coat')) && (
                         <View style={[styles.cotaItemLeft, { top: 308 }]}>
-                            <View style={[styles.calloutBadge, isGarmentIn('skirt', 'pants', 'jacket', 'coat') && styles.calloutHighlightGold]}>
-                                <Text style={[styles.calloutLabel, isGarmentIn('skirt', 'pants', 'jacket', 'coat') && styles.calloutLabelHighlight]}>CADERA</Text>
-                                <Text style={[styles.calloutValue, isGarmentIn('skirt', 'pants', 'jacket', 'coat') && styles.calloutValueHighlight]}>{hipVal}</Text>
-                            </View>
+                            {renderCallout('contorno_cadera', 'CADERA', hipVal, isGarmentIn('skirt', 'pants', 'jacket', 'coat'))}
                             <View style={styles.pointerGroupLeft}>
                                 <View style={[styles.pointerLineLeft, isGarmentIn('skirt', 'pants', 'jacket', 'coat') && styles.pointerLineHighlight]} />
                                 <View style={[styles.pointerDot, isGarmentIn('skirt', 'pants', 'jacket', 'coat') && styles.pointerDotHighlight]} />
@@ -304,17 +351,14 @@ export function AtelierMannequinDisplay({
 
                 {/* COTAS DEL LADO DERECHO */}
                 <View style={styles.rightCotasLayer} pointerEvents="box-none">
-                    {/* CUELLO (Bodice, Dress, Blouse, Shirt, Jacket, Coat, o Full) */}
+                    {/* CUELLO */}
                     {(viewMode === 'full' || isGarmentIn('bodice', 'dress', 'blouse', 'shirt', 'jacket', 'coat')) && (
                         <View style={[styles.cotaItemRight, { top: 58 }]}>
                             <View style={styles.pointerGroupRight}>
                                 <View style={styles.pointerDot} />
                                 <View style={styles.pointerLineRight} />
                             </View>
-                            <View style={styles.calloutBadge}>
-                                <Text style={styles.calloutLabel}>CUELLO</Text>
-                                <Text style={styles.calloutValue}>{neckVal}</Text>
-                            </View>
+                            {renderCallout('contorno_cuello', 'CUELLO', neckVal)}
                         </View>
                     )}
 
@@ -325,29 +369,18 @@ export function AtelierMannequinDisplay({
                                 <View style={styles.pointerDot} />
                                 <View style={styles.pointerLineRight} />
                             </View>
-                            <View style={styles.calloutBadge}>
-                                <View style={styles.labelRowWithBadge}>
-                                    <Text style={styles.calloutLabel}>SISA (C10)</Text>
-                                    <View style={styles.starBadgeTC}>
-                                        <Text style={styles.starBadgeTCText}>TC</Text>
-                                    </View>
-                                </View>
-                                <Text style={styles.calloutValue}>{armholeVal}</Text>
-                            </View>
+                            {renderCallout('profundidad_sisa', 'SISA (C10)', armholeVal, false, 'TC')}
                         </View>
                     )}
 
-                    {/* CINTURA EN LADO DERECHO (Bodice, Dress, Blouse, Shirt, Corset, Jacket, Coat, o Full) — DESTACADA EN ORO */}
+                    {/* CINTURA EN LADO DERECHO — DESTACADA EN ORO */}
                     {(viewMode === 'full' || isGarmentIn('bodice', 'dress', 'blouse', 'shirt', 'corset', 'jacket', 'coat')) && (
                         <View style={[styles.cotaItemRight, { top: 228 }]}>
                             <View style={styles.pointerGroupRight}>
                                 <View style={[styles.pointerDot, styles.pointerDotHighlight]} />
                                 <View style={[styles.pointerLineRight, styles.pointerLineHighlight]} />
                             </View>
-                            <View style={[styles.calloutBadge, styles.calloutHighlightGold]}>
-                                <Text style={[styles.calloutLabel, styles.calloutLabelHighlight]}>CINTURA</Text>
-                                <Text style={[styles.calloutValue, styles.calloutValueHighlight]}>{waistVal}</Text>
-                            </View>
+                            {renderCallout('contorno_cintura', 'CINTURA', waistVal, true)}
                         </View>
                     )}
 
@@ -358,10 +391,7 @@ export function AtelierMannequinDisplay({
                                 <View style={styles.pointerDot} />
                                 <View style={styles.pointerLineRight} />
                             </View>
-                            <View style={styles.calloutBadge}>
-                                <Text style={styles.calloutLabel}>ALT. CADERA</Text>
-                                <Text style={styles.calloutValue}>{hipHeightVal}</Text>
-                            </View>
+                            {renderCallout('altura_cadera', 'ALT. CADERA', hipHeightVal)}
                         </View>
                     )}
 
@@ -372,10 +402,7 @@ export function AtelierMannequinDisplay({
                                 <View style={[styles.pointerDot, styles.pointerDotHighlight]} />
                                 <View style={[styles.pointerLineRight, styles.pointerLineHighlight]} />
                             </View>
-                            <View style={[styles.calloutBadge, styles.calloutHighlightGold]}>
-                                <Text style={[styles.calloutLabel, styles.calloutLabelHighlight]}>LARGO FALDA</Text>
-                                <Text style={[styles.calloutValue, styles.calloutValueHighlight]}>{skirtLengthVal}</Text>
-                            </View>
+                            {renderCallout('largo_falda', 'LARGO FALDA', skirtLengthVal, true)}
                         </View>
                     )}
 
@@ -386,10 +413,7 @@ export function AtelierMannequinDisplay({
                                 <View style={styles.pointerDot} />
                                 <View style={styles.pointerLineRight} />
                             </View>
-                            <View style={styles.calloutBadge}>
-                                <Text style={styles.calloutLabel}>ALTURA TIRO</Text>
-                                <Text style={styles.calloutValue}>{crotchHeightVal}</Text>
-                            </View>
+                            {renderCallout('altura_tiro', 'ALTURA TIRO', crotchHeightVal)}
                         </View>
                     )}
 
@@ -400,10 +424,7 @@ export function AtelierMannequinDisplay({
                                 <View style={[styles.pointerDot, styles.pointerDotHighlight]} />
                                 <View style={[styles.pointerLineRight, styles.pointerLineHighlight]} />
                             </View>
-                            <View style={[styles.calloutBadge, styles.calloutHighlightGold]}>
-                                <Text style={[styles.calloutLabel, styles.calloutLabelHighlight]}>LARGO PANTALÓN</Text>
-                                <Text style={[styles.calloutValue, styles.calloutValueHighlight]}>{pantsLengthVal}</Text>
-                            </View>
+                            {renderCallout('largo_pantalon', 'LARGO PANTALÓN', pantsLengthVal, true)}
                         </View>
                     )}
 
@@ -415,69 +436,68 @@ export function AtelierMannequinDisplay({
                                     <View style={styles.pointerDot} />
                                     <View style={styles.pointerLineRight} />
                                 </View>
-                                <View style={styles.calloutBadge}>
-                                    <Text style={styles.calloutLabel}>CONT. BRAZO</Text>
-                                    <Text style={styles.calloutValue}>{bicepVal}</Text>
-                                </View>
+                                {renderCallout('contorno_biceps', 'CONT. BRAZO', bicepVal)}
                             </View>
                             <View style={[styles.cotaItemRight, { top: 290 }]}>
                                 <View style={styles.pointerGroupRight}>
                                     <View style={[styles.pointerDot, styles.pointerDotHighlight]} />
                                     <View style={[styles.pointerLineRight, styles.pointerLineHighlight]} />
                                 </View>
-                                <View style={[styles.calloutBadge, styles.calloutHighlightGold]}>
-                                    <Text style={[styles.calloutLabel, styles.calloutLabelHighlight]}>LARGO MANGA</Text>
-                                    <Text style={[styles.calloutValue, styles.calloutValueHighlight]}>{sleeveLengthVal}</Text>
-                                </View>
+                                {renderCallout('largo_brazo', 'LARGO MANGA', sleeveLengthVal, true)}
                             </View>
                         </>
                     )}
 
-                    {/* TALLE ESPALDA (Bodice, Dress, Blouse, Shirt, Jacket, Coat, o Full) */}
+                    {/* TALLE ESPALDA */}
                     {(viewMode === 'full' || isGarmentIn('bodice', 'dress', 'blouse', 'shirt', 'jacket', 'coat')) && (
                         <View style={[styles.cotaItemRight, { top: 308 }]}>
                             <View style={styles.pointerGroupRight}>
                                 <View style={styles.pointerDot} />
                                 <View style={styles.pointerLineRight} />
                             </View>
-                            <View style={styles.calloutBadge}>
-                                <Text style={styles.calloutLabel}>TALLE ESP.</Text>
-                                <Text style={styles.calloutValue}>{backLengthVal}</Text>
-                            </View>
+                            {renderCallout('largo_talle_espalda', 'TALLE ESP.', backLengthVal)}
                         </View>
                     )}
                 </View>
             </View>
 
             {/* Resumen de Taller bajo el Maniquí (Sección 5) */}
-            <View style={styles.mannequinFooterInfo}>
-                <Text style={styles.mannequinFooterText}>
-                    {registeredCount > 0
-                        ? `✓ ${registeredCount} medidas anatómicas disponibles en esta sesión`
-                        : 'Sin medidas anatómicas registradas en esta sesión'}
-                </Text>
-            </View>
+            {!compact && (
+                <View style={styles.mannequinFooterInfo}>
+                    <Text style={styles.mannequinFooterText}>
+                        {registeredCount > 0
+                            ? `✓ ${registeredCount} medidas anatómicas disponibles en esta sesión`
+                            : 'Sin medidas anatómicas registradas en esta sesión'}
+                    </Text>
+                </View>
+            )}
 
             {/* Barra Inferior con Botonera de Taller */}
-            <View style={styles.actionsFooter}>
-                <TouchableOpacity
-                    style={styles.actionBtnSecondaryGlass}
-                    onPress={onCorrectSession}
-                    activeOpacity={0.8}
-                >
-                    <Text style={styles.actionBtnSecondaryText}>
-                        <Text style={styles.lightningIcon}>⚡</Text> Rectificar (v{nextVersionNum})
-                    </Text>
-                </TouchableOpacity>
+            {!compact && !isMeasurementOnly && (onCorrectSession || onNewSession) && (
+                <View style={styles.actionsFooter}>
+                    {onCorrectSession && (
+                        <TouchableOpacity
+                            style={styles.actionBtnSecondaryGlass}
+                            onPress={onCorrectSession}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.actionBtnSecondaryText}>
+                                <Text style={styles.lightningIcon}>⚡</Text> Rectificar (v{nextVersionNum})
+                            </Text>
+                        </TouchableOpacity>
+                    )}
 
-                <TouchableOpacity
-                    style={styles.actionBtnPrimaryGold}
-                    onPress={onNewSession}
-                    activeOpacity={0.85}
-                >
-                    <Text style={styles.actionBtnPrimaryText}>+ Nueva Medición</Text>
-                </TouchableOpacity>
-            </View>
+                    {onNewSession && (
+                        <TouchableOpacity
+                            style={styles.actionBtnPrimaryGold}
+                            onPress={onNewSession}
+                            activeOpacity={0.85}
+                        >
+                            <Text style={styles.actionBtnPrimaryText}>+ Nueva Medición</Text>
+                        </TouchableOpacity>
+                    )}
+                </View>
+            )}
         </View>
     );
 }
@@ -869,5 +889,57 @@ const styles = StyleSheet.create({
         fontSize: 11,
         color: '#94A3B8',
         letterSpacing: 0.2,
+    },
+    // Modos Compactos y Selección Interactiva (Módulo 2 · Flujo B)
+    containerCompact: {
+        padding: 10,
+        borderRadius: 12,
+        marginBottom: 0,
+        borderWidth: 1,
+    },
+    headerRowCompact: {
+        paddingBottom: 6,
+        marginBottom: 6,
+    },
+    calloutBadgeCompact: {
+        paddingHorizontal: 7,
+        paddingVertical: 4,
+        minWidth: 70,
+        borderRadius: 8,
+    },
+    calloutLabelCompact: {
+        fontSize: 7.5,
+    },
+    calloutValueCompact: {
+        fontSize: 11.5,
+    },
+    calloutBadgeActiveFocus: {
+        borderColor: '#F59E0B',
+        borderWidth: 1.8,
+        backgroundColor: 'rgba(50, 36, 16, 0.98)',
+        ...Platform.select({
+            web: {
+                boxShadow: '0 0 16px rgba(245, 158, 11, 0.55)',
+            },
+        }),
+    },
+    calloutCapturedCheck: {
+        color: '#4ADE80',
+        fontSize: 8,
+        fontWeight: '900',
+        marginLeft: 2,
+    },
+    sessionActiveBannerCompact: {
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        marginBottom: 6,
+        borderRadius: 8,
+    },
+    stageCompact: {
+        height: 360,
+    },
+    mannequinImageCompact: {
+        width: 250,
+        height: 360,
     },
 });

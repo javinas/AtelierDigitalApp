@@ -20,20 +20,8 @@
 BEGIN;
 
 -- 1. Actualizar restricción CHECK en public.pattern_templates
-DO $$
-DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN (
-        SELECT conname 
-        FROM pg_constraint 
-        WHERE conrelid = 'public.pattern_templates'::regclass 
-          AND contype = 'c' 
-          AND pg_get_constraintdef(oid) LIKE '%garment_type%'
-    ) LOOP
-        EXECUTE 'ALTER TABLE public.pattern_templates DROP CONSTRAINT ' || quote_ident(r.conname);
-    END LOOP;
-END $$;
+ALTER TABLE public.pattern_templates
+    DROP CONSTRAINT IF EXISTS chk_pattern_templates_garment_type;
 
 ALTER TABLE public.pattern_templates
     ADD CONSTRAINT chk_pattern_templates_garment_type
@@ -44,20 +32,8 @@ ALTER TABLE public.pattern_templates
     ));
 
 -- 2. Actualizar restricción CHECK en public.pattern_executions
-DO $$
-DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN (
-        SELECT conname 
-        FROM pg_constraint 
-        WHERE conrelid = 'public.pattern_executions'::regclass 
-          AND contype = 'c' 
-          AND pg_get_constraintdef(oid) LIKE '%garment_type%'
-    ) LOOP
-        EXECUTE 'ALTER TABLE public.pattern_executions DROP CONSTRAINT ' || quote_ident(r.conname);
-    END LOOP;
-END $$;
+ALTER TABLE public.pattern_executions
+    DROP CONSTRAINT IF EXISTS chk_pattern_executions_garment_type;
 
 ALTER TABLE public.pattern_executions
     ADD CONSTRAINT chk_pattern_executions_garment_type

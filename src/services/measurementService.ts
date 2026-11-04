@@ -39,6 +39,15 @@ export async function fetchMeasurementCatalog(): Promise<MeasurementCatalogItem[
     }
 }
 
+interface ProcessedValue {
+    code: string;
+    side: MeasurementSide;
+    valMm: number;
+    source: MeasurementSource;
+    confidence: MeasurementConfidence;
+    notes?: string | null;
+}
+
 export async function fetchClientMeasurementSessions(
     clientId: string,
     includeDrafts: boolean = false
@@ -57,52 +66,56 @@ export async function fetchClientMeasurementSessions(
             .order('version_number', { ascending: false })
             .order('created_at', { ascending: false });
 
-        if (sessError || !sessions) {
+        if (sessError || !sessions || sessions.length === 0) {
             return [];
         }
 
-        // Cargar valores para cada sesión
-        const sessionsWithValues: MeasurementSession[] = [];
-        for (const sess of sessions) {
-            const { data: values } = await supabase
-                .from('measurement_values')
-                .select('*')
-                .eq('session_id', sess.id);
+        const sessionIds = sessions.map((s) => s.id);
 
-            const valuesMap: Record<string, MeasurementValueItem> = {};
-            if (values) {
-                for (const v of values) {
-                    const side = (v.side as MeasurementSide) || 'none';
-                    const item: MeasurementValueItem = {
-                        id: v.id,
-                        session_id: v.session_id,
-                        measurement_code: v.measurement_code,
-                        side,
-                        value_mm: Number(v.value_mm),
-                        source: v.source,
-                        confidence: v.confidence,
-                        notes: v.notes,
-                        created_at: v.created_at,
-                    };
+        // Optimización H-01: Consulta única en lote (evita N+1 de red sobre measurement_values)
+        const { data: allValues, error: valError } = await supabase
+            .from('measurement_values')
+            .select('*')
+            .in('session_id', sessionIds);
 
-                    if (side === 'none') {
+        const valuesBySession = new Map<string, Record<string, MeasurementValueItem>>();
+
+        if (allValues && !valError) {
+            for (const v of allValues) {
+                const sId = v.session_id;
+                if (!valuesBySession.has(sId)) {
+                    valuesBySession.set(sId, {});
+                }
+                const valuesMap = valuesBySession.get(sId)!;
+                const side = (v.side as MeasurementSide) || 'none';
+                const item: MeasurementValueItem = {
+                    id: v.id,
+                    session_id: v.session_id,
+                    measurement_code: v.measurement_code,
+                    side,
+                    value_mm: Number(v.value_mm),
+                    source: v.source,
+                    confidence: v.confidence,
+                    notes: v.notes,
+                    created_at: v.created_at,
+                };
+
+                if (side === 'none') {
+                    valuesMap[v.measurement_code] = item;
+                } else {
+                    valuesMap[`${v.measurement_code}_${side}`] = item;
+                    if (!valuesMap[v.measurement_code]) {
                         valuesMap[v.measurement_code] = item;
-                    } else {
-                        valuesMap[`${v.measurement_code}_${side}`] = item;
-                        if (!valuesMap[v.measurement_code]) {
-                            valuesMap[v.measurement_code] = item;
-                        }
                     }
                 }
             }
-
-            sessionsWithValues.push({
-                ...sess,
-                values: valuesMap,
-            });
         }
 
-        return sessionsWithValues;
+        // Cargar valores para cada sesión preservando orden exacto
+        return sessions.map((sess) => ({
+            ...sess,
+            values: valuesBySession.get(sess.id) || {},
+        }));
     } catch (err) {
         console.warn('[MeasurementService] Error al consultar sesiones:', err);
         return [];
@@ -138,13 +151,24 @@ export async function createMeasurementSession(
             };
         }
 
-        // Si no se proporcionó versión, calcular la siguiente versión monótona consultando el historial de la clienta
+        // Si no se proporcionó versión, calcular la siguiente versión monótona consultando el historial del sujeto anatómico específico
+        // H-02: Aislar la secuencia de versiones conjuntamente por client_id y person_id
         let resolvedVersion = versionNumber;
         if (!resolvedVersion || resolvedVersion < 1) {
-            const { data: latestSess } = await supabase
+            let versionQuery = supabase
                 .from('measurement_sessions')
                 .select('version_number')
-                .eq('client_id', clientId)
+                .eq('client_id', clientId);
+
+            if (personId) {
+                // Caso B — Sesión de un beneficiario (person_id = UUID)
+                versionQuery = versionQuery.eq('person_id', personId);
+            } else {
+                // Caso A — Sesión de la titular (person_id IS NULL)
+                versionQuery = versionQuery.is('person_id', null);
+            }
+
+            const { data: latestSess } = await versionQuery
                 .order('version_number', { ascending: false })
                 .limit(1)
                 .maybeSingle();
@@ -153,15 +177,6 @@ export async function createMeasurementSession(
         }
 
         // 1. Normalizar valores individuales respetando lateralidad, procedencia y fiabilidad
-        interface ProcessedValue {
-            code: string;
-            side: MeasurementSide;
-            valMm: number;
-            source: MeasurementSource;
-            confidence: MeasurementConfidence;
-            notes?: string | null;
-        }
-
         const processedList: ProcessedValue[] = [];
         const seenCombos = new Set<string>();
 
@@ -215,8 +230,18 @@ export async function createMeasurementSession(
 
             // Convertir a mm
             let valMm = valNum;
-            if (unitSystem === 'cm') valMm = cmToMm(valNum);
-            else if (unitSystem === 'in') valMm = inchToMm(valNum);
+            if (unitSystem === 'cm') {
+                // Compatibilidad dual con AtelierFastMeasurementCaptureModal y entradas directas en cm:
+                // Si el valor ya se encuentra expresado en milímetros (dentro del rango anatómico del catálogo o >= 250),
+                // se preserva; si está expresado en centímetros (< 250), se normaliza a milímetros multiplicando por 10.
+                if ((cat && valNum >= cat.min_value_mm && valNum <= cat.max_value_mm) || valNum >= 250) {
+                    valMm = valNum;
+                } else {
+                    valMm = cmToMm(valNum);
+                }
+            } else if (unitSystem === 'in') {
+                valMm = inchToMm(valNum);
+            }
 
             const comboKey = `${code}__${side}`;
             if (!seenCombos.has(comboKey)) {
@@ -398,6 +423,141 @@ export async function finalizeMeasurementSession(
         return { success: true };
     } catch (err: any) {
         return { success: false, error: err?.message || 'Error al finalizar sesión.' };
+    }
+}
+
+/**
+ * Actualiza una sesión en estado 'draft' de forma atómica y transaccional (RPC H-CV-01),
+ * eliminando valores anteriores, insertando los nuevos y actualizando metadatos bajo una
+ * única transacción ACID en PostgreSQL.
+ */
+export async function updateDraftMeasurementSession(
+    sessionId: string,
+    unitSystem: MeasurementUnit,
+    notes: string,
+    rawValues: Record<string, number | MeasurementInputRecord>,
+    targetStatus: SessionStatus = 'draft'
+): Promise<{ success: boolean; session?: MeasurementSession; error?: string }> {
+    try {
+        // Procesar valores preservando catálogo, lateralidad, procedencia y conversiones
+        const processedList: ProcessedValue[] = [];
+        const seenCombos = new Set<string>();
+
+        for (const [key, rawEntry] of Object.entries(rawValues)) {
+            let valNum: number;
+            let side: MeasurementSide = 'none';
+            let source: MeasurementSource = 'direct';
+            let confidence: MeasurementConfidence = 'confirmed';
+            let itemNotes: string | null = null;
+            let code = key;
+
+            if (typeof rawEntry === 'number') {
+                valNum = rawEntry;
+                if (key.endsWith('_left')) {
+                    code = key.slice(0, -5);
+                    side = 'left';
+                } else if (key.endsWith('_right')) {
+                    code = key.slice(0, -6);
+                    side = 'right';
+                }
+            } else if (rawEntry && typeof rawEntry === 'object') {
+                valNum = rawEntry.value;
+                side = rawEntry.side || (key.endsWith('_left') ? 'left' : key.endsWith('_right') ? 'right' : 'none');
+                source = rawEntry.source || 'direct';
+                confidence = rawEntry.confidence || 'confirmed';
+                itemNotes = rawEntry.notes || null;
+                if (key.endsWith('_left') || key.endsWith('_right')) {
+                    code = key.replace(/_(left|right)$/, '');
+                }
+            } else {
+                continue;
+            }
+
+            const cat = MEASUREMENT_MAP[code];
+            const allowZero = cat?.scope === 'design_parameter' && cat.min_value_mm <= 0;
+
+            if (valNum === undefined || valNum === null || isNaN(valNum) || (!allowZero && valNum <= 0)) {
+                continue;
+            }
+
+            if (cat?.is_calculated || cat?.scope === 'calculated') {
+                source = 'calculated';
+                if (confidence === 'confirmed') confidence = 'designer_approved';
+            } else if (source === 'estimated' && confidence === 'confirmed') {
+                confidence = 'preliminary';
+            }
+
+            let valMm = valNum;
+            if (unitSystem === 'cm') {
+                // Compatibilidad dual con AtelierFastMeasurementCaptureModal y entradas directas en cm:
+                // Si el valor ya se encuentra expresado en milímetros (dentro del rango anatómico del catálogo o >= 250),
+                // se preserva; si está expresado en centímetros (< 250), se normaliza a milímetros multiplicando por 10.
+                if ((cat && valNum >= cat.min_value_mm && valNum <= cat.max_value_mm) || valNum >= 250) {
+                    valMm = valNum;
+                } else {
+                    valMm = cmToMm(valNum);
+                }
+            } else if (unitSystem === 'in') {
+                valMm = inchToMm(valNum);
+            }
+
+            const comboKey = `${code}__${side}`;
+            if (!seenCombos.has(comboKey)) {
+                seenCombos.add(comboKey);
+                processedList.push({
+                    code,
+                    side,
+                    valMm: roundTo(valMm, 1),
+                    source,
+                    confidence,
+                    notes: itemNotes,
+                });
+            }
+        }
+
+        const valueInserts = processedList.map((p) => ({
+            measurement_code: p.code,
+            side: p.side,
+            value_mm: p.valMm,
+            source: p.source,
+            confidence: p.confidence,
+            notes: p.notes,
+        }));
+
+        // Invocación RPC atómica: una única transacción PostgreSQL (Fase D0.1 - H-CV-01)
+        const { data: rpcResult, error: rpcErr } = await supabase.rpc(
+            'update_draft_measurement_session_atomic',
+            {
+                p_session_id: sessionId,
+                p_unit_system: unitSystem,
+                p_notes: notes ? notes.trim() : null,
+                p_values: valueInserts,
+                p_target_status: targetStatus,
+            }
+        );
+
+        if (rpcErr) {
+            return {
+                success: false,
+                error: rpcErr.message || 'Error al actualizar sesión en borrador.',
+            };
+        }
+
+        if (!rpcResult) {
+            return {
+                success: false,
+                error: 'No se recibió respuesta de la función atómica de actualización.',
+            };
+        }
+
+        // El resultado retorna { success: true, session: {...}, inserted_count: N }
+        const session = (rpcResult.session || rpcResult) as MeasurementSession;
+        return { success: true, session };
+    } catch (err: any) {
+        return {
+            success: false,
+            error: err?.message || 'Error inesperado al actualizar sesión en borrador.',
+        };
     }
 }
 

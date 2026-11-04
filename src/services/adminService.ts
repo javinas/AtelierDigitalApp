@@ -120,16 +120,35 @@ export async function fetchAdminUsers(): Promise<{
         }
 
         // Si la Edge Function falló (p. ej. 404 no desplegada aún), recurrimos al fallback directo con RLS
-        const { data: dbData, error: dbError } = await supabase
+        let { data: dbData, error: dbError } = await supabase
             .from('profiles')
             .select('id, full_name, email, role, phone, avatar_url, created_at, updated_at')
             .order('created_at', { ascending: false });
 
+        if (dbError && dbError.message?.toLowerCase().includes('jwt expired')) {
+            console.warn('[AdminService] JWT expirado. Intentando refrescar sesión de Supabase...');
+            try {
+                const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+                if (!refreshError && refreshData.session) {
+                    const retry = await supabase
+                        .from('profiles')
+                        .select('id, full_name, email, role, phone, avatar_url, created_at, updated_at')
+                        .order('created_at', { ascending: false });
+                    dbData = retry.data;
+                    dbError = retry.error;
+                }
+            } catch (refErr) {
+                console.warn('[AdminService] No fue posible renovar el JWT automáticamente:', refErr);
+            }
+        }
+
         if (dbError) {
-            console.error('[AdminService] Error en fallback de base de datos:', dbError.message);
+            console.warn('[AdminService] Error en fallback de base de datos:', dbError.message);
             return {
                 users: [],
-                error: 'No se pudieron consultar los usuarios. Verifica que el Administrador tenga la sesión activa.',
+                error: dbError.message?.toLowerCase().includes('jwt expired')
+                    ? 'Tu sesión ha expirado por inactividad. Por favor, vuelve a iniciar sesión.'
+                    : 'No se pudieron consultar los usuarios. Verifica que el Administrador tenga la sesión activa.',
                 source: 'database_direct',
             };
         }
