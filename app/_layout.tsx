@@ -29,10 +29,14 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
             currentGroup === 'clients' ||
             currentGroup === 'patterns' ||
             currentGroup === 'pattern-bank' ||
+            currentGroup === 'library' ||
+            currentGroup === 'materials' ||
             pathname === '/creations' ||
             pathname === '/clients' ||
             pathname === '/patterns' ||
-            pathname === '/pattern-bank';
+            pathname === '/pattern-bank' ||
+            pathname === '/library' ||
+            pathname === '/materials';
         const inClientGroup = currentGroup === '(client)';
         const inAdminGroup = currentGroup === '(admin)';
 
@@ -95,6 +99,10 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
             currentGroup === 'exclusividad' ||
             currentGroup === 'servicios' ||
             currentGroup === 'contacto' ||
+            currentGroup === 'preview-modulo3' ||
+            currentGroup === 'preview-modulo4' ||
+            pathname === '/preview-modulo3' ||
+            pathname === '/preview-modulo4' ||
             pathname === '/terminos-condiciones' ||
             pathname === '/politica-privacidad' ||
             pathname === '/aviso-privacidad' ||

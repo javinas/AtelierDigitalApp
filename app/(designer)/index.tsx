@@ -23,7 +23,7 @@ const CARD_CREATIONS = require('../../assets/cards/card_creations.jpg');
 const CARD_PATTERNS = require('../../assets/cards/card_patterns.jpg');
 const CARD_CAD_BANK = require('../../assets/cards/card_cad_bank.jpg');
 const CARD_SECURITY = require('../../assets/cards/card_security.jpg');
-const CARD_FABRICS = require('../../assets/cards/card_fabrics.jpg');
+const CARD_DESIGN = require('../../assets/editorial/legal_atelier_workspace.jpg');
 const CARD_FITTING = require('../../assets/cards/card_fitting.jpg');
 
 export default function DesignerHomeScreen() {
@@ -60,7 +60,7 @@ export default function DesignerHomeScreen() {
         } as any,
     ];
 
-    // Grid de Información Secundaria (3 columnas en desktop, 2 en tablet, 1 en mobile)
+    // Grid de Información Secundaria / Infraestructura (3 columnas en desktop, 2 en tablet, 1 en mobile)
     const secondaryGridStyle = [
         styles.secondaryGrid,
         Platform.OS === 'web' && {
@@ -265,15 +265,29 @@ export default function DesignerHomeScreen() {
                                 </Text>
                             </View>
 
-                            <TouchableOpacity
-                                onPress={() => router.push('/(designer)/creations')}
-                                style={styles.experienceButton}
-                                activeOpacity={0.88}
-                                accessibilityLabel="Explorar Creaciones"
-                            >
-                                <Text style={styles.experienceButtonText}>EXPLORAR</Text>
-                                <Text style={styles.experienceButtonArrow}>→</Text>
-                            </TouchableOpacity>
+                            <View style={styles.experienceCardFooterGroup}>
+                                <TouchableOpacity
+                                    onPress={() => router.push('/(designer)/creations')}
+                                    style={[styles.experienceButton, { marginTop: 0 }]}
+                                    activeOpacity={0.88}
+                                    accessibilityLabel="Explorar Creaciones"
+                                >
+                                    <Text style={styles.experienceButtonText}>EXPLORAR</Text>
+                                    <Text style={styles.experienceButtonArrow}>→</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => router.push('/(designer)/materials')}
+                                    style={styles.experienceSecondaryButton}
+                                    activeOpacity={0.85}
+                                    accessibilityLabel="Abrir Materiales y Proveedores"
+                                >
+                                    <Text style={styles.experienceSecondaryButtonText}>
+                                        ✦ Materiales & Proveedores
+                                    </Text>
+                                    <Text style={styles.experienceSecondaryButtonArrow}>→</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
 
@@ -446,6 +460,15 @@ export default function DesignerHomeScreen() {
                                     >
                                         <Text style={styles.workbenchSecondaryButtonText}>Ver Expediente</Text>
                                     </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/(designer)/materials')}
+                                        style={styles.workbenchSecondaryButton}
+                                        activeOpacity={0.85}
+                                        accessibilityLabel="Abrir Materiales y Proveedores desde mesa de trabajo"
+                                    >
+                                        <Text style={styles.workbenchSecondaryButtonText}>Materiales y Proveedores</Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -515,32 +538,37 @@ export default function DesignerHomeScreen() {
                             </View>
                         </View>
 
-                        {/* MÓDULO 03: DISEÑOS, CREACIONES & TELAS */}
-                        <View style={[styles.subordinatedCard, styles.subordinatedCardDashed, isDesktop ? styles.colThird : isTablet ? styles.colHalf : styles.colFull]}>
+                        {/* MÓDULO 04: DISEÑO, MOODBOARD & BIBLIOTECA */}
+                        <TouchableOpacity
+                            style={[styles.subordinatedCard, isDesktop ? styles.colThird : isTablet ? styles.colHalf : styles.colFull]}
+                            onPress={() => router.push('/(designer)/library')}
+                            activeOpacity={0.85}
+                            accessibilityLabel="Abrir Biblioteca de Diseño y Moodboard"
+                        >
                             <View style={styles.subordinatedImageWrapper}>
                                 <Image
-                                    source={CARD_FABRICS}
+                                    source={CARD_DESIGN}
                                     style={styles.subordinatedImage}
                                     resizeMode="cover"
                                 />
                                 <View style={styles.experienceImageDimmer} />
                                 <View style={styles.experienceTag}>
-                                    <Text style={styles.experienceTagText}>PRÓXIMO · MÓDULO 03</Text>
+                                    <Text style={styles.experienceTagText}>MÓDULO 04 · ACTIVO</Text>
                                 </View>
                             </View>
                             <View style={styles.subordinatedBody}>
                                 <View>
-                                    <Text style={styles.subordinatedCardTitle}>Diseños, Creaciones & Telas</Text>
+                                    <Text style={styles.subordinatedCardTitle}>Diseño, Moodboard & Biblioteca</Text>
                                     <Text style={styles.subordinatedCardText}>
-                                        Muestrario textil de alta costura, catálogo de tejidos nobles, figurines y memorias de diseño de autor.
+                                        Tablero conceptual por creación, armonías cromáticas de firma, siluetas y archivo permanente de autor.
                                     </Text>
                                 </View>
-                                <View style={styles.upcomingBadgeRow}>
-                                    <Text style={styles.upcomingDot}>◌</Text>
-                                    <Text style={styles.upcomingText}>En fase de conceptualización</Text>
+                                <View style={styles.securityCheckBadge}>
+                                    <Text style={styles.securityCheckIcon}>✦</Text>
+                                    <Text style={styles.securityCheckText}>Abrir Biblioteca de Diseño →</Text>
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
                         {/* PRUEBAS & ENTREGAS */}
                         <View style={[styles.subordinatedCard, styles.subordinatedCardDashed, isDesktop ? styles.colThird : isTablet ? styles.colHalf : styles.colFull]}>
@@ -1146,6 +1174,32 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '700',
     },
+    experienceCardFooterGroup: {
+        marginTop: 'auto',
+        gap: 8,
+    },
+    experienceSecondaryButton: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#FFFDF9',
+        borderWidth: 1,
+        borderColor: '#D6C3A5',
+        paddingVertical: 10,
+        paddingHorizontal: 14,
+        borderRadius: 4,
+    },
+    experienceSecondaryButtonText: {
+        color: colors.bronze,
+        fontSize: 11.5,
+        fontWeight: '700',
+        letterSpacing: 0.4,
+    },
+    experienceSecondaryButtonArrow: {
+        color: colors.bronze,
+        fontSize: 13,
+        fontWeight: '700',
+    },
 
     // 4. Mesa de Trabajo: Continuar en el Atelier
     workbenchWrap: {
@@ -1294,7 +1348,8 @@ const styles = StyleSheet.create({
     workbenchActionsRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 14,
+        flexWrap: 'wrap',
+        gap: 12,
     },
     workbenchPrimaryButton: {
         flexDirection: 'row',
