@@ -34,6 +34,7 @@ export interface CreationCommercialProfile {
     estimated_budget_cop: number;
     estimated_budget_usd: number;
     payment_status: 'unpaid' | 'partially_paid' | 'paid_in_full';
+    balance_pending_amount?: number | null;
     delivery_status: 'pending' | 'in_fitting' | 'ready' | 'delivered';
     delivery_date_actual?: string | null;
     design_guidelines?: string | null;
@@ -580,12 +581,15 @@ export interface CommercialMediaAsset {
     proposal_id?: string | null;
     quote_id?: string | null;
     project_id?: string | null;
+    fitting_session_id?: string | null;
     asset_type: CommercialAssetType;
     file_path: string;
     file_name: string;
     mime_type?: string | null;
     file_size_bytes?: number | null;
     description?: string | null;
+    idempotency_key?: string | null;
+    created_by?: string | null;
     created_at: string;
 }
 
@@ -594,12 +598,15 @@ export interface CreateMediaAssetDTO {
     proposal_id?: string | null;
     quote_id?: string | null;
     project_id?: string | null;
+    fitting_session_id?: string | null;
     asset_type: CommercialAssetType;
     file_path: string;
     file_name: string;
     mime_type?: string | null;
     file_size_bytes?: number | null;
     description?: string | null;
+    idempotency_key?: string | null;
+    created_by?: string | null;
 }
 
 // ==============================================================================
@@ -645,7 +652,13 @@ export const COMMERCIAL_ASSET_ALLOWED_MIME_TYPES = [
 ] as const;
 
 export type CommercialAssetAllowedMimeType = (typeof COMMERCIAL_ASSET_ALLOWED_MIME_TYPES)[number];
-export type CommercialStorageScope = 'materials' | 'suppliers' | 'swatches' | 'documents';
+export type CommercialStorageScope =
+    | 'materials'
+    | 'suppliers'
+    | 'swatches'
+    | 'documents'
+    | 'fittings'
+    | 'deliveries';
 
 export interface CommercialStorageUploadInput {
     uri: string;

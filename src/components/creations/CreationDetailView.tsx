@@ -34,6 +34,7 @@ import { ProjectExecutionTab } from '../commercial/ProjectExecutionTab';
 import { FinancialControlTab } from '../commercial/FinancialControlTab';
 import { CreationLogbookTab } from '../commercial/CreationLogbookTab';
 import { CreationMoodboardTab } from '../design/CreationMoodboardTab';
+import { CreationFittingTab } from '../fitting/CreationFittingTab';
 import {
     CreationDetailTab,
     GARMENT_TYPE_LABELS,
@@ -566,52 +567,15 @@ export const CreationDetailView: React.FC<CreationDetailViewProps> = ({
                     </View>
                 )}
 
-                {/* 4. SECCIÓN DE FITTING & PRUEBAS (SECCIÓN 14) */}
+                {/* 4. SECCIÓN DE FITTING & PRUEBAS (MÓDULO 06) */}
                 {(detailActiveTab === 'resumen' || detailActiveTab === 'fitting') && (
-                    <View style={styles.sectionCard}>
-                        <View style={styles.sectionCardHeader}>
-                            <View>
-                                <Text style={styles.sectionCardTitle}>4. FITTING & PRUEBAS DE VESTUARIO</Text>
-                                <Text style={styles.sectionCardSubtitle}>
-                                    Glasilla base, ajustes anatómicos y validación física
-                                </Text>
-                            </View>
-                            <View style={styles.fittingStatusBadge}>
-                                <Text style={styles.fittingStatusBadgeText}>
-                                    {selectedCreation.status === 'approved' || selectedCreation.status === 'production' || selectedCreation.status === 'completed'
-                                        ? '✓ FITTING APROBADO'
-                                        : selectedCreation.status === 'fitting'
-                                            ? 'EN PROCESO DE PRUEBA'
-                                            : 'PENDIENTE DE FITTING'}
-                                </Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.fittingContentBox}>
-                            <View style={styles.fittingDetailRow}>
-                                <Text style={styles.fittingDetailLabel}>GLASILLA DE PRUEBA:</Text>
-                                <Text style={styles.fittingDetailValue}>Chaqueta Sastre Base · Retor de algodón</Text>
-                            </View>
-                            <View style={styles.fittingDetailRow}>
-                                <Text style={styles.fittingDetailLabel}>HISTORIAL DE PRUEBAS:</Text>
-                                <Text style={styles.fittingDetailValue}>
-                                    2 pruebas registradas con clienta Laura Martínez
-                                </Text>
-                            </View>
-                            <View style={styles.fittingDetailRow}>
-                                <Text style={styles.fittingDetailLabel}>AJUSTES TÉCNICOS EFECTUADOS:</Text>
-                                <Text style={styles.fittingDetailValue}>
-                                    Sisa reducida 5 mm · Quiebre de solapa asentado · Caída de manga corregida
-                                </Text>
-                            </View>
-                            <View style={styles.fittingDetailRow}>
-                                <Text style={styles.fittingDetailLabel}>VERSIÓN RESULTANTE:</Text>
-                                <Text style={styles.fittingDetailValueGold}>
-                                    v1.1 (Aprobada por Katherine Carroll · Lista para corte definitivo)
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
+                    <CreationFittingTab
+                        creation={selectedCreation}
+                        compactMode={detailActiveTab === 'resumen'}
+                        onOpenFullFittingTab={() => setDetailActiveTab('fitting')}
+                        onOpenCad={() => setIsCadOpen(true)}
+                        onStatusChange={handleChangeStatus}
+                    />
                 )}
 
                 {/* 5. SECCIÓN MATERIALES (MÓDULO 03: CATÁLOGO Y TELAS) */}
