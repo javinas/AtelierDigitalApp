@@ -39,8 +39,19 @@ import {
     CurrencyRateBase,
     CurrencyRateTarget,
     DesignProposal,
+    FinancialMovement,
+    FinancialMovementType,
+    FinancialPaymentMethod,
+    FinancialStateSummary,
     FinancialSummary,
     FinancialTransaction,
+    AtelierFinancialOverview,
+    AtelierFinancialCreationItem,
+    M07_ERROR_NAMES,
+    M07_SQLSTATE_CODES,
+    M07ServiceErrorDetails,
+    RecordFinancialMovementDTO,
+    VoidFinancialMovementDTO,
     MaterialFilter,
     MaterialItem,
     MaterialStockAdjustment,
@@ -1802,8 +1813,409 @@ export async function updateProject(
 }
 
 // ==============================================================================
-// 6. CONTROL FINANCIERO Y MOVIMIENTOS DE CAJA (financial_movements)
 // ==============================================================================
+// 6. CONTROL FINANCIERO Y MOVIMIENTOS DE CAJA (financial_movements / M07)
+// ==============================================================================
+
+/**
+ * Obtiene la fecha local en formato ISO YYYY-MM-DD sin desviaciones por huso UTC.
+ */
+export function getLocalIsoDate(date: Date = new Date()): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+/**
+ * Normaliza y formatea los errores provenientes de PostgREST, PostgreSQL y RPCs M07.
+ * Maneja específicamente PT409, 23505, 23514 y 42501.
+ */
+export function formatCommercialError(err: unknown): M07ServiceErrorDetails {
+    if (!err || typeof err !== 'object') {
+        return {
+            code: M07_ERROR_NAMES.UNKNOWN_ERROR,
+            message: 'Ocurrió un error inesperado en el servicio financiero.',
+        };
+    }
+
+    const candidate = err as {
+        code?: string;
+        message?: string;
+        status?: number;
+        hint?: string | null;
+        details?: unknown;
+    };
+
+    const rawCode = candidate.code || '';
+    const rawMessage = candidate.message || '';
+    const httpStatus = candidate.status;
+
+    // Conflicto optimista PT409 (HTTP 409 sin reintentos de PostgREST)
+    if (
+        rawCode === M07_SQLSTATE_CODES.CONCURRENCY_CONFLICT ||
+        httpStatus === 409 ||
+        rawMessage.includes('PT409') ||
+        rawMessage.toLowerCase().includes('conflicto de concurrencia')
+    ) {
+        return {
+            code: M07_ERROR_NAMES.CONCURRENCY_CONFLICT,
+            message:
+                rawMessage ||
+                'Conflicto de concurrencia: el registro financiero fue modificado por otra sesión. Por favor recarga el expediente para ver la versión más reciente.',
+            httpStatus: 409,
+            hint: candidate.hint,
+            details: candidate.details,
+        };
+    }
+
+    // Idempotencia / Clave duplicada 23505
+    if (
+        rawCode === M07_SQLSTATE_CODES.IDEMPOTENCY_CONFLICT ||
+        rawMessage.includes('23505') ||
+        rawMessage.toLowerCase().includes('conflicto de idempotencia') ||
+        rawMessage.toLowerCase().includes('conflicto de anulación')
+    ) {
+        return {
+            code: M07_ERROR_NAMES.IDEMPOTENCY_CONFLICT,
+            message:
+                rawMessage ||
+                'Conflicto de idempotencia: los datos enviados difieren de una operación ya registrada con la misma clave.',
+            httpStatus: 409,
+            hint: candidate.hint,
+            details: candidate.details,
+        };
+    }
+
+    // Violación de reglas CHECK 23514
+    if (rawCode === M07_SQLSTATE_CODES.CHECK_VIOLATION || rawMessage.includes('23514')) {
+        return {
+            code: M07_ERROR_NAMES.RULE_VIOLATION,
+            message:
+                rawMessage ||
+                'Regla de integridad financiera no cumplida: verifique montos, divisas y motivos ingresados.',
+            httpStatus: 400,
+            hint: candidate.hint,
+            details: candidate.details,
+        };
+    }
+
+    // Permiso denegado 42501
+    if (
+        rawCode === M07_SQLSTATE_CODES.PERMISSION_DENIED ||
+        rawMessage.includes('42501') ||
+        rawMessage.toLowerCase().includes('acceso denegado')
+    ) {
+        return {
+            code: M07_ERROR_NAMES.ACCESS_DENIED,
+            message:
+                rawMessage ||
+                'Acceso denegado: requiere rol de taller o administración autenticado.',
+            httpStatus: 403,
+            hint: candidate.hint,
+            details: candidate.details,
+        };
+    }
+
+    // Referencia inexistente 23503
+    if (rawCode === M07_SQLSTATE_CODES.FOREIGN_KEY_VIOLATION || rawMessage.includes('23503')) {
+        return {
+            code: M07_ERROR_NAMES.FOREIGN_KEY_VIOLATION,
+            message: rawMessage || 'Registro referenciado no encontrado o inválido.',
+            httpStatus: 404,
+            hint: candidate.hint,
+            details: candidate.details,
+        };
+    }
+
+    return {
+        code: M07_ERROR_NAMES.UNKNOWN_ERROR,
+        message: rawMessage || 'Error en el servicio financiero del atelier.',
+        httpStatus: typeof httpStatus === 'number' ? httpStatus : 500,
+        hint: candidate.hint,
+        details: candidate.details,
+    };
+}
+
+/**
+ * Registra un movimiento financiero transaccional atómico (M07).
+ * Locks 1->5, recálculo atómico de saldos, idempotencia y auditoría.
+ */
+export async function recordFinancialMovementM07(
+    dto: RecordFinancialMovementDTO
+): Promise<{
+    data: { movement: FinancialMovement; summary: FinancialStateSummary } | null;
+    error: string | null;
+    errorDetails?: M07ServiceErrorDetails;
+}> {
+    if (!isValidUuid(dto.creationId)) {
+        return { data: null, error: MOCK_UUID_PERSISTENCE_ERROR };
+    }
+
+    const idemKey = dto.idempotencyKey?.trim() || `fin-mov-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    const effectiveDate = dto.movementDate || getLocalIsoDate();
+
+    let uploadedReceiptPath: string | null = null;
+    let receiptAssetPayload = null;
+
+    // Subida opcional de comprobante si se proporciona URI local
+    if (dto.receiptAssetUri) {
+        const uploadRes = await uploadCommercialAsset({
+            uri: dto.receiptAssetUri,
+            scope: 'documents',
+            entityId: dto.creationId,
+            fileName: `receipt_${idemKey}.jpg`,
+        });
+        if (uploadRes.data) {
+            uploadedReceiptPath = uploadRes.data.storagePath;
+            receiptAssetPayload = {
+                file_path: uploadRes.data.storagePath,
+                file_name: uploadRes.data.fileName,
+                mime_type: uploadRes.data.mimeType,
+                file_size_bytes: uploadRes.data.fileSizeBytes,
+                description: `Comprobante ${dto.movementType} · Ref: ${dto.referenceNumber || 'S/N'}`,
+            };
+        }
+    }
+
+    try {
+        const { data, error } = await supabase.rpc('record_financial_movement_m07', {
+            p_creation_id: dto.creationId,
+            p_movement_type: dto.movementType,
+            p_amount: dto.amount,
+            p_currency: dto.currency,
+            p_payment_method: dto.paymentMethod,
+            p_idempotency_key: idemKey,
+            p_movement_date: effectiveDate,
+            p_reference_number: dto.referenceNumber || null,
+            p_notes: dto.notes || null,
+            p_quote_id: dto.quoteId || null,
+            p_project_id: dto.projectId || null,
+            p_supplier_id: dto.supplierId || null,
+            p_material_id: dto.materialId || null,
+            p_receipt_asset: receiptAssetPayload,
+        });
+
+        if (error) {
+            if (uploadedReceiptPath) {
+                await removeCommercialAsset(uploadedReceiptPath);
+            }
+            const errDetails = formatCommercialError(error);
+            return { data: null, error: errDetails.message, errorDetails: errDetails };
+        }
+
+        return { data: data as { movement: FinancialMovement; summary: FinancialStateSummary }, error: null };
+    } catch (err: unknown) {
+        if (uploadedReceiptPath) {
+            await removeCommercialAsset(uploadedReceiptPath);
+        }
+        const errDetails = formatCommercialError(err);
+        return { data: null, error: errDetails.message, errorDetails: errDetails };
+    }
+}
+
+/**
+ * Anula un movimiento financiero de forma auditada con control optimista PT409 e idempotencia.
+ */
+export async function voidFinancialMovementM07(
+    dto: VoidFinancialMovementDTO
+): Promise<{
+    data: { movement: FinancialMovement; summary: FinancialStateSummary } | null;
+    error: string | null;
+    errorDetails?: M07ServiceErrorDetails;
+}> {
+    if (!isValidUuid(dto.movementId)) {
+        return { data: null, error: MOCK_UUID_PERSISTENCE_ERROR };
+    }
+
+    const voidIdemKey = dto.idempotencyKey?.trim() || `void-fin-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
+    try {
+        const { data, error } = await supabase.rpc('void_financial_movement_m07', {
+            p_movement_id: dto.movementId,
+            p_expected_row_version: dto.expectedRowVersion,
+            p_idempotency_key: voidIdemKey,
+            p_void_reason: dto.voidReason.trim(),
+        });
+
+        if (error) {
+            const errDetails = formatCommercialError(error);
+            return { data: null, error: errDetails.message, errorDetails: errDetails };
+        }
+
+        return { data: data as { movement: FinancialMovement; summary: FinancialStateSummary }, error: null };
+    } catch (err: unknown) {
+        const errDetails = formatCommercialError(err);
+        return { data: null, error: errDetails.message, errorDetails: errDetails };
+    }
+}
+
+/**
+ * Consulta SQL pura del estado financiero de una creación (STABLE, cero mutaciones).
+ */
+export async function fetchCreationFinancialSummaryM07(
+    creationId: string
+): Promise<{ data: FinancialStateSummary | null; error: string | null; errorDetails?: M07ServiceErrorDetails }> {
+    if (!isValidUuid(creationId)) {
+        return { data: null, error: MOCK_UUID_PERSISTENCE_ERROR };
+    }
+
+    try {
+        const { data, error } = await supabase.rpc('get_creation_financial_summary_m07', {
+            p_creation_id: creationId,
+        });
+
+        if (error) {
+            const errDetails = formatCommercialError(error);
+            return { data: null, error: errDetails.message, errorDetails: errDetails };
+        }
+
+        return { data: data as FinancialStateSummary, error: null };
+    } catch (err: unknown) {
+        const errDetails = formatCommercialError(err);
+        return { data: null, error: errDetails.message, errorDetails: errDetails };
+    }
+}
+
+/**
+ * Consulta de analítica agregada para la bandeja transversal de finanzas del atelier (STABLE).
+ */
+export async function fetchAtelierFinancialOverviewM07(): Promise<{
+    data: AtelierFinancialOverview | null;
+    error: string | null;
+    errorDetails?: M07ServiceErrorDetails;
+}> {
+    try {
+        const { data, error } = await supabase.rpc('get_atelier_financial_overview_m07');
+
+        if (error) {
+            const errDetails = formatCommercialError(error);
+            return { data: null, error: errDetails.message, errorDetails: errDetails };
+        }
+
+        return { data: data as AtelierFinancialOverview, error: null };
+    } catch (err: unknown) {
+        const errDetails = formatCommercialError(err);
+        return { data: null, error: errDetails.message, errorDetails: errDetails };
+    }
+}
+
+/**
+ * Consulta las creaciones con sus perfiles comerciales y cotizaciones para la bandeja transversal M07.
+ */
+export async function fetchAtelierFinancialCreationsM07(): Promise<{
+    data: AtelierFinancialCreationItem[];
+    error: string | null;
+}> {
+    try {
+        const { data: creationsData, error: creationsError } = await supabase
+            .from('creations')
+            .select(`
+                id,
+                name,
+                creation_code,
+                status,
+                created_at,
+                client:clients(id, full_name, phone),
+                profile:creation_commercial_profiles(
+                    payment_status,
+                    currency
+                ),
+                quotes:commercial_quotes(
+                    id,
+                    quote_number,
+                    status,
+                    currency,
+                    total_price,
+                    advance_paid_amount,
+                    balance_pending_amount,
+                    created_at
+                )
+            `)
+            .order('created_at', { ascending: false });
+
+        if (creationsError) {
+            return { data: [], error: creationsError.message };
+        }
+
+        const items: AtelierFinancialCreationItem[] = (creationsData || []).map((c: any) => {
+            const rawQuotes = Array.isArray(c.quotes) ? c.quotes : [];
+            const acceptedQuote = rawQuotes.find((q: any) => q.status === 'accepted') || rawQuotes[0] || null;
+            const profile = Array.isArray(c.profile) ? c.profile[0] : c.profile;
+            const client = Array.isArray(c.client) ? c.client[0] : c.client;
+
+            const contractCurrency: CommercialCurrency =
+                acceptedQuote?.currency || profile?.currency || 'COP';
+            const quotedTotal = Number(acceptedQuote?.total_price || 0);
+            const advancePaid = Number(acceptedQuote?.advance_paid_amount || 0);
+            const balancePending = Number(
+                acceptedQuote?.balance_pending_amount !== undefined && acceptedQuote?.balance_pending_amount !== null
+                    ? acceptedQuote.balance_pending_amount
+                    : quotedTotal - advancePaid
+            );
+
+            let paymentStatus: 'unpaid' | 'partially_paid' | 'paid_in_full' = 'unpaid';
+            if (profile?.payment_status) {
+                paymentStatus = profile.payment_status;
+            } else if (advancePaid > 0 && balancePending <= 0) {
+                paymentStatus = 'paid_in_full';
+            } else if (advancePaid > 0) {
+                paymentStatus = 'partially_paid';
+            }
+
+            return {
+                id: c.id,
+                name: c.name || 'Creación sin nombre',
+                creation_code: c.creation_code || null,
+                status: c.status,
+                client_name: client?.full_name || 'Sin clienta asociada',
+                client_phone: client?.phone || null,
+                payment_status: paymentStatus,
+                contract_currency: contractCurrency,
+                quoted_total: quotedTotal,
+                advance_paid: advancePaid,
+                balance_pending: balancePending,
+                quote_number: acceptedQuote?.quote_number || null,
+                quote_status: acceptedQuote?.status || null,
+                created_at: c.created_at,
+            };
+        });
+
+        return { data: items, error: null };
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Error al consultar creaciones financieras.';
+        return { data: [], error: message };
+    }
+}
+
+/**
+ * Consulta el listado completo de movimientos financieros de una creación ordenados cronológicamente.
+ */
+export async function fetchMovementsByCreationM07(
+    creationId: string
+): Promise<{ data: FinancialMovement[]; error: string | null }> {
+    if (!isValidUuid(creationId)) {
+        return { data: [], error: MOCK_UUID_PERSISTENCE_ERROR };
+    }
+
+    try {
+        const { data, error } = await supabase
+            .from('financial_movements')
+            .select('*')
+            .eq('creation_id', creationId)
+            .order('movement_date', { ascending: false })
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            return { data: [], error: error.message };
+        }
+
+        return { data: (data || []) as FinancialMovement[], error: null };
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Error al consultar movimientos financieros.';
+        return { data: [], error: message };
+    }
+}
 
 export async function fetchTransactionsByCreation(
     creationId: string
@@ -1817,23 +2229,11 @@ export async function fetchTransactionsByCreation(
     }
 
     try {
-        let { data, error } = await supabase
+        const { data, error } = await supabase
             .from('financial_movements')
             .select('*')
             .eq('creation_id', creationId)
             .order('movement_date', { ascending: false });
-
-        if (error && error.code === 'PGRST205') {
-            const fallback = await supabase
-                .from('financial_transactions')
-                .select('*')
-                .eq('creation_id', creationId)
-                .order('transaction_date', { ascending: false });
-            if (!fallback.error) {
-                data = fallback.data;
-                error = null;
-            }
-        }
 
         if (error) {
             return { data: [], error: error.message };
@@ -1860,7 +2260,7 @@ export async function createTransaction(
     }
 
     try {
-        let { data, error } = await supabase
+        const { data, error } = await supabase
             .from('financial_movements')
             .insert({
                 creation_id: dto.creation_id,
@@ -1871,7 +2271,7 @@ export async function createTransaction(
                 payment_method: dto.payment_method,
                 reference_number: dto.reference_number?.trim() || null,
                 receipt_url: dto.receipt_url || null,
-                movement_date: dto.transaction_date || new Date().toISOString().split('T')[0],
+                movement_date: dto.transaction_date || getLocalIsoDate(),
                 idempotency_key: dto.idempotency_key || null,
                 notes: dto.notes?.trim() || null,
             })
@@ -1879,31 +2279,7 @@ export async function createTransaction(
             .single();
 
         if (error) {
-            if (error.code === 'PGRST205') {
-                const fallbackRes = await supabase
-                    .from('financial_transactions')
-                    .insert({
-                        creation_id: dto.creation_id,
-                        project_id: dto.project_id || null,
-                        transaction_type: dto.transaction_type,
-                        amount: dto.amount,
-                        payment_method: dto.payment_method,
-                        reference_number: dto.reference_number?.trim() || null,
-                        receipt_url: dto.receipt_url || null,
-                        transaction_date: dto.transaction_date || new Date().toISOString().split('T')[0],
-                        notes: dto.notes?.trim() || null,
-                    })
-                    .select()
-                    .single();
-
-                if (!fallbackRes.error && fallbackRes.data) {
-                    data = fallbackRes.data;
-                } else {
-                    return { data: null, error: error.message };
-                }
-            } else {
-                return { data: null, error: error.message };
-            }
+            return { data: null, error: error.message };
         }
 
         return { data: normalizeTransactionRow(data as Record<string, unknown>), error: null };
@@ -1921,7 +2297,7 @@ export async function voidTransaction(
     }
 
     try {
-        let { data, error } = await supabase
+        const { data, error } = await supabase
             .from('financial_movements')
             .update({
                 is_void: true,
@@ -1933,23 +2309,7 @@ export async function voidTransaction(
             .single();
 
         if (error) {
-            if (error.code === 'PGRST205') {
-                const fallback = await supabase
-                    .from('financial_transactions')
-                    .update({
-                        notes: `[ANULADO: ${dto.void_reason.trim()}]`,
-                    })
-                    .eq('id', dto.transaction_id)
-                    .select()
-                    .single();
-                if (!fallback.error && fallback.data) {
-                    data = fallback.data;
-                } else {
-                    return { data: null, error: error.message };
-                }
-            } else {
-                return { data: null, error: error.message };
-            }
+            return { data: null, error: error.message };
         }
 
         return { data: normalizeTransactionRow(data as Record<string, unknown>), error: null };

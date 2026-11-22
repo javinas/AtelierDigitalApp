@@ -34,6 +34,7 @@ export interface CreationCommercialProfile {
     estimated_budget_cop: number;
     estimated_budget_usd: number;
     payment_status: 'unpaid' | 'partially_paid' | 'paid_in_full';
+    advance_paid_amount?: number | null;
     balance_pending_amount?: number | null;
     delivery_status: 'pending' | 'in_fitting' | 'ready' | 'delivered';
     delivery_date_actual?: string | null;
@@ -847,3 +848,157 @@ export interface UpdateCurrencyRateDTO {
     source_note?: string | null;
     is_active?: boolean;
 }
+
+// ==============================================================================
+// 10. MÓDULO M07: COSTOS Y PAGOS (MVP ALTA COSTURA)
+// ==============================================================================
+
+export const FINANCIAL_MOVEMENT_TYPES = [
+    'advance',           // Anticipo comercial (recaudo)
+    'installment',       // Abono parcial a saldo (recaudo)
+    'final_payment',     // Pago de liquidación / saldo final (recaudo)
+    'material_purchase', // Compra de insumos / telas (gasto de taller)
+    'workshop_expense',  // Gasto operativo / confección externa (gasto de taller)
+    'refund',            // Reembolso a clienta (egreso extraordinario)
+] as const;
+
+export type FinancialMovementType = (typeof FINANCIAL_MOVEMENT_TYPES)[number];
+
+export const FINANCIAL_PAYMENT_METHODS = [
+    'transfer',
+    'wompi',
+    'bold',
+    'cash',
+    'card',
+    'other',
+] as const;
+
+export type FinancialPaymentMethod = (typeof FINANCIAL_PAYMENT_METHODS)[number];
+
+export interface FinancialMovement {
+    id: string;
+    creation_id: string;
+    quote_id?: string | null;
+    project_id?: string | null;
+    movement_type: FinancialMovementType;
+    amount: number;
+    currency: CommercialCurrency;
+    payment_method: FinancialPaymentMethod;
+    reference_number?: string | null;
+    receipt_url?: string | null;
+    movement_date: string;
+    notes?: string | null;
+    idempotency_key?: string | null;
+    is_void: boolean;
+    voided_at?: string | null;
+    voided_by?: string | null;
+    void_reason?: string | null;
+    void_idempotency_key?: string | null;
+    supplier_id?: string | null;     // Opcional M05
+    material_id?: string | null;     // Opcional M05
+    media_asset_id?: string | null;  // Opcional comprobante
+    created_by?: string | null;
+    created_at: string;
+    updated_at: string;
+    row_version: number;
+}
+
+/**
+ * DTO para registro simplificado de pagos o gastos (M07).
+ * Mínima digitación: solo creationId, movementType, amount, currency y paymentMethod son obligatorios.
+ */
+export interface RecordFinancialMovementDTO {
+    creationId: string;
+    movementType: FinancialMovementType;
+    amount: number;
+    currency: CommercialCurrency;
+    paymentMethod: FinancialPaymentMethod;
+    idempotencyKey?: string;
+    movementDate?: string;           // YYYY-MM-DD local (default hoy)
+    referenceNumber?: string | null; // Opcional
+    notes?: string | null;           // Concepto / notas (opcional)
+    quoteId?: string | null;
+    projectId?: string | null;
+    supplierId?: string | null;      // Opcional M05
+    materialId?: string | null;      // Opcional M05
+    receiptAssetUri?: string | null; // Opcional comprobante
+}
+
+export interface VoidFinancialMovementDTO {
+    movementId: string;
+    expectedRowVersion: number;
+    idempotencyKey?: string;
+    voidReason: string;
+}
+
+export interface FinancialStateSummary {
+    contract_currency: CommercialCurrency;
+    quoted_total: number;
+    total_income: number;
+    balance_pending: number;
+    total_expenses_cop: number;
+    total_expenses_usd: number;
+    projected_gross_margin: number;
+    cash_flow_margin: number;
+    payment_status: 'unpaid' | 'partially_paid' | 'paid_in_full';
+    is_financially_cleared: boolean;
+}
+
+export interface AtelierFinancialOverview {
+    total_revenue_month_cop: number;
+    total_revenue_month_usd: number;
+    total_expenses_month_cop: number;
+    total_expenses_month_usd: number;
+    total_pending_receivables_cop: number;
+    total_pending_receivables_usd: number;
+    active_creations_count: number;
+    unpaid_creations_count: number;
+    partially_paid_creations_count: number;
+    paid_in_full_creations_count: number;
+}
+
+/**
+ * Ítem de Creación enriquecido para la bandeja transversal de Finanzas (M07 Bloque 3).
+ */
+export interface AtelierFinancialCreationItem {
+    id: string;
+    name: string;
+    creation_code?: string | null;
+    status: string;
+    client_name: string;
+    client_phone?: string | null;
+    payment_status: 'unpaid' | 'partially_paid' | 'paid_in_full';
+    contract_currency: CommercialCurrency;
+    quoted_total: number;
+    advance_paid: number;
+    balance_pending: number;
+    quote_number?: string | null;
+    quote_status?: string | null;
+    created_at: string;
+}
+
+export const M07_SQLSTATE_CODES = {
+    CONCURRENCY_CONFLICT: 'PT409',
+    IDEMPOTENCY_CONFLICT: '23505',
+    CHECK_VIOLATION: '23514',
+    FOREIGN_KEY_VIOLATION: '23503',
+    PERMISSION_DENIED: '42501',
+} as const;
+
+export const M07_ERROR_NAMES = {
+    CONCURRENCY_CONFLICT: 'M07_CONCURRENCY_CONFLICT',
+    IDEMPOTENCY_CONFLICT: 'M07_IDEMPOTENCY_CONFLICT',
+    RULE_VIOLATION: 'M07_RULE_VIOLATION',
+    FOREIGN_KEY_VIOLATION: 'M07_FOREIGN_KEY_VIOLATION',
+    ACCESS_DENIED: 'M07_ACCESS_DENIED',
+    UNKNOWN_ERROR: 'M07_UNKNOWN_ERROR',
+} as const;
+
+export interface M07ServiceErrorDetails {
+    code: (typeof M07_ERROR_NAMES)[keyof typeof M07_ERROR_NAMES];
+    message: string;
+    httpStatus?: number;
+    hint?: string | null;
+    details?: unknown;
+}
+

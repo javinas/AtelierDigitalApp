@@ -6,7 +6,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
-    Alert,
     ScrollView,
     Text,
     TextInput,
@@ -57,6 +56,13 @@ export const ProjectExecutionTab: React.FC<ProjectExecutionTabProps> = ({ creati
     const [notes, setNotes] = useState<string>('');
     const [priority, setPriority] = useState<'normal' | 'high' | 'urgent'>('normal');
 
+    // Avisos y notificaciones inline (cero alertas emergentes)
+    const [feedbackNotice, setFeedbackNotice] = useState<{
+        tone: 'error' | 'warning' | 'success';
+        title: string;
+        text: string;
+    } | null>(null);
+
     const loadProject = async () => {
         setLoading(true);
         const { data } = await fetchProjectByCreation(creation.id);
@@ -77,6 +83,7 @@ export const ProjectExecutionTab: React.FC<ProjectExecutionTabProps> = ({ creati
     }, [creation.id]);
 
     const handleStartProject = async () => {
+        setFeedbackNotice(null);
         setSaving(true);
         const { data, error } = await createDirectProject(creation.id, {
             priority: 'normal',
@@ -84,18 +91,28 @@ export const ProjectExecutionTab: React.FC<ProjectExecutionTabProps> = ({ creati
         setSaving(false);
 
         if (error) {
-            Alert.alert('Aviso', error);
+            setFeedbackNotice({
+                tone: 'warning',
+                title: 'Aviso de Taller',
+                text: error,
+            });
         } else if (data) {
             setProject(data);
             setAssignedTailor(data.assigned_tailor || '');
             setDeliveryDate(data.estimated_delivery_date || '');
             setNotes(data.notes || '');
             setPriority(data.priority || 'normal');
+            setFeedbackNotice({
+                tone: 'success',
+                title: 'Confección Iniciada',
+                text: 'El proyecto operativo de taller ha sido iniciado exitosamente.',
+            });
         }
     };
 
     const handleUpdateStatus = async (newStatus: ProjectOperationalStatus) => {
         if (!project) return;
+        setFeedbackNotice(null);
         setSaving(true);
         const { data, error } = await updateProject(project.id, {
             operational_status: newStatus,
@@ -104,14 +121,25 @@ export const ProjectExecutionTab: React.FC<ProjectExecutionTabProps> = ({ creati
         setSaving(false);
 
         if (error) {
-            Alert.alert('Error', error);
+            setFeedbackNotice({
+                tone: 'error',
+                title: 'Error al actualizar etapa',
+                text: error,
+            });
         } else if (data) {
             setProject(data);
+            const stageLabel = STAGES.find((s) => s.id === newStatus)?.label || newStatus;
+            setFeedbackNotice({
+                tone: 'success',
+                title: 'Etapa Actualizada',
+                text: `Estado operativo actualizado a: ${stageLabel}.`,
+            });
         }
     };
 
     const handleSaveOperationalDetails = async () => {
         if (!project) return;
+        setFeedbackNotice(null);
         setSaving(true);
         const { data, error } = await updateProject(project.id, {
             assigned_tailor: assignedTailor.trim() || null,
@@ -122,11 +150,100 @@ export const ProjectExecutionTab: React.FC<ProjectExecutionTabProps> = ({ creati
         setSaving(false);
 
         if (error) {
-            Alert.alert('Error', error);
+            setFeedbackNotice({
+                tone: 'error',
+                title: 'Error al guardar',
+                text: error,
+            });
         } else if (data) {
             setProject(data);
-            Alert.alert('Guardado', 'Los datos operativos del taller han sido actualizados.');
+            setFeedbackNotice({
+                tone: 'success',
+                title: 'Datos Guardados',
+                text: 'Los datos operativos del taller han sido actualizados.',
+            });
         }
+    };
+
+    const renderFeedbackNotice = () => {
+        if (!feedbackNotice) return null;
+        return (
+            <View
+                style={{
+                    backgroundColor:
+                        feedbackNotice.tone === 'error'
+                            ? '#FAF2F2'
+                            : feedbackNotice.tone === 'warning'
+                              ? '#FFF8E7'
+                              : '#F1F7F2',
+                    borderWidth: 1,
+                    borderColor:
+                        feedbackNotice.tone === 'error'
+                            ? '#E8C5C5'
+                            : feedbackNotice.tone === 'warning'
+                              ? '#F2D48E'
+                              : '#C2DFCA',
+                    borderRadius: 8,
+                    paddingHorizontal: 12,
+                    paddingVertical: 10,
+                    marginBottom: 14,
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                    gap: 10,
+                }}
+            >
+                <View style={{ flex: 1 }}>
+                    <Text
+                        style={{
+                            fontSize: 12,
+                            fontWeight: '700',
+                            color:
+                                feedbackNotice.tone === 'error'
+                                    ? '#9E3B3B'
+                                    : feedbackNotice.tone === 'warning'
+                                      ? '#8A5C12'
+                                      : '#3D6346',
+                        }}
+                    >
+                        {feedbackNotice.title}
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 12,
+                            marginTop: 2,
+                            color:
+                                feedbackNotice.tone === 'error'
+                                    ? '#9E3B3B'
+                                    : feedbackNotice.tone === 'warning'
+                                      ? '#6E5023'
+                                      : '#3D6346',
+                        }}
+                    >
+                        {feedbackNotice.text}
+                    </Text>
+                </View>
+                <TouchableOpacity
+                    onPress={() => setFeedbackNotice(null)}
+                    accessibilityLabel="Cerrar mensaje de taller"
+                >
+                    <Text
+                        style={{
+                            fontWeight: '700',
+                            fontSize: 13,
+                            color:
+                                feedbackNotice.tone === 'error'
+                                    ? '#9E3B3B'
+                                    : feedbackNotice.tone === 'warning'
+                                      ? '#8A5C12'
+                                      : '#3D6346',
+                        }}
+                    >
+                        ✕
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        );
     };
 
     if (loading) {
@@ -151,6 +268,8 @@ export const ProjectExecutionTab: React.FC<ProjectExecutionTabProps> = ({ creati
                         </Text>
                     </View>
                 </View>
+
+                {renderFeedbackNotice()}
 
                 <View style={styles.emptyStateBox}>
                     <Text style={styles.emptyStateTitle}>Sin proyecto de taller activo</Text>
@@ -211,6 +330,8 @@ export const ProjectExecutionTab: React.FC<ProjectExecutionTabProps> = ({ creati
                     )}
                 </TouchableOpacity>
             </View>
+
+            {renderFeedbackNotice()}
 
             {/* Stepper de Etapas de Confección */}
             <View style={{ marginBottom: 20 }}>
