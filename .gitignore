@@ -55,3 +55,6 @@ test-results/
 supabase/.temp/
 
 
+
+# Backups locales con datos personales (M09 pre-migración)
+backups/
