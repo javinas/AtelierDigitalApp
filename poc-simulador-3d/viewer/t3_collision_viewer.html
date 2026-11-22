@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Atelier Digital PoC T3 — Colisión Corporal A vs B vs C</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #FAF7F2;
+      color: #2A1F18;
+      overflow: hidden;
+    }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .badge {
+      background: rgba(255, 252, 247, 0.93);
+      border: 1px solid #C5A880;
+      border-radius: 8px;
+      padding: 9px 13px;
+      box-shadow: 0 2px 10px rgba(42, 31, 24, 0.08);
+      max-width: 760px;
+    }
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.25px;
+      margin-bottom: 3px;
+    }
+    .subtitle {
+      font-size: 11.5px;
+      color: #5A4E44;
+      line-height: 1.4;
+    }
+    .legend {
+      display: flex;
+      gap: 12px;
+      margin-top: 4px;
+      font-size: 11px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+    .cards {
+      position: fixed;
+      bottom: 12px;
+      left: 16px;
+      right: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .card {
+      background: rgba(255, 252, 247, 0.93);
+      border: 1px solid #D8CBB8;
+      border-radius: 8px;
+      padding: 8px 11px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .card strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 2px;
+      color: #2A1F18;
+    }
+    .pass { color: #1E6B3A; font-weight: 700; }
+    .fail { color: #A62626; font-weight: 700; }
+    #canvas-host { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="badge">
+      <div class="title" id="hud-title">Atelier Digital PoC T3 — Benchmark Colisión Corporal</div>
+      <div class="subtitle" id="hud-subtitle">Cargando geometría y telemetría...</div>
+    </div>
+    <div class="badge">
+      <div class="title">Mapa Térmico de Penetración (vs Torso Canónico 96×108)</div>
+      <div class="legend">
+        <span><span class="dot" style="background:#3A6B54;border:1px solid #1E3E2E"></span>Sin penetración (d ≥ 0 mm)</span>
+        <span><span class="dot" style="background:#E09F3E"></span>Leve (0 &lt; prof ≤ 3 mm)</span>
+        <span><span class="dot" style="background:#C92A2A"></span>Severa (&gt; 3.0 mm)</span>
+        <span><span class="dot" style="background:#7A5C9E"></span>Cian/Violeta: cápsulas/elipsoides (Alt B)</span>
+      </div>
+    </div>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div id="canvas-host"></div>
+
+  <script type="module">
+    import * as THREE from '/node_modules/three/build/three.module.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('mode') || 'compare';
+    const sceneId = params.get('scene') || 'T3_SHOULDER_DROP';
+    const kfIndex = Number(params.get('kf') ?? 4);
+    const singleAlt = params.get('alt') || 'ALT_A_MESH_SPATIAL_HASH';
+    const viewAngle = params.get('view') || 'threequarter';
+
+    const [kfRes, repRes] = await Promise.all([
+      fetch('/results/t3/t3_keyframe_meshes.json'),
+      fetch('/results/t3/t3_summary_report.json'),
+    ]);
+    const bundle = await kfRes.json();
+    const report = await repRes.json();
+    const sceneData = bundle.scenes[sceneId];
+
+    const host = document.getElementById('canvas-host');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#FAF7F2');
+
+    const camera = new THREE.PerspectiveCamera(34, width / height, 0.05, 30);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(1);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    host.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight('#FFF9F2', 0.95));
+    const keyLight = new THREE.DirectionalLight('#FFF3E0', 1.25);
+    keyLight.position.set(2.4, 3.6, 3.2);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight('#DAE4F2', 0.55);
+    fillLight.position.set(-2.5, 1.8, -2.0);
+    scene.add(fillLight);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(8, 8),
+      new THREE.ShadowMaterial({ opacity: 0.14 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -0.46;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const gridHelper = new THREE.GridHelper(4, 40, 0xC5A880, 0xE6DDD0);
+    gridHelper.position.y = -0.459;
+    scene.add(gridHelper);
+
+    // Construir geometría compartida del torso canónico
+    const baseTorsoGeo = new THREE.BufferGeometry();
+    baseTorsoGeo.setIndex(bundle.torsoMesh.indices);
+    baseTorsoGeo.setAttribute('position', new THREE.Float32BufferAttribute(bundle.torsoMesh.positionsM, 3));
+    baseTorsoGeo.setAttribute('normal', new THREE.Float32BufferAttribute(bundle.torsoMesh.vertexNormals, 3));
+
+    const torsoMat = new THREE.MeshStandardMaterial({
+      color: '#D8C7B4',
+      roughness: 0.78,
+      metalness: 0.02,
+    });
+
+    function createCapsuleWireframe(p) {
+      const a = new THREE.Vector3(p.ax, p.ay, p.az);
+      const b = new THREE.Vector3(p.bx, p.by, p.bz);
+      const len = a.distanceTo(b);
+      const geo = new THREE.CapsuleGeometry(p.radiusM, len, 6, 14);
+      const mesh = new THREE.Mesh(
+        geo,
+        new THREE.MeshBasicMaterial({
+          color: '#6A4C93',
+          wireframe: true,
+          transparent: true,
+          opacity: 0.22,
+        })
+      );
+      const mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
+      mesh.position.copy(mid);
+      if (len > 1e-6) {
+        const dir = new THREE.Vector3().subVectors(b, a).normalize();
+        const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+        mesh.quaternion.copy(q);
+      }
+      return mesh;
+    }
+
+    function createEllipsoidWireframe(p) {
+      const geo = new THREE.SphereGeometry(1, 14, 10);
+      const mesh = new THREE.Mesh(
+        geo,
+        new THREE.MeshBasicMaterial({
+          color: '#6A4C93',
+          wireframe: true,
+          transparent: true,
+          opacity: 0.2,
+        })
+      );
+      mesh.position.set(p.cx, p.cy, p.cz);
+      mesh.scale.set(p.rx, p.ry, p.rz);
+      return mesh;
+    }
+
+    function colorForSignedDistanceMm(sdMm) {
+      if (sdMm < -3.0) {
+        return [0.79, 0.16, 0.16]; // Rojo severo > 3 mm
+      }
+      if (sdMm < 0.0) {
+        return [0.88, 0.62, 0.24]; // Ámbar penetración leve 0..3 mm
+      }
+      return [0.23, 0.42, 0.33]; // Verde sastre sin penetración
+    }
+
+    const altDefs = [
+      { id: 'ALT_A_MESH_SPATIAL_HASH', shortTitle: 'Alt A · Malla + Spatial Hash', xOffset: -0.78 },
+      { id: 'ALT_B_CAPSULES_ELLIPSOIDS', shortTitle: 'Alt B · 10 Cápsulas/Elipsoides', xOffset: 0.0 },
+      { id: 'ALT_C_SDF_GRID_3D', shortTitle: 'Alt C · Grid SDF 3D (12 mm)', xOffset: 0.78 },
+    ];
+
+    function buildColumn(altDef, xOffset, targetKfIndex) {
+      const group = new THREE.Group();
+      group.position.set(xOffset, 0, 0);
+
+      const torsoMesh = new THREE.Mesh(baseTorsoGeo, torsoMat);
+      torsoMesh.castShadow = true;
+      torsoMesh.receiveShadow = true;
+      group.add(torsoMesh);
+
+      if (altDef.id === 'ALT_B_CAPSULES_ELLIPSOIDS') {
+        for (const p of bundle.analyticPrimitives) {
+          group.add(p.kind === 'capsule' ? createCapsuleWireframe(p) : createEllipsoidWireframe(p));
+        }
+      }
+
+      const runKf = sceneData.runs[altDef.id];
+      const kf = runKf.keyframes[Math.min(targetKfIndex, runKf.keyframes.length - 1)];
+
+      const clothGeo = new THREE.BufferGeometry();
+      clothGeo.setIndex(sceneData.triangleIndices);
+      clothGeo.setAttribute('position', new THREE.Float32BufferAttribute(kf.positionsM, 3));
+      clothGeo.computeVertexNormals();
+
+      const colors = new Float32Array(kf.groundTruthSignedDistancesMm.length * 3);
+      for (let i = 0; i < kf.groundTruthSignedDistancesMm.length; i++) {
+        const [r, g, b] = colorForSignedDistanceMm(kf.groundTruthSignedDistancesMm[i]);
+        colors[i * 3] = r;
+        colors[i * 3 + 1] = g;
+        colors[i * 3 + 2] = b;
+      }
+      clothGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const clothMat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.72,
+        metalness: 0.03,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -1,
+        polygonOffsetUnits: -1,
+      });
+      const clothMesh = new THREE.Mesh(clothGeo, clothMat);
+      clothMesh.castShadow = true;
+      clothMesh.receiveShadow = true;
+      group.add(clothMesh);
+
+      const wire = new THREE.Mesh(
+        clothGeo,
+        new THREE.MeshBasicMaterial({
+          color: '#FFFFFF',
+          wireframe: true,
+          transparent: true,
+          opacity: 0.22,
+        })
+      );
+      group.add(wire);
+
+      if (sceneData.pinnedIndices && sceneData.pinnedIndices.length > 0) {
+        const pinGeo = new THREE.SphereGeometry(0.013, 14, 14);
+        const pinMat = new THREE.MeshBasicMaterial({ color: '#1E824C' });
+        for (const pi of sceneData.pinnedIndices) {
+          const pin = new THREE.Mesh(pinGeo, pinMat);
+          pin.position.set(
+            kf.positionsM[pi * 3],
+            kf.positionsM[pi * 3 + 1],
+            kf.positionsM[pi * 3 + 2]
+          );
+          group.add(pin);
+        }
+      }
+
+      scene.add(group);
+      return kf;
+    }
+
+    const activeAlts = mode === 'single'
+      ? altDefs.filter((a) => a.id === singleAlt).map((a) => ({ ...a, xOffset: 0 }))
+      : altDefs;
+
+    let sampleKf = null;
+    for (const a of activeAlts) {
+      sampleKf = buildColumn(a, a.xOffset, kfIndex);
+    }
+
+    const cardsEl = document.getElementById('cards');
+    if (mode === 'single') {
+      cardsEl.style.gridTemplateColumns = '1fr';
+      cardsEl.style.maxWidth = '560px';
+    }
+
+    for (const a of activeAlts) {
+      const summary = report.runs.find((r) => r.sceneId === sceneId && r.alternativeId === a.id);
+      const card = document.createElement('div');
+      card.className = 'card';
+      const statusHtml = summary.allGate1ChecksPass
+        ? '<span class="pass">PASS</span>'
+        : '<span class="fail">FAIL</span>';
+
+      card.innerHTML =
+        `<strong>${a.shortTitle} · [${statusHtml}]</strong>` +
+        `Colisión: <b>${summary.timingMs.collisionMean.toFixed(2)} ms</b> (p95: ${summary.timingMs.collisionP95.toFixed(2)} ms) · ` +
+        `Total paso: <b>${summary.timingMs.totalStepMean.toFixed(2)} ms</b> (p95: ${summary.timingMs.totalStepP95.toFixed(2)} ms)<br/>` +
+        `Penetración real eq (GT): max <b>${summary.penetrationGroundTruth.equilibriumMaxDepthMm.toFixed(2)} mm</b> ` +
+        `(frames &gt;3mm: ${summary.penetrationGroundTruth.equilibriumSevereFramesCount}, global max: ${summary.penetrationGroundTruth.maxDepthAllFramesMm.toFixed(2)} mm) · ` +
+        `Proxy reportado: ${summary.penetrationProxySelfReported.equilibriumMaxDepthMm.toFixed(2)} mm<br/>` +
+        `Elongación eq: media <b>${summary.clothPhysics.equilibriumMeanStretchPct.toFixed(2)}%</b> / pico <b>${summary.clothPhysics.equilibriumMaxStretchPct.toFixed(2)}%</b> · ` +
+        `Pico transitorio: ${summary.clothPhysics.transientPeakStretchPct.toFixed(2)}% · NaN: ${summary.nanVertexCountTotal}`;
+      cardsEl.appendChild(card);
+    }
+
+    document.getElementById('hud-title').textContent =
+      `Atelier Digital PoC T3 — ${sceneData.title} (t = ${sampleKf ? sampleKf.simTimeS.toFixed(2) : '5.00'} s)`;
+    document.getElementById('hud-subtitle').textContent =
+      `${sceneData.description} Solver: H1B_VCYCLE_12SUB (32×32 = 1,024 vértices, k_w=1200 N/m, μ=0.35).`;
+
+    if (mode === 'single') {
+      if (viewAngle === 'side') {
+        camera.position.set(1.38, 0.56, 0.25);
+        camera.lookAt(0, 0.44, 0.05);
+      } else if (viewAngle === 'front') {
+        camera.position.set(0.0, 0.54, 1.55);
+        camera.lookAt(0, 0.44, 0.02);
+      } else {
+        camera.position.set(0.95, 0.72, 1.38);
+        camera.lookAt(0, 0.44, 0.02);
+      }
+    } else {
+      camera.position.set(0.0, 0.76, 2.75);
+      camera.lookAt(0, 0.44, 0.02);
+    }
+
+    renderer.render(scene, camera);
+    window.__T3_VIEWER_READY__ = true;
+  </script>
+</body>
+</html>
+

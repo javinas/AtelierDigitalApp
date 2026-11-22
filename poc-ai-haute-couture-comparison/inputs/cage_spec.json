@@ -1,0 +1,124 @@
+{
+  "cageSpec": {
+    "canvasWidthPx": 1024,
+    "canvasHeightPx": 1536,
+    "centerXPx": 512,
+    "scalePxPerMm": 0.75,
+    "tolerancePct": 6,
+    "bgColorHex": "#FAF7F2",
+    "anatomyY": {
+      "crownPx": 100,
+      "neckTopPx": 262,
+      "neckBasePx": 300,
+      "shoulderPx": 332,
+      "upperBustPx": 416,
+      "bustPx": 472,
+      "underBustPx": 526,
+      "waistPx": 604,
+      "highHipPx": 678,
+      "hipPx": 758,
+      "midThighPx": 912,
+      "kneePx": 1045,
+      "ankleHemPx": 1322,
+      "floorPx": 1360
+    },
+    "targetsPx": {
+      "neckBase": {
+        "yPx": 300,
+        "bodyWidthMm": 112,
+        "garmentEaseMm": 0,
+        "bodyHalfPx": 42,
+        "targetHalfPx": 42,
+        "label": "Cuello"
+      },
+      "shoulder": {
+        "yPx": 332,
+        "bodyWidthMm": 380,
+        "garmentEaseMm": 6,
+        "bodyHalfPx": 142.5,
+        "targetHalfPx": 144.8,
+        "label": "Hombros (38.0 cm)"
+      },
+      "bust": {
+        "yPx": 472,
+        "bodyWidthMm": 330,
+        "garmentEaseMm": 10,
+        "bodyHalfPx": 123.8,
+        "targetHalfPx": 127.5,
+        "label": "Busto (96.0 cm)"
+      },
+      "waist": {
+        "yPx": 604,
+        "bodyWidthMm": 234,
+        "garmentEaseMm": 6,
+        "bodyHalfPx": 87.8,
+        "targetHalfPx": 90,
+        "label": "Cintura (68.0 cm)"
+      },
+      "hip": {
+        "yPx": 758,
+        "bodyWidthMm": 356,
+        "garmentEaseMm": 10,
+        "bodyHalfPx": 133.5,
+        "targetHalfPx": 137.3,
+        "label": "Cadera (102.0 cm)"
+      }
+    }
+  },
+  "mannequinSelfAudit": {
+    "imageDimensions": {
+      "width": 1024,
+      "height": 1536
+    },
+    "backgroundDetectedRgb": [
+      244,
+      241,
+      236
+    ],
+    "tolerancePct": 6,
+    "verdict": "FIDELITY_PASS",
+    "maxDeviationPct": 2.75,
+    "renderedRatios": {
+      "waistToBustWidthRatio": 0.71,
+      "waistToHipWidthRatio": 0.657
+    },
+    "zones": [
+      {
+        "zone": "shoulder",
+        "label": "Hombros (38.0 cm)",
+        "yPx": 332,
+        "targetWidthPx": 289.6,
+        "measuredWidthPx": 286,
+        "deviationPct": 1.24,
+        "withinTolerance": true
+      },
+      {
+        "zone": "bust",
+        "label": "Busto (96.0 cm)",
+        "yPx": 472,
+        "targetWidthPx": 255,
+        "measuredWidthPx": 248,
+        "deviationPct": 2.75,
+        "withinTolerance": true
+      },
+      {
+        "zone": "waist",
+        "label": "Cintura (68.0 cm)",
+        "yPx": 604,
+        "targetWidthPx": 180,
+        "measuredWidthPx": 176,
+        "deviationPct": 2.22,
+        "withinTolerance": true
+      },
+      {
+        "zone": "hip",
+        "label": "Cadera (102.0 cm)",
+        "yPx": 758,
+        "targetWidthPx": 274.6,
+        "measuredWidthPx": 268,
+        "deviationPct": 2.4,
+        "withinTolerance": true
+      }
+    ]
+  }
+}

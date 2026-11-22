@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Atelier Digital PoC T4 — Arquetipos Textiles (TIER_3_ESTIMATED)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #FAF7F2;
+      color: #2A1F18;
+      overflow: hidden;
+    }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .badge {
+      background: rgba(255, 252, 247, 0.94);
+      border: 1px solid #C5A880;
+      border-radius: 8px;
+      padding: 9px 13px;
+      box-shadow: 0 2px 10px rgba(42, 31, 24, 0.08);
+      max-width: 780px;
+    }
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      margin-bottom: 3px;
+    }
+    .subtitle {
+      font-size: 11.5px;
+      color: #5A4E44;
+      line-height: 1.4;
+    }
+    .legend {
+      display: flex;
+      gap: 11px;
+      margin-top: 4px;
+      font-size: 11px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+    .cards {
+      position: fixed;
+      bottom: 12px;
+      left: 16px;
+      right: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .card {
+      background: rgba(255, 252, 247, 0.94);
+      border: 1px solid #D8CBB8;
+      border-radius: 8px;
+      padding: 8px 11px;
+      font-size: 10.8px;
+      line-height: 1.42;
+    }
+    .card strong {
+      display: block;
+      font-size: 11.8px;
+      margin-bottom: 2px;
+      color: #2A1F18;
+    }
+    .pass { color: #1E6B3A; font-weight: 700; }
+    .fail { color: #A62626; font-weight: 700; }
+    .warn { color: #9A6700; font-weight: 700; }
+    #canvas-host { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="badge">
+      <div class="title" id="hud-title">Atelier Digital PoC T4 — Arquetipos Textiles Sintéticos (TIER_3_ESTIMATED)</div>
+      <div class="subtitle" id="hud-subtitle">Cargando datos T4...</div>
+    </div>
+    <div class="badge">
+      <div class="title">Referencia de Arquetipos (H1B_VCYCLE_12SUB + Alt C SDF 3D)</div>
+      <div class="legend">
+        <span><span class="dot" style="background:#3B8F78"></span>Fluido Ligero (55 g/m², B=2.5 µN·m)</span>
+        <span><span class="dot" style="background:#C26D3D"></span>Medio (160 g/m², B=20 µN·m)</span>
+        <span><span class="dot" style="background:#374C7C"></span>Estructurado (310 g/m², B=180 µN·m)</span>
+        <span><span class="dot" style="background:#7A4988"></span>Asim. FACE_UP Rígido</span>
+        <span><span class="dot" style="background:#D9822B"></span>Asim. FACE_DOWN Rígido</span>
+      </div>
+    </div>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div id="canvas-host"></div>
+
+  <script type="module">
+    import * as THREE from '/node_modules/three/build/three.module.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('mode') || 'compare3';
+    const sceneId = params.get('scene') || 'T4_SCENE0_HANGING_DRAPE';
+    const kfIndex = Number(params.get('kf') ?? 3);
+
+    const [kfRes, repRes] = await Promise.all([
+      fetch('/results/t4/t4_keyframe_meshes.json'),
+      fetch('/results/t4/t4_summary_report.json'),
+    ]);
+    const bundle = await kfRes.json();
+    const report = await repRes.json();
+    const sceneData = bundle.scenes[sceneId];
+
+    const host = document.getElementById('canvas-host');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#FAF7F2');
+
+    const camera = new THREE.PerspectiveCamera(34, width / height, 0.05, 30);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(1);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    host.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight('#FFF9F2', 0.92));
+    const keyLight = new THREE.DirectionalLight('#FFF3E0', 1.25);
+    keyLight.position.set(2.4, 3.6, 3.2);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight('#DAE4F2', 0.58);
+    fillLight.position.set(-2.4, 1.9, -2.1);
+    scene.add(fillLight);
+
+    const isTorsoScene = sceneId.includes('TORSO');
+    const floorY = isTorsoScene ? -0.46 : 0.25;
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(10, 10),
+      new THREE.ShadowMaterial({ opacity: 0.14 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = floorY;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const gridHelper = new THREE.GridHelper(6, 50, 0xC5A880, 0xE6DDD0);
+    gridHelper.position.y = floorY + 0.001;
+    scene.add(gridHelper);
+
+    const baseTorsoGeo = new THREE.BufferGeometry();
+    baseTorsoGeo.setIndex(bundle.torsoMesh.indices);
+    baseTorsoGeo.setAttribute('position', new THREE.Float32BufferAttribute(bundle.torsoMesh.positionsM, 3));
+    baseTorsoGeo.setAttribute('normal', new THREE.Float32BufferAttribute(bundle.torsoMesh.vertexNormals, 3));
+
+    const torsoMat = new THREE.MeshStandardMaterial({
+      color: '#DCCAB8',
+      roughness: 0.78,
+      metalness: 0.02,
+    });
+
+    const ARCH_META = {
+      T4_ARCH1_FLUID_LIGHT: { shortTitle: 'Arquetipo 1 · Fluido Ligero (55 gsm, B=2.5 µN·m)', color: '#3B8F78', wireOpacity: 0.18 },
+      T4_ARCH2_MEDIUM_BALANCED: { shortTitle: 'Arquetipo 2 · Medio Balanceado (160 gsm, B=20 µN·m)', color: '#C26D3D', wireOpacity: 0.18 },
+      T4_ARCH3_STRUCTURED_STIFF: { shortTitle: 'Arquetipo 3 · Estructurado Rígido (310 gsm, B=180 µN·m)', color: '#374C7C', wireOpacity: 0.18 },
+      T4_ARCH4_ASYM_FACE_UP_STIFF: { shortTitle: 'Arquetipo 4A · Asim. FACE_UP Rígido (B+=180, B-=6 µN·m)', color: '#7A4988', wireOpacity: 0.2 },
+      T4_ARCH4_ASYM_FACE_DOWN_STIFF: { shortTitle: 'Arquetipo 4B · Asim. FACE_DOWN Rígido (B+=6, B-=180 µN·m)', color: '#D9822B', wireOpacity: 0.2 },
+      T4_ARCH4_FORBIDDEN_AVG_CONTROL: { shortTitle: 'Control Negativo · Promedio (B=93 µN·m)', color: '#7D8491', wireOpacity: 0.2 },
+    };
+
+    let layoutItems = [];
+    if (mode === 'compare3') {
+      const gap = isTorsoScene ? 0.76 : 0.66;
+      layoutItems = [
+        { id: 'T4_ARCH1_FLUID_LIGHT', xOffset: -gap, zOffset: 0 },
+        { id: 'T4_ARCH2_MEDIUM_BALANCED', xOffset: 0, zOffset: 0 },
+        { id: 'T4_ARCH3_STRUCTURED_STIFF', xOffset: gap, zOffset: 0 },
+      ];
+    } else if (mode === 'cantilever') {
+      layoutItems = [
+        { id: 'T4_ARCH1_FLUID_LIGHT', xOffset: -0.9, zOffset: 0 },
+        { id: 'T4_ARCH2_MEDIUM_BALANCED', xOffset: -0.54, zOffset: 0 },
+        { id: 'T4_ARCH3_STRUCTURED_STIFF', xOffset: -0.18, zOffset: 0 },
+        { id: 'T4_ARCH4_ASYM_FACE_UP_STIFF', xOffset: 0.18, zOffset: 0 },
+        { id: 'T4_ARCH4_ASYM_FACE_DOWN_STIFF', xOffset: 0.54, zOffset: 0 },
+        { id: 'T4_ARCH4_FORBIDDEN_AVG_CONTROL', xOffset: 0.9, zOffset: 0 },
+      ];
+    } else if (mode === 'asymSide') {
+      layoutItems = [
+        { id: 'T4_ARCH4_ASYM_FACE_UP_STIFF', xOffset: -0.38, zOffset: 0 },
+        { id: 'T4_ARCH4_ASYM_FACE_DOWN_STIFF', xOffset: 0.38, zOffset: 0 },
+      ];
+    }
+
+    let sampleKf = null;
+    for (const item of layoutItems) {
+      const meta = ARCH_META[item.id];
+      const runKf = sceneData.runs[item.id];
+      const kf = runKf.keyframes[Math.min(kfIndex, runKf.keyframes.length - 1)];
+      sampleKf = kf;
+
+      const group = new THREE.Group();
+      group.position.set(item.xOffset, 0, item.zOffset);
+      if (mode === 'asymSide') {
+        group.rotation.y = -Math.PI * 0.36;
+      } else if (sceneId === 'T4_TORSO_FRONT_BODICE_ALT_C') {
+        group.rotation.y = -Math.PI * 0.24;
+      } else if (sceneId === 'T4_GATHERED_PLEAT_DRAPE' || sceneId === 'T4_SCENE0_HANGING_DRAPE') {
+        group.rotation.y = -Math.PI * 0.18;
+      }
+
+      if (isTorsoScene) {
+        const torsoMesh = new THREE.Mesh(baseTorsoGeo, torsoMat);
+        torsoMesh.castShadow = true;
+        torsoMesh.receiveShadow = true;
+        group.add(torsoMesh);
+      }
+
+      const clothGeo = new THREE.BufferGeometry();
+      clothGeo.setIndex(sceneData.triangleIndices);
+      clothGeo.setAttribute('position', new THREE.Float32BufferAttribute(kf.positionsM, 3));
+      clothGeo.computeVertexNormals();
+
+      const clothMat = new THREE.MeshStandardMaterial({
+        color: meta.color,
+        roughness: 0.72,
+        metalness: 0.04,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -1,
+        polygonOffsetUnits: -1,
+      });
+      const clothMesh = new THREE.Mesh(clothGeo, clothMat);
+      clothMesh.castShadow = true;
+      clothMesh.receiveShadow = true;
+      group.add(clothMesh);
+
+      const wireMesh = new THREE.Mesh(
+        clothGeo,
+        new THREE.MeshBasicMaterial({
+          color: '#FFFFFF',
+          wireframe: true,
+          transparent: true,
+          opacity: meta.wireOpacity,
+        })
+      );
+      group.add(wireMesh);
+
+      if (sceneData.pinnedIndices && sceneData.pinnedIndices.length > 0) {
+        const pinGeo = new THREE.SphereGeometry(0.0085, 10, 10);
+        const pinMat = new THREE.MeshBasicMaterial({ color: '#1F2937' });
+        for (const pi of sceneData.pinnedIndices) {
+          const pin = new THREE.Mesh(pinGeo, pinMat);
+          pin.position.set(
+            kf.positionsM[pi * 3],
+            kf.positionsM[pi * 3 + 1],
+            kf.positionsM[pi * 3 + 2]
+          );
+          group.add(pin);
+        }
+      }
+
+      scene.add(group);
+    }
+
+    const cardsEl = document.getElementById('cards');
+    if (mode === 'cantilever') {
+      cardsEl.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    } else if (mode === 'asymSide') {
+      cardsEl.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    }
+
+    for (const item of layoutItems) {
+      const meta = ARCH_META[item.id];
+      const summary = report.runs.find((r) => r.sceneId === sceneId && r.archetypeId === item.id);
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const gateHtml = summary.strictGate1AllChecksPass
+        ? '<span class="pass">GATE1 PASS</span>'
+        : summary.t4FunctionalPass
+          ? '<span class="warn">T4 FUNC OK · GATE1 FAIL</span>'
+          : '<span class="fail">FAIL</span>';
+
+      let extraLine = '';
+      if (sceneId === 'T4_CANTILEVER_OVERHANG' || sceneId === 'T4_CONCAVE_HAMMOCK') {
+        extraLine = `Caída punta: <b>${summary.drape.tipDropM.toFixed(4)} m</b> · Alcance horiz: ${summary.drape.tipReachRatioPct.toFixed(1)}% (${summary.drape.tipAngleBelowHorizontalDeg.toFixed(1)}°)`;
+      } else if (sceneId === 'T4_TORSO_FRONT_BODICE_ALT_C') {
+        extraLine = `Holgura sub-busto: <b>${summary.drape.subBustAirGapMm.toFixed(2)} mm</b> · Onda bajo: ${summary.drape.hemWaveAmplitudeMm.toFixed(1)} mm (${summary.drape.foldExtremaCount} ext.)`;
+      } else if (sceneId === 'T4_TORSO_SHOULDER_CAPE_ALT_C' || sceneId === 'T4_TORSO_SHOULDER_ANCHORED_ALT_C') {
+        extraLine = `Radio campana medio: <b>${summary.drape.perimeterMeanRadiusM.toFixed(4)} m</b> · Lóbulos: ${summary.drape.foldExtremaCount} (amp ${summary.drape.radialLobeAmplitudeMm.toFixed(1)} mm)`;
+      } else {
+        extraLine = `Caída centro-bajo: <b>${summary.drape.centerBottomDropM.toFixed(4)} m</b> · Curvatura media: <b>${summary.drape.meanAbsDihedralDeg.toFixed(2)}°</b> · Onda: ${summary.drape.hemWaveAmplitudeMm.toFixed(1)} mm`;
+      }
+
+      card.innerHTML =
+        `<strong>${meta.shortTitle} · [${gateHtml}]</strong>` +
+        `${extraLine}<br/>` +
+        `Cómputo: <b>${summary.timingMs.totalStepMean.toFixed(2)} ms</b> (p95 ${summary.timingMs.totalStepP95.toFixed(2)} ms · col ${summary.timingMs.collisionMean.toFixed(2)} ms) · ` +
+        `E_kin=${summary.stabilityAndEnergy.finalKineticEnergyJ.toFixed(5)} J · E_bend=${summary.stabilityAndEnergy.finalBendingEnergyJ.toFixed(5)} J<br/>` +
+        `Elongación eq: ${summary.clothStrain.equilibriumMeanStretchPct.toFixed(2)}% (pico trans: <b>${summary.clothStrain.transientPeakStretchPct.toFixed(2)}%</b>) · ` +
+        `GT pen eq max: ${summary.penetrationGroundTruth.equilibriumMaxDepthMm.toFixed(2)} mm · NaN: ${summary.stabilityAndEnergy.nanVertexCountTotal}`;
+      cardsEl.appendChild(card);
+    }
+
+    document.getElementById('hud-title').textContent =
+      `Atelier Digital PoC T4 — ${sceneData.title} (t = ${sampleKf ? sampleKf.simTimeS.toFixed(2) : '5.00'} s)`;
+    document.getElementById('hud-subtitle').textContent =
+      'Perfiles sintéticos TIER_3_ESTIMATED (no medidos en laboratorio). Solver H1B_VCYCLE_12SUB + Proxy Alt C SDF 3D (12 mm).';
+
+    if (mode === 'cantilever') {
+      camera.position.set(1.48, 1.18, 1.48);
+      camera.lookAt(0.06, 0.90, 0.08);
+    } else if (mode === 'asymSide') {
+      camera.position.set(0.0, 0.62, 1.75);
+      camera.lookAt(0.0, 0.44, 0.03);
+    } else if (isTorsoScene) {
+      camera.position.set(0.0, 0.72, 2.75);
+      camera.lookAt(0.0, 0.44, 0.02);
+    } else {
+      camera.position.set(0.0, 0.82, 2.35);
+      camera.lookAt(0.0, 0.68, 0.1);
+    }
+
+    renderer.render(scene, camera);
+    window.__T4_VIEWER_READY__ = true;
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "caseId": "SYNTH_COUTURE_HOURGLASS_01__VESTIDO_GALA_KC_01",
+  "title": "Prueba Comparativa Controlada Alta Costura · Silueta Sirena Estructurada en Mikado",
+  "privacyCompliance": {
+    "usesRealClientData": false,
+    "usesRealClientPhotos": false,
+    "mannequinNature": "synthetic_controlled_parametric_reference"
+  },
+  "syntheticMannequin": {
+    "id": "SYNTH_COUTURE_HOURGLASS_01",
+    "label": "Maniquí Sintético de Alta Costura (Reloj de Arena Calibrado)",
+    "measurementsMm": {
+      "estatura": 1680,
+      "contorno_cuello": 350,
+      "contorno_busto": 960,
+      "contorno_cintura": 680,
+      "contorno_cadera": 1020,
+      "ancho_espalda": 380,
+      "largo_talle_delantero": 435,
+      "largo_talle_espalda": 415,
+      "altura_busto": 265,
+      "separacion_busto": 190
+    },
+    "easeProfile": {
+      "code": "fitted",
+      "label": "Entallado Alta Costura",
+      "easeMm": {
+        "bust": 25,
+        "waist": 15,
+        "hip": 25
+      }
+    },
+    "dimensionlessRatios": {
+      "waistToBust": 0.7083,
+      "waistToHip": 0.6667,
+      "frontWaistToHeight": 0.2589,
+      "shoulderToHip": 0.3725
+    }
+  },
+  "garmentDesign": {
+    "id": "VESTIDO_GALA_KC_01",
+    "name": "Vestido Gala Sirena Corte Princesa & Escote Corazón",
+    "garmentType": "evening_gown",
+    "silhouette": "Sirena estructurada entallada hasta cadera media con godets amplios bajo rodilla",
+    "neckline": "Escote corazón profundo con ribete limpio y tirante sastre de 4.5 cm hacia hombros",
+    "sleeves": "Sin mangas (fase inicial v1)",
+    "structuralLines": [
+      "Cortes verticales princesa delanteros desde sisa y busto hasta ruedo",
+      "Entalle anatómico marcado exactamente en cintura natural",
+      "Cierre limpio sin arrugas transversales sobre cadera"
+    ]
+  },
+  "textileSpecification": {
+    "id": "TEXTIL_MIKADO_KC_01",
+    "primaryFabric": {
+      "name": "Mikado de Seda Natural 280 gsm",
+      "composition": "100% Seda Morera tejida en sarga compacta de alta densidad",
+      "weightGsm": 280,
+      "drapeProfile": "structured",
+      "finish": "silk_sheen",
+      "colorName": "Verde Esmeralda Profundo",
+      "colorHex": "#124E3F"
+    },
+    "secondaryAccent": {
+      "name": "Encaje Chantilly francés con bordado Lunéville artesanal",
+      "finish": "metallic_matte_blend",
+      "colorName": "Oro Champagne",
+      "colorHex": "#C5A880",
+      "placement": "Aplicación delicada siguiendo únicamente el borde superior del escote corazón"
+    }
+  },
+  "parityConditions": {
+    "imageSize": "1024x1536",
+    "aspectRatio": "2:3",
+    "quality": "high",
+    "backgroundColorHex": "#FAF7F2",
+    "referenceInputs": [
+      "inputs/reference_mannequin_1024x1536.png",
+      "inputs/reference_fabric_swatch_512x512.png"
+    ]
+  },
+  "prompts": {
+    "researchPrompt": "Actúa como ingeniera textil y patronista de alta costura. Analiza exclusivamente desde un punto de vista técnico de taller esta especificación exacta (medidas sintéticas de prueba: estatura 168 cm, busto 96 cm, cintura 68 cm, cadera 102 cm, espalda 38 cm, talle delantero 43.5 cm, holgura entallada; vestido sirena con corte princesa, escote corazón y godets bajo rodilla).\n\nInvestiga usando búsqueda web verificada y cita fuentes reales (títulos y URLs):\n1. Comportamiento mecánico y de caída del Mikado de seda natural de 280 gsm frente a cortes princesa y godets estructurados.\n2. Tipo de entretela recomendada (organza de seda, crinolina o entretela termofusible ligera vs sastre), varillas flexibles o ballenas en corpiño escote corazón y técnica de costura para aplicar bordado Lunéville en encaje Chantilly (#C5A880) sin fruncir la sarga de Mikado (#124E3F).\n3. Puntos críticos de calce para una silueta 96-68-102 (WHR 0.67) antes del corte.\n\nFormato exigido: informe técnico estructurado en español diferenciando claramente hechos verificados en fuentes web citadas de recomendaciones generales de taller.",
+    "initialGenerationPrompt": "Create a photorealistic haute couture atelier photograph dressing the EXACT tailor mannequin body proportions provided in the first reference image (1024x1536 reference sheet: 168 cm stature, 38 cm shoulder width, 96 cm bust, 68 cm waist, 102 cm hip hourglass silhouette) with a bespoke structured evening gown.\n\nSTRICT PROPORTION LOCK:\n- Match the exact silhouette contours, shoulder width, bust line, narrow 68 cm waist pinch position, and 102 cm hip curve shown in the mannequin reference image. Do not elongate limbs, slim the waist artificially, or alter camera framing/scale.\n- Keep the neutral warm ivory atelier studio background (#FAF7F2) with soft diffused natural editorial daylight and floor shadow.\n\nGARMENT & TEXTILE SPECIFICATION:\n- Design: Bespoke mermaid haute couture evening gown with architectural princess seams running over bust to waist, clean tailored 4.5 cm straps, deep sweetheart neckline, fitted torso through hip, and dramatic sculpted floor-length godet flare starting below the knee.\n- Primary fabric: Authentic 280 gsm natural mulberry silk Mikado in Deep Emerald Green (#124E3F, subtle lustrous silk_sheen, firm crisp sculptural folds matching the first block in the fabric swatch reference).\n- Trim & embroidery: Fine French Chantilly lace motif with delicate Champagne Gold (#C5A880) Lunéville micro-beading placed exclusively along the upper contour of the sweetheart neckline.\n- Presentation: Displayed cleanly on the headless linen Stockman-style tailor mannequin form over its wooden/brass stand; show zero human skin, zero face, zero text labels or measurement callouts.",
+    "conversationalEditPrompt": "Edit the previous haute couture gown photograph (Image 1) while preserving the EXACT same mannequin body pose, 96-68-102 hourglass proportions, framing, background (#FAF7F2), princess seam fit through waist/hip, and mermaid godet skirt geometry from both Image 1 and the mannequin proportion sheet (Image 2).\n\nAPPLY ONLY THESE 3 CONVERSATIONAL MODIFICATIONS:\n1. Color shift: Change the primary 280 gsm silk Mikado fabric from Deep Emerald Green to Imperial Petrol Blue (#1B3B4B), keeping the exact crisp structured silk_sheen folds and lighting.\n2. Neckline redesign: Replace the deep sweetheart neckline and straps with an architectural asymmetric portrait boat neckline (escote barco asimétrico) gracefully framing the collarbones, keeping the Champagne Gold (#C5A880) Lunéville beaded Chantilly lace trim along the new asymmetric neckline edge.\n3. Add sleeves: Add fitted 3/4-length sheer illusion tulle sleeves matching the Petrol Blue tone with sparse Champagne Gold (#C5A880) Chantilly lace embroidery cascading from shoulder cap toward the forearm."
+  }
+}

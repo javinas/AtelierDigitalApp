@@ -1,0 +1,27 @@
+{
+  "status": "ERROR",
+  "httpStatus": 429,
+  "errorMessage": "OpenAI Research HTTP 429: You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.",
+  "attemptedModels": [
+    {
+      "model": "gpt-4.1",
+      "httpStatus": 429,
+      "elapsedMs": 1611,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+    }
+  ],
+  "provider": "openai",
+  "model": "gpt-4.1",
+  "endpoint": "POST /v1/responses (web_search_preview)",
+  "elapsedMs": 1611,
+  "citations": [],
+  "groundingNote": null,
+  "reportMarkdown": "",
+  "usage": {
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "costUsd": null,
+  "pricingSource": "NO_EJECUTADO_POR_ERROR"
+}

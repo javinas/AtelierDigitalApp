@@ -1,0 +1,509 @@
+{
+  "generatedAtIso": "2026-11-15T19:16:06.586Z",
+  "referenceSolverId": "H1B_VCYCLE_12SUB",
+  "referenceMeasurementsMm": {
+    "estatura": 1680,
+    "talle": 430,
+    "busto": 920,
+    "cintura": 700,
+    "cadera": 980,
+    "espalda": 380
+  },
+  "collisionParams": {
+    "contactThicknessM": 0.002,
+    "frictionCoeff": 0.35
+  },
+  "thresholdsPreserved": {
+    "collisionMeanMsLimit": 6,
+    "totalStepMeanMsLimit": 16,
+    "totalStepP95MsLimit": 25,
+    "severePenetrationDepthMm": 3,
+    "sustainedSevereCountLimit": 0,
+    "meanStretchPctLimit": 2,
+    "peakStretchPctLimit": 5,
+    "nanVertexCountLimit": 0
+  },
+  "proxyAccuracyComparison": [
+    {
+      "alternativeId": "ALT_A_MESH_SPATIAL_HASH",
+      "initMs": 219.9804,
+      "memoryFootprintBytes": 1686984,
+      "meanAbsErrorMm": 0.1844,
+      "maxAbsErrorMm": 3.1817,
+      "rmseMm": 0.3881
+    },
+    {
+      "alternativeId": "ALT_B_CAPSULES_ELLIPSOIDS",
+      "initMs": 0.0097,
+      "memoryFootprintBytes": 640,
+      "meanAbsErrorMm": 12.7937,
+      "maxAbsErrorMm": 70.2408,
+      "rmseMm": 17.6044
+    },
+    {
+      "alternativeId": "ALT_C_SDF_GRID_3D",
+      "initMs": 1930.5839,
+      "memoryFootprintBytes": 790856,
+      "meanAbsErrorMm": 0.2969,
+      "maxAbsErrorMm": 3.6333,
+      "rmseMm": 0.5146
+    }
+  ],
+  "runs": [
+    {
+      "runId": "T3_SHOULDER_DROP_ALT_A_MESH_SPATIAL_HASH",
+      "sceneId": "T3_SHOULDER_DROP",
+      "alternativeId": "ALT_A_MESH_SPATIAL_HASH",
+      "label": "Malla Torso Refinada + Spatial Hash 3D (con fallback BVH)",
+      "initStats": {
+        "alternativeId": "ALT_A_MESH_SPATIAL_HASH",
+        "label": "Malla Torso Refinada + Spatial Hash 3D (con fallback BVH)",
+        "initMs": 219.9804,
+        "memoryFootprintBytes": 1686984,
+        "primitiveOrCellSummary": "9216 triángulos, Spatial Hash 20x59x18 (24 mm), 94163 refs"
+      },
+      "proxyVsGroundTruthStaticMm": {
+        "meanAbsErrorMm": 0.1844,
+        "maxAbsErrorMm": 3.1817,
+        "rmseMm": 0.3881
+      },
+      "gridSize": 32,
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "totalFrames": 300,
+      "simDurationS": 5,
+      "nanVertexCountTotal": 0,
+      "timingMs": {
+        "collisionMean": 14.1755,
+        "collisionP95": 24.925,
+        "collisionMax": 69.2456,
+        "physicsStepMean": 13.7788,
+        "physicsStepP95": 21.6698,
+        "totalStepMean": 27.9543,
+        "totalStepP95": 44.7868,
+        "collisionShareOfTotalPct": 50.7097
+      },
+      "clothPhysics": {
+        "transientMeanStretchPctMax": 0.8175,
+        "transientPeakStretchPct": 11.8851,
+        "transientPeakFrame": 20,
+        "equilibriumMeanStretchPct": 0.2976,
+        "equilibriumMaxStretchPct": 10.1855,
+        "equilibriumRmsVelocityMS": 0.5289,
+        "minSignedDistanceInitialM": 0.0307
+      },
+      "penetrationGroundTruth": {
+        "maxDepthAllFramesMm": 2.0662,
+        "maxDepthAllFramesFrame": 208,
+        "severeVertexFramesTotal": 0,
+        "rawContactViolationFrames": 275,
+        "equilibriumMaxDepthMm": 2.0055,
+        "equilibriumMeanSevereCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "equilibriumRawViolationVerticesMean": 7.0778
+      },
+      "penetrationProxySelfReported": {
+        "maxDepthAllFramesMm": 0.2879,
+        "equilibriumMaxDepthMm": 0.2879,
+        "equilibriumSevereFramesCount": 0
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": false,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false
+      },
+      "allGate1ChecksPass": false
+    },
+    {
+      "runId": "T3_SHOULDER_DROP_ALT_B_CAPSULES_ELLIPSOIDS",
+      "sceneId": "T3_SHOULDER_DROP",
+      "alternativeId": "ALT_B_CAPSULES_ELLIPSOIDS",
+      "label": "Jerarquía Analítica de 10 Primitivas (2 Cápsulas + 8 Elipsoides)",
+      "initStats": {
+        "alternativeId": "ALT_B_CAPSULES_ELLIPSOIDS",
+        "label": "Jerarquía Analítica de 10 Primitivas (2 Cápsulas + 8 Elipsoides)",
+        "initMs": 0.0097,
+        "memoryFootprintBytes": 640,
+        "primitiveOrCellSummary": "10 primitivas analíticas exactas (O(N_verts * 10))"
+      },
+      "proxyVsGroundTruthStaticMm": {
+        "meanAbsErrorMm": 12.7937,
+        "maxAbsErrorMm": 70.2408,
+        "rmseMm": 17.6044
+      },
+      "gridSize": 32,
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "totalFrames": 300,
+      "simDurationS": 5,
+      "nanVertexCountTotal": 0,
+      "timingMs": {
+        "collisionMean": 7.3938,
+        "collisionP95": 11.2305,
+        "collisionMax": 33.8019,
+        "physicsStepMean": 14.7079,
+        "physicsStepP95": 22.7027,
+        "totalStepMean": 22.1017,
+        "totalStepP95": 33.9881,
+        "collisionShareOfTotalPct": 33.4537
+      },
+      "clothPhysics": {
+        "transientMeanStretchPctMax": 0.9411,
+        "transientPeakStretchPct": 11.5023,
+        "transientPeakFrame": 24,
+        "equilibriumMeanStretchPct": 0.3784,
+        "equilibriumMaxStretchPct": 9.3516,
+        "equilibriumRmsVelocityMS": 0.0016,
+        "minSignedDistanceInitialM": 0.0307
+      },
+      "penetrationGroundTruth": {
+        "maxDepthAllFramesMm": 34.8687,
+        "maxDepthAllFramesFrame": 18,
+        "severeVertexFramesTotal": 87844,
+        "rawContactViolationFrames": 295,
+        "equilibriumMaxDepthMm": 31.9539,
+        "equilibriumMeanSevereCount": 311.9111,
+        "equilibriumSevereFramesCount": 90,
+        "equilibriumRawViolationVerticesMean": 398.3111
+      },
+      "penetrationProxySelfReported": {
+        "maxDepthAllFramesMm": 0.3921,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": false,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": false,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false
+      },
+      "allGate1ChecksPass": false
+    },
+    {
+      "runId": "T3_SHOULDER_DROP_ALT_C_SDF_GRID_3D",
+      "sceneId": "T3_SHOULDER_DROP",
+      "alternativeId": "ALT_C_SDF_GRID_3D",
+      "label": "Grid SDF 3D Uniforme (voxel = 12 mm, trilineal)",
+      "initStats": {
+        "alternativeId": "ALT_C_SDF_GRID_3D",
+        "label": "Grid SDF 3D Uniforme (voxel = 12 mm, trilineal)",
+        "initMs": 1930.5839,
+        "memoryFootprintBytes": 790856,
+        "primitiveOrCellSummary": "43x121x38 = 197,714 voxeles (12 mm)"
+      },
+      "proxyVsGroundTruthStaticMm": {
+        "meanAbsErrorMm": 0.2969,
+        "maxAbsErrorMm": 3.6333,
+        "rmseMm": 0.5146
+      },
+      "gridSize": 32,
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "totalFrames": 300,
+      "simDurationS": 5,
+      "nanVertexCountTotal": 0,
+      "timingMs": {
+        "collisionMean": 1.4019,
+        "collisionP95": 2.2752,
+        "collisionMax": 4.0786,
+        "physicsStepMean": 13.9468,
+        "physicsStepP95": 20.3784,
+        "totalStepMean": 15.3487,
+        "totalStepP95": 22.5242,
+        "collisionShareOfTotalPct": 9.1336
+      },
+      "clothPhysics": {
+        "transientMeanStretchPctMax": 0.8313,
+        "transientPeakStretchPct": 13.7819,
+        "transientPeakFrame": 23,
+        "equilibriumMeanStretchPct": 0.3524,
+        "equilibriumMaxStretchPct": 10.4978,
+        "equilibriumRmsVelocityMS": 0.0317,
+        "minSignedDistanceInitialM": 0.0307
+      },
+      "penetrationGroundTruth": {
+        "maxDepthAllFramesMm": 2.3174,
+        "maxDepthAllFramesFrame": 298,
+        "severeVertexFramesTotal": 0,
+        "rawContactViolationFrames": 295,
+        "equilibriumMaxDepthMm": 2.3174,
+        "equilibriumMeanSevereCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "equilibriumRawViolationVerticesMean": 12
+      },
+      "penetrationProxySelfReported": {
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false
+      },
+      "allGate1ChecksPass": false
+    },
+    {
+      "runId": "T3_FRONT_BODICE_PANEL_ALT_A_MESH_SPATIAL_HASH",
+      "sceneId": "T3_FRONT_BODICE_PANEL",
+      "alternativeId": "ALT_A_MESH_SPATIAL_HASH",
+      "label": "Malla Torso Refinada + Spatial Hash 3D (con fallback BVH)",
+      "initStats": {
+        "alternativeId": "ALT_A_MESH_SPATIAL_HASH",
+        "label": "Malla Torso Refinada + Spatial Hash 3D (con fallback BVH)",
+        "initMs": 219.9804,
+        "memoryFootprintBytes": 1686984,
+        "primitiveOrCellSummary": "9216 triángulos, Spatial Hash 20x59x18 (24 mm), 94163 refs"
+      },
+      "proxyVsGroundTruthStaticMm": {
+        "meanAbsErrorMm": 0.1844,
+        "maxAbsErrorMm": 3.1817,
+        "rmseMm": 0.3881
+      },
+      "gridSize": 32,
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "totalFrames": 300,
+      "simDurationS": 5,
+      "nanVertexCountTotal": 0,
+      "timingMs": {
+        "collisionMean": 5.0158,
+        "collisionP95": 9.5187,
+        "collisionMax": 20.7918,
+        "physicsStepMean": 15.2629,
+        "physicsStepP95": 22.3049,
+        "totalStepMean": 20.2787,
+        "totalStepP95": 31.2748,
+        "collisionShareOfTotalPct": 24.7342
+      },
+      "clothPhysics": {
+        "transientMeanStretchPctMax": 0.2383,
+        "transientPeakStretchPct": 5.4229,
+        "transientPeakFrame": 22,
+        "equilibriumMeanStretchPct": 0.1526,
+        "equilibriumMaxStretchPct": 4.1352,
+        "equilibriumRmsVelocityMS": 0.0126,
+        "minSignedDistanceInitialM": 0.0053
+      },
+      "penetrationGroundTruth": {
+        "maxDepthAllFramesMm": 0,
+        "maxDepthAllFramesFrame": 0,
+        "severeVertexFramesTotal": 0,
+        "rawContactViolationFrames": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumMeanSevereCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "equilibriumRawViolationVerticesMean": 0
+      },
+      "penetrationProxySelfReported": {
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false
+      },
+      "allGate1ChecksPass": false
+    },
+    {
+      "runId": "T3_FRONT_BODICE_PANEL_ALT_B_CAPSULES_ELLIPSOIDS",
+      "sceneId": "T3_FRONT_BODICE_PANEL",
+      "alternativeId": "ALT_B_CAPSULES_ELLIPSOIDS",
+      "label": "Jerarquía Analítica de 10 Primitivas (2 Cápsulas + 8 Elipsoides)",
+      "initStats": {
+        "alternativeId": "ALT_B_CAPSULES_ELLIPSOIDS",
+        "label": "Jerarquía Analítica de 10 Primitivas (2 Cápsulas + 8 Elipsoides)",
+        "initMs": 0.0097,
+        "memoryFootprintBytes": 640,
+        "primitiveOrCellSummary": "10 primitivas analíticas exactas (O(N_verts * 10))"
+      },
+      "proxyVsGroundTruthStaticMm": {
+        "meanAbsErrorMm": 12.7937,
+        "maxAbsErrorMm": 70.2408,
+        "rmseMm": 17.6044
+      },
+      "gridSize": 32,
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "totalFrames": 300,
+      "simDurationS": 5,
+      "nanVertexCountTotal": 0,
+      "timingMs": {
+        "collisionMean": 6.8864,
+        "collisionP95": 9.9227,
+        "collisionMax": 83.7563,
+        "physicsStepMean": 14.3513,
+        "physicsStepP95": 23.4518,
+        "totalStepMean": 21.2377,
+        "totalStepP95": 33.8701,
+        "collisionShareOfTotalPct": 32.4252
+      },
+      "clothPhysics": {
+        "transientMeanStretchPctMax": 0.2372,
+        "transientPeakStretchPct": 6.0266,
+        "transientPeakFrame": 161,
+        "equilibriumMeanStretchPct": 0.1421,
+        "equilibriumMaxStretchPct": 4.0746,
+        "equilibriumRmsVelocityMS": 0.0438,
+        "minSignedDistanceInitialM": 0.0053
+      },
+      "penetrationGroundTruth": {
+        "maxDepthAllFramesMm": 15.6672,
+        "maxDepthAllFramesFrame": 6,
+        "severeVertexFramesTotal": 7040,
+        "rawContactViolationFrames": 297,
+        "equilibriumMaxDepthMm": 9.5164,
+        "equilibriumMeanSevereCount": 23.1111,
+        "equilibriumSevereFramesCount": 90,
+        "equilibriumRawViolationVerticesMean": 33.2889
+      },
+      "penetrationProxySelfReported": {
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": false,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": false,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false
+      },
+      "allGate1ChecksPass": false
+    },
+    {
+      "runId": "T3_FRONT_BODICE_PANEL_ALT_C_SDF_GRID_3D",
+      "sceneId": "T3_FRONT_BODICE_PANEL",
+      "alternativeId": "ALT_C_SDF_GRID_3D",
+      "label": "Grid SDF 3D Uniforme (voxel = 12 mm, trilineal)",
+      "initStats": {
+        "alternativeId": "ALT_C_SDF_GRID_3D",
+        "label": "Grid SDF 3D Uniforme (voxel = 12 mm, trilineal)",
+        "initMs": 1930.5839,
+        "memoryFootprintBytes": 790856,
+        "primitiveOrCellSummary": "43x121x38 = 197,714 voxeles (12 mm)"
+      },
+      "proxyVsGroundTruthStaticMm": {
+        "meanAbsErrorMm": 0.2969,
+        "maxAbsErrorMm": 3.6333,
+        "rmseMm": 0.5146
+      },
+      "gridSize": 32,
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "totalFrames": 300,
+      "simDurationS": 5,
+      "nanVertexCountTotal": 0,
+      "timingMs": {
+        "collisionMean": 0.9205,
+        "collisionP95": 1.3386,
+        "collisionMax": 14.5552,
+        "physicsStepMean": 13.6297,
+        "physicsStepP95": 19.1347,
+        "totalStepMean": 14.5502,
+        "totalStepP95": 21.0092,
+        "collisionShareOfTotalPct": 6.3262
+      },
+      "clothPhysics": {
+        "transientMeanStretchPctMax": 0.2396,
+        "transientPeakStretchPct": 5.4509,
+        "transientPeakFrame": 22,
+        "equilibriumMeanStretchPct": 0.152,
+        "equilibriumMaxStretchPct": 4.0559,
+        "equilibriumRmsVelocityMS": 0.0126,
+        "minSignedDistanceInitialM": 0.0053
+      },
+      "penetrationGroundTruth": {
+        "maxDepthAllFramesMm": 0,
+        "maxDepthAllFramesFrame": 0,
+        "severeVertexFramesTotal": 0,
+        "rawContactViolationFrames": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumMeanSevereCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "equilibriumRawViolationVerticesMean": 0
+      },
+      "penetrationProxySelfReported": {
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false
+      },
+      "allGate1ChecksPass": false
+    }
+  ],
+  "alternativeRollup": [
+    {
+      "alternativeId": "ALT_A_MESH_SPATIAL_HASH",
+      "label": "Malla Torso Refinada + Spatial Hash 3D (con fallback BVH)",
+      "scenesPassedCount": 0,
+      "scenesTotalCount": 2,
+      "overallPass": false,
+      "worstCollisionMeanMs": 14.1755,
+      "worstTotalStepMeanMs": 27.9543,
+      "worstTotalStepP95Ms": 44.7868,
+      "worstGtEquilibriumPenetrationMm": 2.0055,
+      "worstGtGlobalPenetrationMm": 2.0662,
+      "worstPeakStretchPct": 11.8851
+    },
+    {
+      "alternativeId": "ALT_B_CAPSULES_ELLIPSOIDS",
+      "label": "Jerarquía Analítica de 10 Primitivas (2 Cápsulas + 8 Elipsoides)",
+      "scenesPassedCount": 0,
+      "scenesTotalCount": 2,
+      "overallPass": false,
+      "worstCollisionMeanMs": 7.3938,
+      "worstTotalStepMeanMs": 22.1017,
+      "worstTotalStepP95Ms": 33.9881,
+      "worstGtEquilibriumPenetrationMm": 31.9539,
+      "worstGtGlobalPenetrationMm": 34.8687,
+      "worstPeakStretchPct": 11.5023
+    },
+    {
+      "alternativeId": "ALT_C_SDF_GRID_3D",
+      "label": "Grid SDF 3D Uniforme (voxel = 12 mm, trilineal)",
+      "scenesPassedCount": 0,
+      "scenesTotalCount": 2,
+      "overallPass": false,
+      "worstCollisionMeanMs": 1.4019,
+      "worstTotalStepMeanMs": 15.3487,
+      "worstTotalStepP95Ms": 22.5242,
+      "worstGtEquilibriumPenetrationMm": 2.3174,
+      "worstGtGlobalPenetrationMm": 2.3174,
+      "worstPeakStretchPct": 13.7819
+    }
+  ]
+}

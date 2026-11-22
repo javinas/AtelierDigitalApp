@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Atelier Digital PoC T5.1 — Diagnóstico y Corrección F1 + F2</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #FAF7F2;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1F2937;
+    }
+    #canvas-host { width: 100%; height: 100%; display: block; }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .badge {
+      background: rgba(255, 255, 255, 0.93);
+      border: 1px solid #D8CFC2;
+      border-radius: 8px;
+      padding: 8px 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .title { font-weight: 700; font-size: 13px; color: #111827; margin-bottom: 2px; }
+    .subtitle { color: #4B5563; font-size: 11px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; font-size: 11px; }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+    .cards {
+      position: fixed;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #D8CFC2;
+      border-radius: 8px;
+      padding: 8px 11px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .card strong { display: block; font-size: 12px; margin-bottom: 3px; }
+    .pass { color: #15803D; font-weight: 700; }
+    .warn { color: #B45309; font-weight: 700; }
+    .fail { color: #B91C1C; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="badge">
+      <div class="title" id="hud-title">Atelier Digital PoC T5.1 — Correcciones F1 + F2</div>
+      <div class="subtitle" id="hud-subtitle">Cargando datos T5.1...</div>
+    </div>
+    <div class="badge">
+      <div class="title">Leyenda T5.1 (TIER_3_ESTIMATED)</div>
+      <div class="legend">
+        <span><span class="dot" style="background:#3B8F78"></span>Fluido Ligero (55 gsm)</span>
+        <span><span class="dot" style="background:#C26D3D"></span>Medio (160 gsm)</span>
+        <span><span class="dot" style="background:#374C7C"></span>Estructurado (310 gsm)</span>
+        <span><span class="dot" style="background:#F59E0B"></span>Costuras XPBD</span>
+        <span><span class="dot" style="background:#111827"></span>Sujeciones Hombro</span>
+      </div>
+    </div>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div id="canvas-host"></div>
+
+  <script type="module">
+    import * as THREE from '/node_modules/three/build/three.module.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('mode') || 'views4';
+    const configId = params.get('config') || 'T51_F1_F2_RESEAL';
+    const archId = params.get('arch') || 'ARCH2_MEDIUM_BALANCED';
+    const kfIndex = Number(params.get('kf') ?? 3);
+
+    const [kfRes, repRes] = await Promise.all([
+      fetch('/results/t5_1/t51_keyframe_meshes.json'),
+      fetch('/results/t5_1/t51_summary_report.json'),
+    ]);
+    const bundle = await kfRes.json();
+    const report = await repRes.json();
+
+    const host = document.getElementById('canvas-host');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#FAF7F2');
+
+    const camera = new THREE.PerspectiveCamera(32, width / height, 0.05, 30);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(1);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    host.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight('#FFF9F2', 0.94));
+    const keyLight = new THREE.DirectionalLight('#FFF3E0', 1.25);
+    keyLight.position.set(2.2, 3.6, 3.2);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight('#DCE6F5', 0.62);
+    fillLight.position.set(-2.4, 2.0, -2.4);
+    scene.add(fillLight);
+
+    const floorY = -0.46;
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(12, 12),
+      new THREE.ShadowMaterial({ opacity: 0.14 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = floorY;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const gridHelper = new THREE.GridHelper(6, 50, 0xC5A880, 0xE6DDD0);
+    gridHelper.position.y = floorY + 0.001;
+    scene.add(gridHelper);
+
+    const baseTorsoGeo = new THREE.BufferGeometry();
+    baseTorsoGeo.setIndex(bundle.torsoMesh.indices);
+    baseTorsoGeo.setAttribute('position', new THREE.Float32BufferAttribute(bundle.torsoMesh.positionsM, 3));
+    baseTorsoGeo.setAttribute('normal', new THREE.Float32BufferAttribute(bundle.torsoMesh.vertexNormals, 3));
+
+    const torsoMat = new THREE.MeshStandardMaterial({
+      color: '#DCCAB8',
+      roughness: 0.78,
+      metalness: 0.02,
+    });
+
+    const ARCH_META = {
+      ARCH1_FLUID_LIGHT: { shortTitle: 'Fluido Ligero (55 gsm, B=2.5 µN·m)', color: '#3B8F78', backColor: '#2E7461' },
+      ARCH2_MEDIUM_BALANCED: { shortTitle: 'Medio Balanceado (160 gsm, B=20 µN·m)', color: '#C26D3D', backColor: '#A3582F' },
+      ARCH3_STRUCTURED_STIFF: { shortTitle: 'Estructurado Rígido (310 gsm, B=180 µN·m)', color: '#374C7C', backColor: '#293B63' },
+      ARCH4_ASYM_FACE_UP_STIFF: { shortTitle: 'Asimétrico FACE_UP (B+=180, B-=6 µN·m)', color: '#7A4988', backColor: '#5F366B' },
+      ARCH4_ASYM_FACE_DOWN_STIFF: { shortTitle: 'Asimétrico FACE_DOWN (B+=6, B-=180 µN·m)', color: '#D9822B', backColor: '#B5691D' },
+    };
+
+    function addGarmentInstance(runKey, xOffset, rotYRad) {
+      const runKf = bundle.runs[runKey];
+      const kf = runKf.keyframes[Math.min(kfIndex, runKf.keyframes.length - 1)];
+      const meta = ARCH_META[runKf.archetypeId];
+      const topo = bundle.garmentTopologies[runKf.contourMode];
+      const frontIndices = topo.triangleIndices.slice(0, topo.panelTriangleSplitIndex);
+      const backIndices = topo.triangleIndices.slice(topo.panelTriangleSplitIndex);
+
+      const group = new THREE.Group();
+      group.position.set(xOffset, 0, 0);
+      group.rotation.y = rotYRad;
+
+      const torsoMesh = new THREE.Mesh(baseTorsoGeo, torsoMat);
+      torsoMesh.castShadow = true;
+      torsoMesh.receiveShadow = true;
+      group.add(torsoMesh);
+
+      const posAttr = new THREE.Float32BufferAttribute(kf.positionsM, 3);
+
+      const frontGeo = new THREE.BufferGeometry();
+      frontGeo.setIndex(frontIndices);
+      frontGeo.setAttribute('position', posAttr);
+      frontGeo.computeVertexNormals();
+
+      const backGeo = new THREE.BufferGeometry();
+      backGeo.setIndex(backIndices);
+      backGeo.setAttribute('position', posAttr);
+      backGeo.computeVertexNormals();
+
+      const frontMat = new THREE.MeshStandardMaterial({
+        color: meta.color,
+        roughness: 0.72,
+        metalness: 0.04,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -1,
+        polygonOffsetUnits: -1,
+      });
+      const backMat = new THREE.MeshStandardMaterial({
+        color: meta.backColor,
+        roughness: 0.75,
+        metalness: 0.04,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -1,
+        polygonOffsetUnits: -1,
+      });
+
+      const frontMesh = new THREE.Mesh(frontGeo, frontMat);
+      frontMesh.castShadow = true;
+      frontMesh.receiveShadow = true;
+      group.add(frontMesh);
+
+      const backMesh = new THREE.Mesh(backGeo, backMat);
+      backMesh.castShadow = true;
+      backMesh.receiveShadow = true;
+      group.add(backMesh);
+
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: '#FFFFFF',
+        wireframe: true,
+        transparent: true,
+        opacity: 0.16,
+      });
+      group.add(new THREE.Mesh(frontGeo, wireMat));
+      group.add(new THREE.Mesh(backGeo, wireMat));
+
+      const seamLinePos = [];
+      for (const s of topo.seamPairs) {
+        const fb = s.frontVertexIndex * 3;
+        const bb = s.backVertexIndex * 3;
+        seamLinePos.push(
+          kf.positionsM[fb], kf.positionsM[fb + 1], kf.positionsM[fb + 2],
+          kf.positionsM[bb], kf.positionsM[bb + 1], kf.positionsM[bb + 2]
+        );
+      }
+      const seamGeo = new THREE.BufferGeometry();
+      seamGeo.setAttribute('position', new THREE.Float32BufferAttribute(seamLinePos, 3));
+      group.add(new THREE.LineSegments(seamGeo, new THREE.LineBasicMaterial({ color: '#F59E0B' })));
+
+      const pinGeo = new THREE.SphereGeometry(0.007, 10, 10);
+      const pinMat = new THREE.MeshBasicMaterial({ color: '#111827' });
+      for (const pi of topo.pinnedIndices) {
+        const pin = new THREE.Mesh(pinGeo, pinMat);
+        pin.position.set(kf.positionsM[pi * 3], kf.positionsM[pi * 3 + 1], kf.positionsM[pi * 3 + 2]);
+        group.add(pin);
+      }
+
+      scene.add(group);
+      return { runKf, kf, meta, topo };
+    }
+
+    const cardsEl = document.getElementById('cards');
+    let sampleTime = 5.0;
+
+    if (mode === 'compareConfigs') {
+      const cfgs = ['T51_CONTROL', 'T51_F1_EX_SEAMS', 'T51_F2_CONFORMAL', configId];
+      const labels = ['Control Stepped (T5)', 'F1 Aislada (Stepped)', 'F2 Aislada (Conformal)', `Ganadora (${configId})`];
+      const xPositions = [-0.96, -0.32, 0.32, 0.96];
+      cardsEl.style.gridTemplateColumns = 'repeat(4, 1fr)';
+      cfgs.forEach((cid, idx) => {
+        const runKey = `${cid}__${archId}`;
+        const info = addGarmentInstance(runKey, xPositions[idx], -Math.PI * 0.14);
+        sampleTime = info.kf.simTimeS;
+        const s = report.runs.find((r) => r.runId === runKey);
+        const tag = s.t51AllCorrectivePass ? '<span class="pass">T5.1 PASS</span>' : '<span class="warn">REVISAR</span>';
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML =
+          `<strong>${labels[idx]} · [${tag}]</strong>` +
+          `Panel Eq/Pk: ${s.panelStrain.equilibriumMaxStretchPct.toFixed(2)}% / ${s.panelStrain.transientPeakStretchPct.toFixed(2)}% · CombPk: <b>${s.combinedStrain.transientPeakStretchPct.toFixed(2)}%</b><br/>` +
+          `Costura Eq/Pk: <b>${s.seamMetrics.equilibriumMaxGapMm.toFixed(2)} / ${s.seamMetrics.transientPeakGapMm.toFixed(2)} mm</b> · rmsV: ${s.stability.finalRmsVelocityMS.toFixed(4)} m/s<br/>` +
+          `CPU: ${s.timingMs.totalStepMean.toFixed(2)} ms (P95 ${s.timingMs.totalStepP95.toFixed(2)} ms) · GT eq max: ${s.penetrationGt.equilibriumMaxPenetrationDepthMm.toFixed(2)} mm`;
+        cardsEl.appendChild(card);
+      });
+      camera.position.set(0.0, 0.72, 2.95);
+      camera.lookAt(0.0, 0.42, 0.0);
+    } else if (mode === 'views4') {
+      const runKey = `${configId}__${archId}`;
+      const views = [
+        { label: 'Vista 1 · Frontal Conformal', xOffset: -0.96, rotY: 0 },
+        { label: 'Vista 2 · Tres Cuartos (35°)', xOffset: -0.32, rotY: -Math.PI * 0.20 },
+        { label: 'Vista 3 · Lateral Sisa Conformal', xOffset: 0.32, rotY: -Math.PI * 0.50 },
+        { label: 'Vista 4 · Posterior Escote Barco', xOffset: 0.96, rotY: Math.PI },
+      ];
+      cardsEl.style.gridTemplateColumns = 'repeat(4, 1fr)';
+      const summary = report.runs.find((r) => r.runId === runKey);
+      for (const v of views) {
+        const info = addGarmentInstance(runKey, v.xOffset, v.rotY);
+        sampleTime = info.kf.simTimeS;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML =
+          `<strong>${v.label}</strong>` +
+          `Panel Eq: ${summary.panelStrain.equilibriumMeanStretchPct.toFixed(2)}% (pico ${summary.panelStrain.transientPeakStretchPct.toFixed(2)}%)<br/>` +
+          `Costuras Eq/Pk: ${summary.seamMetrics.equilibriumMaxGapMm.toFixed(2)} / ${summary.seamMetrics.transientPeakGapMm.toFixed(2)} mm<br/>` +
+          `GT Pen (>3mm eq): ${summary.penetrationGt.equilibriumSevereFramesCount} fr (max ${summary.penetrationGt.equilibriumMaxPenetrationDepthMm.toFixed(2)} mm)`;
+        cardsEl.appendChild(card);
+      }
+      camera.position.set(0.0, 0.72, 2.95);
+      camera.lookAt(0.0, 0.42, 0.0);
+    } else if (mode === 'compare3') {
+      const archs = ['ARCH1_FLUID_LIGHT', 'ARCH2_MEDIUM_BALANCED', 'ARCH3_STRUCTURED_STIFF'];
+      cardsEl.style.gridTemplateColumns = 'repeat(3, 1fr)';
+      const gap = 0.70;
+      archs.forEach((aId, idx) => {
+        const runKey = `${configId}__${aId}`;
+        const info = addGarmentInstance(runKey, (idx - 1) * gap, -Math.PI * 0.18);
+        sampleTime = info.kf.simTimeS;
+        const s = report.runs.find((r) => r.runId === runKey);
+        const tag = s.t51AllCorrectivePass ? '<span class="pass">T5.1 PASS</span>' : '<span class="warn">REVISAR</span>';
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML =
+          `<strong>${info.meta.shortTitle} · [${tag}]</strong>` +
+          `Sub-busto gap: <b>${s.drape.subBustMeanAirGapMm.toFixed(2)} mm</b> · Caída bajo: ${(s.drape.hemDropMeanM * 1000).toFixed(1)} mm<br/>` +
+          `Panel eq/pico: ${s.panelStrain.equilibriumMeanStretchPct.toFixed(2)}% / ${s.panelStrain.transientPeakStretchPct.toFixed(2)}% · Costura: ${s.seamMetrics.transientPeakGapMm.toFixed(2)} mm<br/>` +
+          `Cómputo: <b>${s.timingMs.totalStepMean.toFixed(2)} ms</b> (P95 ${s.timingMs.totalStepP95.toFixed(2)} ms) · GT eq max: ${s.penetrationGt.equilibriumMaxPenetrationDepthMm.toFixed(2)} mm`;
+        cardsEl.appendChild(card);
+      });
+      camera.position.set(0.0, 0.70, 2.55);
+      camera.lookAt(0.0, 0.42, 0.0);
+    } else if (mode === 'asym2') {
+      const archs = ['ARCH4_ASYM_FACE_UP_STIFF', 'ARCH4_ASYM_FACE_DOWN_STIFF'];
+      cardsEl.style.gridTemplateColumns = 'repeat(2, 1fr)';
+      archs.forEach((aId, idx) => {
+        const runKey = `${configId}__${aId}`;
+        const info = addGarmentInstance(runKey, idx === 0 ? -0.36 : 0.36, -Math.PI * 0.22);
+        sampleTime = info.kf.simTimeS;
+        const s = report.runs.find((r) => r.runId === runKey);
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML =
+          `<strong>${info.meta.shortTitle}</strong>` +
+          `Sub-busto gap: <b>${s.drape.subBustMeanAirGapMm.toFixed(2)} mm</b> · E_bend: <b>${s.stability.finalBendingEnergyJ.toFixed(5)} J</b> · Diédrico: ${s.stability.finalMeanAbsDihedralDeg.toFixed(2)}°<br/>` +
+          `Panel eq/pico: ${s.panelStrain.equilibriumMeanStretchPct.toFixed(2)}% / ${s.panelStrain.transientPeakStretchPct.toFixed(2)}% · Costura pk: ${s.seamMetrics.transientPeakGapMm.toFixed(2)} mm`;
+        cardsEl.appendChild(card);
+      });
+      camera.position.set(0.0, 0.66, 1.85);
+      camera.lookAt(0.0, 0.44, 0.0);
+    } else if (mode === 'neckArmCloseup') {
+      const leftKey = `T51_CONTROL__${archId}`;
+      const rightKey = `${configId}__${archId}`;
+      const infoL = addGarmentInstance(leftKey, -0.30, -Math.PI * 0.14);
+      const infoR = addGarmentInstance(rightKey, 0.30, -Math.PI * 0.14);
+      sampleTime = infoR.kf.simTimeS;
+      cardsEl.style.gridTemplateColumns = 'repeat(2, 1fr)';
+      const sL = report.runs.find((r) => r.runId === leftKey);
+      const sR = report.runs.find((r) => r.runId === rightKey);
+      const c1 = document.createElement('div');
+      c1.className = 'card';
+      c1.innerHTML = `<strong>Control T5 Stepped · ${infoL.meta.shortTitle}</strong>Costura eq/pk: ${sL.seamMetrics.equilibriumMaxGapMm.toFixed(2)} / ${sL.seamMetrics.transientPeakGapMm.toFixed(2)} mm · GT max eq: ${sL.penetrationGt.equilibriumMaxPenetrationDepthMm.toFixed(2)} mm`;
+      const c2 = document.createElement('div');
+      c2.className = 'card';
+      c2.innerHTML = `<strong>T5.1 ${configId} Conformal · ${infoR.meta.shortTitle}</strong>Costura eq/pk: <b>${sR.seamMetrics.equilibriumMaxGapMm.toFixed(2)} / ${sR.seamMetrics.transientPeakGapMm.toFixed(2)} mm</b> · GT max eq: ${sR.penetrationGt.equilibriumMaxPenetrationDepthMm.toFixed(2)} mm`;
+      cardsEl.appendChild(c1);
+      cardsEl.appendChild(c2);
+      camera.position.set(0.0, 0.80, 1.38);
+      camera.lookAt(0.0, 0.62, 0.0);
+    }
+
+    const activeGeom = bundle.runs[`${configId}__${archId}`].contourMode;
+    const stats = report.geometries[activeGeom].garmentStats;
+    document.getElementById('hud-title').textContent =
+      `Atelier Digital PoC T5.1 — ${configId} (t = ${sampleTime.toFixed(2)} s)`;
+    document.getElementById('hud-subtitle').textContent =
+      `Contorno ${activeGeom.toUpperCase()}: ${stats.frontVertexCount}+${stats.backVertexCount} vértices, ${stats.seamEdgeCount} costuras XPBD, ${stats.pinnedSupportCount} sujeciones · TIER_3_ESTIMATED`;
+
+    renderer.render(scene, camera);
+    window.__T51_VIEWER_READY__ = true;
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,4373 @@
+{
+  "generatedAtIso": "2026-11-15T21:13:35.325Z",
+  "referenceSolver": "H1B_VCYCLE_12SUB",
+  "collisionProxy": "ALT_C_SDF_GRID_3D",
+  "collisionParams": {
+    "contactThicknessM": 0.002,
+    "frictionCoeff": 0.35
+  },
+  "solverOrder": [
+    "H1B_ORIGINAL",
+    "EXP1_BEND_FIRST_CLEANUP",
+    "EXP2_RAYLEIGH_BEND_FIRST",
+    "EXP3_SUB16_STRAIN_GUARD_DUAL_COL"
+  ],
+  "runs": [
+    {
+      "runId": "H1B_ORIGINAL__MICRO_CANTILEVER_32__ARCH3_STRUCTURED_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "MICRO_CANTILEVER_32",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 9.905,
+        "physicsStepP95": 14.2912,
+        "collisionMean": 0.0026,
+        "collisionP95": 0.0075,
+        "totalStepMean": 9.9076,
+        "totalStepP95": 14.2956,
+        "bendingMean": 4.288,
+        "stretchMean": 2.8787,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 570.4353,
+        "transientPeakStretchPct": 2831.9765,
+        "transientPeakFrame": 163,
+        "framesOver5PctCount": 178,
+        "equilibriumMeanStretchPct": 445.1799,
+        "equilibriumMaxStretchPct": 2831.9765
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 20.3185,
+        "finalKineticEnergyJ": 0.5222,
+        "finalStretchEnergyJ": 1195.3049,
+        "finalBendingEnergyJ": 2.4996
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": -0.0053,
+        "tipDropM": 0.018,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 74.3673
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": false,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__SCENE0_HANGING_32__ARCH2_MEDIUM_BALANCED",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "SCENE0_HANGING_32",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 9.9481,
+        "physicsStepP95": 15.2637,
+        "collisionMean": 0.002,
+        "collisionP95": 0.0039,
+        "totalStepMean": 9.9501,
+        "totalStepP95": 15.2665,
+        "bendingMean": 3.9793,
+        "stretchMean": 3.1133,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1356,
+        "transientPeakStretchPct": 3.5472,
+        "transientPeakFrame": 30,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0406,
+        "equilibriumMaxStretchPct": 1.4895
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.186,
+        "finalKineticEnergyJ": 0.0003,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.499,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 0.3825
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__GATHERED_PLEAT_DRAPE__ARCH2_MEDIUM_BALANCED",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 9.3953,
+        "physicsStepP95": 13.0344,
+        "collisionMean": 0.0017,
+        "collisionP95": 0.0029,
+        "totalStepMean": 9.397,
+        "totalStepP95": 13.0361,
+        "bendingMean": 3.8352,
+        "stretchMean": 2.9917,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.369,
+        "transientPeakStretchPct": 6.0294,
+        "transientPeakFrame": 50,
+        "framesOver5PctCount": 9,
+        "equilibriumMeanStretchPct": 0.1018,
+        "equilibriumMaxStretchPct": 1.9991
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.2496,
+        "finalKineticEnergyJ": 0.0006,
+        "finalStretchEnergyJ": 0.0008,
+        "finalBendingEnergyJ": 0.0005
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.509,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.7457
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__GATHERED_PLEAT_DRAPE__ARCH3_STRUCTURED_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 9.0208,
+        "physicsStepP95": 13.4151,
+        "collisionMean": 0.0015,
+        "collisionP95": 0.0025,
+        "totalStepMean": 9.0222,
+        "totalStepP95": 13.4182,
+        "bendingMean": 3.7132,
+        "stretchMean": 2.8828,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.4727,
+        "transientPeakStretchPct": 8.2761,
+        "transientPeakFrame": 2,
+        "framesOver5PctCount": 5,
+        "equilibriumMeanStretchPct": 0.0933,
+        "equilibriumMaxStretchPct": 1.6075
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.2327,
+        "finalKineticEnergyJ": 0.001,
+        "finalStretchEnergyJ": 0.0007,
+        "finalBendingEnergyJ": 0.0008
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.5132,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.1633
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__BODICE_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 9.9814,
+        "physicsStepP95": 14.2948,
+        "collisionMean": 0.6271,
+        "collisionP95": 0.9942,
+        "totalStepMean": 10.6084,
+        "totalStepP95": 15.2599,
+        "bendingMean": 4.0247,
+        "stretchMean": 3.1259,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.244,
+        "transientPeakStretchPct": 5.7791,
+        "transientPeakFrame": 22,
+        "framesOver5PctCount": 3,
+        "equilibriumMeanStretchPct": 0.1441,
+        "equilibriumMaxStretchPct": 4.7084
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0463,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0022,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0276,
+        "tipDropM": null,
+        "subBustAirGapMm": 10.253,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.8215
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__BODICE_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 9.4138,
+        "physicsStepP95": 12.4809,
+        "collisionMean": 0.5421,
+        "collisionP95": 0.8425,
+        "totalStepMean": 9.9559,
+        "totalStepP95": 13.3099,
+        "bendingMean": 3.8388,
+        "stretchMean": 2.9596,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2396,
+        "transientPeakStretchPct": 5.4509,
+        "transientPeakFrame": 22,
+        "framesOver5PctCount": 2,
+        "equilibriumMeanStretchPct": 0.152,
+        "equilibriumMaxStretchPct": 4.0559
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0126,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0042,
+        "finalBendingEnergyJ": 0.0004
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.027,
+        "tipDropM": null,
+        "subBustAirGapMm": 11.3175,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.992
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__BODICE_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 9.7269,
+        "physicsStepP95": 17.4532,
+        "collisionMean": 0.5445,
+        "collisionP95": 0.9327,
+        "totalStepMean": 10.2714,
+        "totalStepP95": 18.3805,
+        "bendingMean": 3.9483,
+        "stretchMean": 3.0635,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2783,
+        "transientPeakStretchPct": 5.8186,
+        "transientPeakFrame": 21,
+        "framesOver5PctCount": 4,
+        "equilibriumMeanStretchPct": 0.1705,
+        "equilibriumMaxStretchPct": 3.6668
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0358,
+        "finalKineticEnergyJ": 0.0001,
+        "finalStretchEnergyJ": 0.011,
+        "finalBendingEnergyJ": 0.0022
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0262,
+        "tipDropM": null,
+        "subBustAirGapMm": 12.3358,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.5945
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__BODICE_ALT_C__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 9.463,
+        "physicsStepP95": 12.8172,
+        "collisionMean": 0.5296,
+        "collisionP95": 0.7796,
+        "totalStepMean": 9.9925,
+        "totalStepP95": 13.6013,
+        "bendingMean": 3.8463,
+        "stretchMean": 2.9947,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2951,
+        "transientPeakStretchPct": 6.6621,
+        "transientPeakFrame": 20,
+        "framesOver5PctCount": 21,
+        "equilibriumMeanStretchPct": 0.1807,
+        "equilibriumMaxStretchPct": 5.5329
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0718,
+        "finalKineticEnergyJ": 0.0001,
+        "finalStretchEnergyJ": 0.0057,
+        "finalBendingEnergyJ": 0.0017
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.027,
+        "tipDropM": null,
+        "subBustAirGapMm": 11.985,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.8083
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__SHOULDER_ANCHORED_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 8.8977,
+        "physicsStepP95": 11.2134,
+        "collisionMean": 0.574,
+        "collisionP95": 0.8001,
+        "totalStepMean": 9.4717,
+        "totalStepP95": 11.9894,
+        "bendingMean": 3.684,
+        "stretchMean": 2.8545,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.7919,
+        "transientPeakStretchPct": 29.1694,
+        "transientPeakFrame": 18,
+        "framesOver5PctCount": 297,
+        "equilibriumMeanStretchPct": 0.3235,
+        "equilibriumMaxStretchPct": 12.219
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0113,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0271,
+        "finalBendingEnergyJ": 0.004
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.4391,
+        "equilibriumMaxDepthMm": 0.4966,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2715,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.2267,
+        "meanAbsDihedralDeg": 6.517
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__SHOULDER_ANCHORED_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 9.6209,
+        "physicsStepP95": 12.8939,
+        "collisionMean": 0.582,
+        "collisionP95": 0.8824,
+        "totalStepMean": 10.2029,
+        "totalStepP95": 13.8879,
+        "bendingMean": 3.943,
+        "stretchMean": 3.0706,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.7021,
+        "transientPeakStretchPct": 20.1136,
+        "transientPeakFrame": 18,
+        "framesOver5PctCount": 297,
+        "equilibriumMeanStretchPct": 0.2882,
+        "equilibriumMaxStretchPct": 9.3991
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.007,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0485,
+        "finalBendingEnergyJ": 0.0142
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.3824,
+        "equilibriumMaxDepthMm": 0.0235,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.274,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.2447,
+        "meanAbsDihedralDeg": 3.9863
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__SHOULDER_CAPE_0PIN_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 9.6049,
+        "physicsStepP95": 12.669,
+        "collisionMean": 0.9503,
+        "collisionP95": 1.513,
+        "totalStepMean": 10.5552,
+        "totalStepP95": 14.191,
+        "bendingMean": 3.9982,
+        "stretchMean": 3.037,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.8959,
+        "transientPeakStretchPct": 19.0964,
+        "transientPeakFrame": 14,
+        "framesOver5PctCount": 291,
+        "equilibriumMeanStretchPct": 0.2918,
+        "equilibriumMaxStretchPct": 11.7816
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0194,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0105,
+        "finalBendingEnergyJ": 0.0009
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 3.0267,
+        "equilibriumMaxDepthMm": 3.0159,
+        "equilibriumSevereFramesCount": 1
+      },
+      "drape": {
+        "centerBottomDropM": 0.2936,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.1905,
+        "meanAbsDihedralDeg": 8.2707
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": false,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__SHOULDER_CAPE_0PIN_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 10.3806,
+        "physicsStepP95": 15.5968,
+        "collisionMean": 0.5204,
+        "collisionP95": 1.3405,
+        "totalStepMean": 10.901,
+        "totalStepP95": 16.6133,
+        "bendingMean": 4.2502,
+        "stretchMean": 3.3001,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.8638,
+        "transientPeakStretchPct": 22.634,
+        "transientPeakFrame": 22,
+        "framesOver5PctCount": 121,
+        "equilibriumMeanStretchPct": 0.0183,
+        "equilibriumMaxStretchPct": 1.1197
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 5.2194,
+        "finalKineticEnergyJ": 1.7358,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 2.9779,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 12.139,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.4633,
+        "meanAbsDihedralDeg": 0.1507
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__CANTILEVER_16__ARCH1_FLUID_LIGHT",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 1.5625,
+        "physicsStepP95": 2.1963,
+        "collisionMean": 0.0015,
+        "collisionP95": 0.0027,
+        "totalStepMean": 1.5641,
+        "totalStepP95": 2.199,
+        "bendingMean": 0.6098,
+        "stretchMean": 0.5094,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0914,
+        "transientPeakStretchPct": 1.5823,
+        "transientPeakFrame": 18,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0415,
+        "equilibriumMaxStretchPct": 0.8948
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0623,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1306,
+        "tipDropM": 0.1306,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1924
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "H1B_ORIGINAL__CANTILEVER_16__ARCH3_STRUCTURED_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 1.5652,
+        "physicsStepP95": 2.2543,
+        "collisionMean": 0.0016,
+        "collisionP95": 0.0027,
+        "totalStepMean": 1.5668,
+        "totalStepP95": 2.2567,
+        "bendingMean": 0.6139,
+        "stretchMean": 0.516,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1975,
+        "transientPeakStretchPct": 4.3215,
+        "transientPeakFrame": 22,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.1032,
+        "equilibriumMaxStretchPct": 2.0386
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0457,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0006,
+        "finalBendingEnergyJ": 0.0014
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1171,
+        "tipDropM": 0.1169,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1425
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "H1B_ORIGINAL__CANTILEVER_16__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 1.6828,
+        "physicsStepP95": 2.5049,
+        "collisionMean": 0.0016,
+        "collisionP95": 0.003,
+        "totalStepMean": 1.6844,
+        "totalStepP95": 2.5071,
+        "bendingMean": 0.649,
+        "stretchMean": 0.5502,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2525,
+        "transientPeakStretchPct": 9.0261,
+        "transientPeakFrame": 15,
+        "framesOver5PctCount": 18,
+        "equilibriumMeanStretchPct": 0.1168,
+        "equilibriumMaxStretchPct": 3.7695
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.043,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0005,
+        "finalBendingEnergyJ": 0.0012
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1113,
+        "tipDropM": 0.1109,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1233
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "H1B_ORIGINAL__CANTILEVER_16__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.0635,
+        "physicsStepP95": 2.7894,
+        "collisionMean": 0.002,
+        "collisionP95": 0.0033,
+        "totalStepMean": 2.0655,
+        "totalStepP95": 2.7934,
+        "bendingMean": 0.7834,
+        "stretchMean": 0.6638,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1046,
+        "transientPeakStretchPct": 1.8702,
+        "transientPeakFrame": 37,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0339,
+        "equilibriumMaxStretchPct": 0.517
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0566,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1315,
+        "tipDropM": 0.1315,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0456
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "H1B_ORIGINAL__CANTILEVER_16__ARCH4_FORBIDDEN_AVG_CONTROL",
+      "solverId": "H1B_ORIGINAL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_FORBIDDEN_AVG_CONTROL",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 1.5074,
+        "physicsStepP95": 2.1595,
+        "collisionMean": 0.0013,
+        "collisionP95": 0.0021,
+        "totalStepMean": 1.5087,
+        "totalStepP95": 2.1616,
+        "bendingMean": 0.5949,
+        "stretchMean": 0.5001,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1894,
+        "transientPeakStretchPct": 3.8701,
+        "transientPeakFrame": 23,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.1002,
+        "equilibriumMaxStretchPct": 1.8436
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0461,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0003,
+        "finalBendingEnergyJ": 0.0008
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1187,
+        "tipDropM": 0.1186,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1858
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__MICRO_CANTILEVER_32__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "MICRO_CANTILEVER_32",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 13.287,
+        "physicsStepP95": 16.117,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 13.287,
+        "totalStepP95": 16.117,
+        "bendingMean": 4.3714,
+        "stretchMean": 5.8418,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 18.5463,
+        "transientPeakStretchPct": 127.4452,
+        "transientPeakFrame": 14,
+        "framesOver5PctCount": 167,
+        "equilibriumMeanStretchPct": 17.3518,
+        "equilibriumMaxStretchPct": 125.1899
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 2.4848,
+        "finalKineticEnergyJ": 0.0087,
+        "finalStretchEnergyJ": 1.4164,
+        "finalBendingEnergyJ": 2.4293
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.005,
+        "tipDropM": 0.0047,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 67.0234
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": false,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__SCENE0_HANGING_32__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "SCENE0_HANGING_32",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 14.7354,
+        "physicsStepP95": 19.6732,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 14.7354,
+        "totalStepP95": 19.6732,
+        "bendingMean": 4.5156,
+        "stretchMean": 6.3711,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1119,
+        "transientPeakStretchPct": 3.926,
+        "transientPeakFrame": 30,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0285,
+        "equilibriumMaxStretchPct": 1.1731
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.18,
+        "finalKineticEnergyJ": 0.0003,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.499,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 0.3603
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__GATHERED_PLEAT_DRAPE__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 16.6337,
+        "physicsStepP95": 23.2187,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 16.6337,
+        "totalStepP95": 23.2187,
+        "bendingMean": 4.9409,
+        "stretchMean": 7.4715,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.3171,
+        "transientPeakStretchPct": 5.627,
+        "transientPeakFrame": 45,
+        "framesOver5PctCount": 3,
+        "equilibriumMeanStretchPct": 0.0684,
+        "equilibriumMaxStretchPct": 1.6613
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.2347,
+        "finalKineticEnergyJ": 0.0006,
+        "finalStretchEnergyJ": 0.0004,
+        "finalBendingEnergyJ": 0.0005
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.5096,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.7541
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__GATHERED_PLEAT_DRAPE__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 15.0554,
+        "physicsStepP95": 21.7775,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 15.0554,
+        "totalStepP95": 21.7775,
+        "bendingMean": 4.6126,
+        "stretchMean": 6.6194,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2881,
+        "transientPeakStretchPct": 5.0646,
+        "transientPeakFrame": 6,
+        "framesOver5PctCount": 1,
+        "equilibriumMeanStretchPct": 0.0668,
+        "equilibriumMaxStretchPct": 1.5964
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.2407,
+        "finalKineticEnergyJ": 0.0012,
+        "finalStretchEnergyJ": 0.0006,
+        "finalBendingEnergyJ": 0.0009
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.5129,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.2501
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__BODICE_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 13.6619,
+        "physicsStepP95": 19.3595,
+        "collisionMean": 0.5939,
+        "collisionP95": 0.9533,
+        "totalStepMean": 14.2558,
+        "totalStepP95": 20.2639,
+        "bendingMean": 3.9338,
+        "stretchMean": 5.8286,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1788,
+        "transientPeakStretchPct": 5.1404,
+        "transientPeakFrame": 22,
+        "framesOver5PctCount": 1,
+        "equilibriumMeanStretchPct": 0.1044,
+        "equilibriumMaxStretchPct": 4.3146
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0494,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0013,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0276,
+        "tipDropM": null,
+        "subBustAirGapMm": 10.6501,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.8477
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__BODICE_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 13.1148,
+        "physicsStepP95": 16.6531,
+        "collisionMean": 0.547,
+        "collisionP95": 0.7902,
+        "totalStepMean": 13.6618,
+        "totalStepP95": 17.3782,
+        "bendingMean": 3.824,
+        "stretchMean": 5.6232,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1677,
+        "transientPeakStretchPct": 5.0633,
+        "transientPeakFrame": 21,
+        "framesOver5PctCount": 1,
+        "equilibriumMeanStretchPct": 0.1069,
+        "equilibriumMaxStretchPct": 2.5907
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0059,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0019,
+        "finalBendingEnergyJ": 0.0005
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0269,
+        "tipDropM": null,
+        "subBustAirGapMm": 11.5609,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.9766
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__BODICE_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 13.2516,
+        "physicsStepP95": 17.8024,
+        "collisionMean": 0.5329,
+        "collisionP95": 0.742,
+        "totalStepMean": 13.7844,
+        "totalStepP95": 18.4409,
+        "bendingMean": 3.8274,
+        "stretchMean": 5.7539,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2049,
+        "transientPeakStretchPct": 5.6862,
+        "transientPeakFrame": 20,
+        "framesOver5PctCount": 1,
+        "equilibriumMeanStretchPct": 0.1141,
+        "equilibriumMaxStretchPct": 2.9212
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0224,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.005,
+        "finalBendingEnergyJ": 0.0023
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0259,
+        "tipDropM": null,
+        "subBustAirGapMm": 12.6398,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.6135
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__BODICE_ALT_C__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 12.9568,
+        "physicsStepP95": 16.2137,
+        "collisionMean": 0.505,
+        "collisionP95": 0.683,
+        "totalStepMean": 13.4618,
+        "totalStepP95": 16.8057,
+        "bendingMean": 3.76,
+        "stretchMean": 5.6165,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2254,
+        "transientPeakStretchPct": 5.839,
+        "transientPeakFrame": 22,
+        "framesOver5PctCount": 10,
+        "equilibriumMeanStretchPct": 0.1254,
+        "equilibriumMaxStretchPct": 5.6093
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0761,
+        "finalKineticEnergyJ": 0.0001,
+        "finalStretchEnergyJ": 0.0024,
+        "finalBendingEnergyJ": 0.0018
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0264,
+        "tipDropM": null,
+        "subBustAirGapMm": 12.5385,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.8678
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__SHOULDER_ANCHORED_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 12.847,
+        "physicsStepP95": 15.8116,
+        "collisionMean": 0.5968,
+        "collisionP95": 0.8166,
+        "totalStepMean": 13.4437,
+        "totalStepP95": 16.6041,
+        "bendingMean": 3.7546,
+        "stretchMean": 5.5859,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.6006,
+        "transientPeakStretchPct": 17.6611,
+        "transientPeakFrame": 18,
+        "framesOver5PctCount": 296,
+        "equilibriumMeanStretchPct": 0.2237,
+        "equilibriumMaxStretchPct": 9.0355
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0178,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.01,
+        "finalBendingEnergyJ": 0.0048
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.2579,
+        "equilibriumMaxDepthMm": 0.197,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2657,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.2244,
+        "meanAbsDihedralDeg": 6.8595
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__SHOULDER_ANCHORED_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 13.6559,
+        "physicsStepP95": 18.3122,
+        "collisionMean": 0.5622,
+        "collisionP95": 0.8187,
+        "totalStepMean": 14.2181,
+        "totalStepP95": 19.0783,
+        "bendingMean": 3.9983,
+        "stretchMean": 5.9277,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.4412,
+        "transientPeakStretchPct": 13.9264,
+        "transientPeakFrame": 17,
+        "framesOver5PctCount": 297,
+        "equilibriumMeanStretchPct": 0.1877,
+        "equilibriumMaxStretchPct": 6.6154
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0079,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0184,
+        "finalBendingEnergyJ": 0.0154
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.5734,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2698,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.2459,
+        "meanAbsDihedralDeg": 3.9783
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__SHOULDER_CAPE_0PIN_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 13.6354,
+        "physicsStepP95": 17.3547,
+        "collisionMean": 0.8834,
+        "collisionP95": 1.24,
+        "totalStepMean": 14.5188,
+        "totalStepP95": 18.6279,
+        "bendingMean": 4.0287,
+        "stretchMean": 5.7404,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.642,
+        "transientPeakStretchPct": 13.8779,
+        "transientPeakFrame": 14,
+        "framesOver5PctCount": 289,
+        "equilibriumMeanStretchPct": 0.2318,
+        "equilibriumMaxStretchPct": 13.3171
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0009,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0067,
+        "finalBendingEnergyJ": 0.0009
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 2.4448,
+        "equilibriumMaxDepthMm": 1.3224,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2568,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.1846,
+        "meanAbsDihedralDeg": 8.5112
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__SHOULDER_CAPE_0PIN_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 13.4552,
+        "physicsStepP95": 18.5911,
+        "collisionMean": 0.4413,
+        "collisionP95": 0.8836,
+        "totalStepMean": 13.8966,
+        "totalStepP95": 19.8999,
+        "bendingMean": 3.96,
+        "stretchMean": 5.9091,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.6081,
+        "transientPeakStretchPct": 16.6932,
+        "transientPeakFrame": 24,
+        "framesOver5PctCount": 97,
+        "equilibriumMeanStretchPct": 0.0121,
+        "equilibriumMaxStretchPct": 0.4571
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 5.2154,
+        "finalKineticEnergyJ": 1.7353,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 3.2197,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 12.0906,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.4576,
+        "meanAbsDihedralDeg": 0.1084
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__CANTILEVER_16__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 1.9397,
+        "physicsStepP95": 2.2789,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 1.9397,
+        "totalStepP95": 2.2789,
+        "bendingMean": 0.5755,
+        "stretchMean": 0.935,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0579,
+        "transientPeakStretchPct": 0.6492,
+        "transientPeakFrame": 14,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0293,
+        "equilibriumMaxStretchPct": 0.4706
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0615,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1307,
+        "tipDropM": 0.1307,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1449
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__CANTILEVER_16__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.1152,
+        "physicsStepP95": 3.3366,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.1152,
+        "totalStepP95": 3.3366,
+        "bendingMean": 0.6137,
+        "stretchMean": 1.0264,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0845,
+        "transientPeakStretchPct": 1.5792,
+        "transientPeakFrame": 57,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0365,
+        "equilibriumMaxStretchPct": 1.4292
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0463,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0.0014
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1171,
+        "tipDropM": 0.1169,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0955
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__CANTILEVER_16__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 1.8956,
+        "physicsStepP95": 2.3685,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 1.8956,
+        "totalStepP95": 2.3685,
+        "bendingMean": 0.562,
+        "stretchMean": 0.9167,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0745,
+        "transientPeakStretchPct": 1.4011,
+        "transientPeakFrame": 41,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0368,
+        "equilibriumMaxStretchPct": 1.0541
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0437,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0012
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1112,
+        "tipDropM": 0.1109,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0793
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__CANTILEVER_16__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.1285,
+        "physicsStepP95": 4.1395,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.1285,
+        "totalStepP95": 4.1395,
+        "bendingMean": 0.6353,
+        "stretchMean": 1.0185,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0735,
+        "transientPeakStretchPct": 1.2499,
+        "transientPeakFrame": 33,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.022,
+        "equilibriumMaxStretchPct": 0.3717
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0563,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1316,
+        "tipDropM": 0.1316,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0468
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP1_BEND_FIRST_CLEANUP__CANTILEVER_16__ARCH4_FORBIDDEN_AVG_CONTROL",
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_FORBIDDEN_AVG_CONTROL",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.0311,
+        "physicsStepP95": 3.0237,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.0311,
+        "totalStepP95": 3.0237,
+        "bendingMean": 0.5973,
+        "stretchMean": 0.9831,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0854,
+        "transientPeakStretchPct": 1.4746,
+        "transientPeakFrame": 85,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0364,
+        "equilibriumMaxStretchPct": 1.3331
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0464,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0008
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1187,
+        "tipDropM": 0.1185,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1378
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__MICRO_CANTILEVER_32__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "MICRO_CANTILEVER_32",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 13.6135,
+        "physicsStepP95": 18.1317,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 13.6135,
+        "totalStepP95": 18.1317,
+        "bendingMean": 4.1319,
+        "stretchMean": 6.6916,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2659,
+        "transientPeakStretchPct": 4.0416,
+        "transientPeakFrame": 8,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.114,
+        "equilibriumMaxStretchPct": 2.3458
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0524,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0002,
+        "finalBendingEnergyJ": 0.0043
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.106,
+        "tipDropM": 0.106,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.1154
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__SCENE0_HANGING_32__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "SCENE0_HANGING_32",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 15.5217,
+        "physicsStepP95": 20.3607,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 15.5217,
+        "totalStepP95": 20.3607,
+        "bendingMean": 4.5832,
+        "stretchMean": 7.6267,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1214,
+        "transientPeakStretchPct": 4.1304,
+        "transientPeakFrame": 31,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0325,
+        "equilibriumMaxStretchPct": 1.4723
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.1816,
+        "finalKineticEnergyJ": 0.0002,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.4991,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 0.3253
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__GATHERED_PLEAT_DRAPE__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 14.4642,
+        "physicsStepP95": 18.4059,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 14.4642,
+        "totalStepP95": 18.4059,
+        "bendingMean": 4.3607,
+        "stretchMean": 7.1235,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.3316,
+        "transientPeakStretchPct": 5.2825,
+        "transientPeakFrame": 57,
+        "framesOver5PctCount": 3,
+        "equilibriumMeanStretchPct": 0.0883,
+        "equilibriumMaxStretchPct": 2.2705
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.1741,
+        "finalKineticEnergyJ": 0.0003,
+        "finalStretchEnergyJ": 0.0005,
+        "finalBendingEnergyJ": 0.0004
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.5117,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.5559
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__GATHERED_PLEAT_DRAPE__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 14.4769,
+        "physicsStepP95": 18.8944,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 14.4769,
+        "totalStepP95": 18.8944,
+        "bendingMean": 4.3901,
+        "stretchMean": 7.1164,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.3594,
+        "transientPeakStretchPct": 4.4645,
+        "transientPeakFrame": 34,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0755,
+        "equilibriumMaxStretchPct": 1.0301
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.174,
+        "finalKineticEnergyJ": 0.0005,
+        "finalStretchEnergyJ": 0.001,
+        "finalBendingEnergyJ": 0.0012
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.5137,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.4585
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__BODICE_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 15.2641,
+        "physicsStepP95": 18.7414,
+        "collisionMean": 0.5481,
+        "collisionP95": 0.7554,
+        "totalStepMean": 15.8122,
+        "totalStepP95": 19.4113,
+        "bendingMean": 4.4005,
+        "stretchMean": 7.2465,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1958,
+        "transientPeakStretchPct": 6.0477,
+        "transientPeakFrame": 22,
+        "framesOver5PctCount": 2,
+        "equilibriumMeanStretchPct": 0.1179,
+        "equilibriumMaxStretchPct": 4.8026
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0449,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.001,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0281,
+        "tipDropM": null,
+        "subBustAirGapMm": 11.1114,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.8359
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__BODICE_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 16.1625,
+        "physicsStepP95": 23.3136,
+        "collisionMean": 0.596,
+        "collisionP95": 0.9384,
+        "totalStepMean": 16.7585,
+        "totalStepP95": 24.2544,
+        "bendingMean": 4.669,
+        "stretchMean": 7.6342,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1884,
+        "transientPeakStretchPct": 4.752,
+        "transientPeakFrame": 21,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.1225,
+        "equilibriumMaxStretchPct": 2.8228
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0058,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0026,
+        "finalBendingEnergyJ": 0.0005
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0273,
+        "tipDropM": null,
+        "subBustAirGapMm": 11.3838,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0826
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__BODICE_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 16.7019,
+        "physicsStepP95": 21.2708,
+        "collisionMean": 0.5847,
+        "collisionP95": 0.8395,
+        "totalStepMean": 17.2866,
+        "totalStepP95": 22.0343,
+        "bendingMean": 4.7481,
+        "stretchMean": 8.0129,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2104,
+        "transientPeakStretchPct": 5.9942,
+        "transientPeakFrame": 20,
+        "framesOver5PctCount": 2,
+        "equilibriumMeanStretchPct": 0.1305,
+        "equilibriumMaxStretchPct": 2.8796
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0074,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0061,
+        "finalBendingEnergyJ": 0.0031
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0.02,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0261,
+        "tipDropM": null,
+        "subBustAirGapMm": 12.4355,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.7011
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__BODICE_ALT_C__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 15.639,
+        "physicsStepP95": 21.5309,
+        "collisionMean": 0.5591,
+        "collisionP95": 0.925,
+        "totalStepMean": 16.1981,
+        "totalStepP95": 22.5184,
+        "bendingMean": 4.5058,
+        "stretchMean": 7.4243,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2369,
+        "transientPeakStretchPct": 6.1287,
+        "transientPeakFrame": 34,
+        "framesOver5PctCount": 3,
+        "equilibriumMeanStretchPct": 0.1295,
+        "equilibriumMaxStretchPct": 3.1336
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0072,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.003,
+        "finalBendingEnergyJ": 0.0025
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.027,
+        "tipDropM": null,
+        "subBustAirGapMm": 12.1219,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.9412
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__SHOULDER_ANCHORED_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 16.073,
+        "physicsStepP95": 23.3912,
+        "collisionMean": 0.6728,
+        "collisionP95": 1.1044,
+        "totalStepMean": 16.7459,
+        "totalStepP95": 24.6064,
+        "bendingMean": 4.7101,
+        "stretchMean": 7.6063,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.6339,
+        "transientPeakStretchPct": 26.0469,
+        "transientPeakFrame": 21,
+        "framesOver5PctCount": 297,
+        "equilibriumMeanStretchPct": 0.2561,
+        "equilibriumMaxStretchPct": 11.8806
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0235,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0158,
+        "finalBendingEnergyJ": 0.0054
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.2765,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2674,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.2206,
+        "meanAbsDihedralDeg": 7.1356
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__SHOULDER_ANCHORED_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 15.2981,
+        "physicsStepP95": 21.5628,
+        "collisionMean": 0.5616,
+        "collisionP95": 0.8433,
+        "totalStepMean": 15.8597,
+        "totalStepP95": 22.5022,
+        "bendingMean": 4.4622,
+        "stretchMean": 7.2617,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.4759,
+        "transientPeakStretchPct": 14.2791,
+        "transientPeakFrame": 20,
+        "framesOver5PctCount": 297,
+        "equilibriumMeanStretchPct": 0.2192,
+        "equilibriumMaxStretchPct": 7.942
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0053,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0272,
+        "finalBendingEnergyJ": 0.0176
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.4882,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2701,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.243,
+        "meanAbsDihedralDeg": 4.257
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__SHOULDER_CAPE_0PIN_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 15.143,
+        "physicsStepP95": 19.0804,
+        "collisionMean": 0.8672,
+        "collisionP95": 1.1435,
+        "totalStepMean": 16.0103,
+        "totalStepP95": 20.1251,
+        "bendingMean": 4.3778,
+        "stretchMean": 7.0006,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.6472,
+        "transientPeakStretchPct": 14.2684,
+        "transientPeakFrame": 172,
+        "framesOver5PctCount": 289,
+        "equilibriumMeanStretchPct": 0.2444,
+        "equilibriumMaxStretchPct": 11.3414
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0172,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0085,
+        "finalBendingEnergyJ": 0.0009
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 2.2987,
+        "equilibriumMaxDepthMm": 2.2987,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2861,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.1877,
+        "meanAbsDihedralDeg": 8.3573
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__SHOULDER_CAPE_0PIN_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 12,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 15.4822,
+        "physicsStepP95": 20.4943,
+        "collisionMean": 0.4649,
+        "collisionP95": 1.0558,
+        "totalStepMean": 15.9471,
+        "totalStepP95": 21.3505,
+        "bendingMean": 4.5682,
+        "stretchMean": 7.4209,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.7353,
+        "transientPeakStretchPct": 20.7234,
+        "transientPeakFrame": 24,
+        "framesOver5PctCount": 116,
+        "equilibriumMeanStretchPct": 0.0125,
+        "equilibriumMaxStretchPct": 0.6255
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 5.2035,
+        "finalKineticEnergyJ": 1.7338,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 3.0711,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 11.9273,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.4569,
+        "meanAbsDihedralDeg": 0.0847
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__CANTILEVER_16__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.2428,
+        "physicsStepP95": 3.0171,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.2428,
+        "totalStepP95": 3.0171,
+        "bendingMean": 0.6687,
+        "stretchMean": 1.1362,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.066,
+        "transientPeakStretchPct": 0.7121,
+        "transientPeakFrame": 14,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0299,
+        "equilibriumMaxStretchPct": 0.5124
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0614,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1307,
+        "tipDropM": 0.1307,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1353
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__CANTILEVER_16__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.1236,
+        "physicsStepP95": 2.4283,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.1236,
+        "totalStepP95": 2.4283,
+        "bendingMean": 0.6407,
+        "stretchMean": 1.0838,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1566,
+        "transientPeakStretchPct": 2.0222,
+        "transientPeakFrame": 25,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0449,
+        "equilibriumMaxStretchPct": 1.5088
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0448,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0.0016
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1197,
+        "tipDropM": 0.1196,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.2906
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__CANTILEVER_16__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.1603,
+        "physicsStepP95": 2.9373,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.1603,
+        "totalStepP95": 2.9373,
+        "bendingMean": 0.647,
+        "stretchMean": 1.1019,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1362,
+        "transientPeakStretchPct": 1.7566,
+        "transientPeakFrame": 25,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0437,
+        "equilibriumMaxStretchPct": 1.1064
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.043,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0017
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1174,
+        "tipDropM": 0.1172,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.3335
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__CANTILEVER_16__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.24,
+        "physicsStepP95": 2.7774,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.24,
+        "totalStepP95": 2.7774,
+        "bendingMean": 0.6627,
+        "stretchMean": 1.1326,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0958,
+        "transientPeakStretchPct": 1.6697,
+        "transientPeakFrame": 34,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0252,
+        "equilibriumMaxStretchPct": 0.3838
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0581,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1315,
+        "tipDropM": 0.1315,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0463
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP2_RAYLEIGH_BEND_FIRST__CANTILEVER_16__ARCH4_FORBIDDEN_AVG_CONTROL",
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_FORBIDDEN_AVG_CONTROL",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 12,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 2.2633,
+        "physicsStepP95": 3.3806,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 2.2633,
+        "totalStepP95": 3.3806,
+        "bendingMean": 0.6789,
+        "stretchMean": 1.1502,
+        "strainGuardMean": 0
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1668,
+        "transientPeakStretchPct": 2.1257,
+        "transientPeakFrame": 25,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0445,
+        "equilibriumMaxStretchPct": 1.435
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0452,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0.0009
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1205,
+        "tipDropM": 0.1204,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.3045
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__MICRO_CANTILEVER_32__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "MICRO_CANTILEVER_32",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 19.3084,
+        "physicsStepP95": 31.0221,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 19.3084,
+        "totalStepP95": 31.0221,
+        "bendingMean": 5.6922,
+        "stretchMean": 8.9957,
+        "strainGuardMean": 0.7744
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.2256,
+        "transientPeakStretchPct": 2.5588,
+        "transientPeakFrame": 8,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0746,
+        "equilibriumMaxStretchPct": 1.6774
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0554,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0.004
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1053,
+        "tipDropM": 0.1053,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.1404
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__SCENE0_HANGING_32__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "SCENE0_HANGING_32",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 20.9105,
+        "physicsStepP95": 30.8008,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 20.9105,
+        "totalStepP95": 30.8008,
+        "bendingMean": 5.9977,
+        "stretchMean": 9.8427,
+        "strainGuardMean": 0.8065
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0944,
+        "transientPeakStretchPct": 3.0507,
+        "transientPeakFrame": 29,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0249,
+        "equilibriumMaxStretchPct": 0.9433
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.1775,
+        "finalKineticEnergyJ": 0.0002,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.4989,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 0.2047
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__GATHERED_PLEAT_DRAPE__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 21.391,
+        "physicsStepP95": 34.2612,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 21.391,
+        "totalStepP95": 34.2612,
+        "bendingMean": 6.244,
+        "stretchMean": 10.0957,
+        "strainGuardMean": 0.7979
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.3062,
+        "transientPeakStretchPct": 4.5,
+        "transientPeakFrame": 49,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0678,
+        "equilibriumMaxStretchPct": 1.9904
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.2003,
+        "finalKineticEnergyJ": 0.0005,
+        "finalStretchEnergyJ": 0.0005,
+        "finalBendingEnergyJ": 0.0005
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.51,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.6254
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__GATHERED_PLEAT_DRAPE__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "GATHERED_PLEAT_DRAPE",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 20.7075,
+        "physicsStepP95": 26.9435,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 20.7075,
+        "totalStepP95": 26.9435,
+        "bendingMean": 6.0476,
+        "stretchMean": 9.8044,
+        "strainGuardMean": 0.724
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.274,
+        "transientPeakStretchPct": 3.8138,
+        "transientPeakFrame": 6,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0593,
+        "equilibriumMaxStretchPct": 1.371
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.2303,
+        "finalKineticEnergyJ": 0.0007,
+        "finalStretchEnergyJ": 0.0004,
+        "finalBendingEnergyJ": 0.0009
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.5125,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.2146
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__BODICE_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 21.9121,
+        "physicsStepP95": 27.6653,
+        "collisionMean": 1.2851,
+        "collisionP95": 1.698,
+        "totalStepMean": 23.1972,
+        "totalStepP95": 29.3558,
+        "bendingMean": 5.9985,
+        "stretchMean": 9.7263,
+        "strainGuardMean": 0.7065
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1735,
+        "transientPeakStretchPct": 4.0002,
+        "transientPeakFrame": 21,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0953,
+        "equilibriumMaxStretchPct": 3.3122
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.046,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0007,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0272,
+        "tipDropM": null,
+        "subBustAirGapMm": 10.8034,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.8018
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__BODICE_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 22.1978,
+        "physicsStepP95": 31.6347,
+        "collisionMean": 1.274,
+        "collisionP95": 1.9327,
+        "totalStepMean": 23.4718,
+        "totalStepP95": 33.6601,
+        "bendingMean": 6.0803,
+        "stretchMean": 9.8665,
+        "strainGuardMean": 0.7099
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1568,
+        "transientPeakStretchPct": 4.0519,
+        "transientPeakFrame": 21,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0988,
+        "equilibriumMaxStretchPct": 2.0134
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0054,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0015,
+        "finalBendingEnergyJ": 0.0005
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0268,
+        "tipDropM": null,
+        "subBustAirGapMm": 11.7389,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0145
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__BODICE_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 22.1405,
+        "physicsStepP95": 29.0361,
+        "collisionMean": 1.238,
+        "collisionP95": 1.659,
+        "totalStepMean": 23.3785,
+        "totalStepP95": 30.7081,
+        "bendingMean": 6.0259,
+        "stretchMean": 10.0006,
+        "strainGuardMean": 0.7233
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.176,
+        "transientPeakStretchPct": 4.1915,
+        "transientPeakFrame": 20,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.1043,
+        "equilibriumMaxStretchPct": 2.4394
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0186,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0038,
+        "finalBendingEnergyJ": 0.0025
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0258,
+        "tipDropM": null,
+        "subBustAirGapMm": 12.8945,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.6063
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__BODICE_ALT_C__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "BODICE_ALT_C",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 21.6391,
+        "physicsStepP95": 28.2535,
+        "collisionMean": 1.2415,
+        "collisionP95": 1.6753,
+        "totalStepMean": 22.8806,
+        "totalStepP95": 30.1849,
+        "bendingMean": 5.9148,
+        "stretchMean": 9.669,
+        "strainGuardMean": 0.6953
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1954,
+        "transientPeakStretchPct": 4.5,
+        "transientPeakFrame": 20,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.1066,
+        "equilibriumMaxStretchPct": 2.5849
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0166,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0018,
+        "finalBendingEnergyJ": 0.0021
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.0265,
+        "tipDropM": null,
+        "subBustAirGapMm": 12.5517,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 1.7995
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__SHOULDER_ANCHORED_ALT_C__ARCH2_MEDIUM_BALANCED",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 21.7917,
+        "physicsStepP95": 28.4617,
+        "collisionMean": 1.4058,
+        "collisionP95": 2.0336,
+        "totalStepMean": 23.1974,
+        "totalStepP95": 30.6512,
+        "bendingMean": 6.0082,
+        "stretchMean": 9.7043,
+        "strainGuardMean": 0.7221
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.5899,
+        "transientPeakStretchPct": 8.8052,
+        "transientPeakFrame": 14,
+        "framesOver5PctCount": 38,
+        "equilibriumMeanStretchPct": 0.2064,
+        "equilibriumMaxStretchPct": 4.5163
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0044,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0085,
+        "finalBendingEnergyJ": 0.0049
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0.7929,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2656,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.2241,
+        "meanAbsDihedralDeg": 6.9012
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__SHOULDER_ANCHORED_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "SHOULDER_ANCHORED_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 22.1662,
+        "physicsStepP95": 28.4787,
+        "collisionMean": 1.2656,
+        "collisionP95": 1.719,
+        "totalStepMean": 23.4318,
+        "totalStepP95": 30.032,
+        "bendingMean": 6.0938,
+        "stretchMean": 9.9678,
+        "strainGuardMean": 0.7359
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.4166,
+        "transientPeakStretchPct": 7.4163,
+        "transientPeakFrame": 16,
+        "framesOver5PctCount": 8,
+        "equilibriumMeanStretchPct": 0.1778,
+        "equilibriumMaxStretchPct": 4.5
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0065,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0154,
+        "finalBendingEnergyJ": 0.0162
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 0.7339,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2688,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.2459,
+        "meanAbsDihedralDeg": 4.0856
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__SHOULDER_CAPE_0PIN_ALT_C__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 23.4356,
+        "physicsStepP95": 35.3913,
+        "collisionMean": 2.0582,
+        "collisionP95": 3.0429,
+        "totalStepMean": 25.4939,
+        "totalStepP95": 38.8501,
+        "bendingMean": 6.3356,
+        "stretchMean": 10.1148,
+        "strainGuardMean": 0.7645
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.5412,
+        "transientPeakStretchPct": 10.2251,
+        "transientPeakFrame": 12,
+        "framesOver5PctCount": 290,
+        "equilibriumMeanStretchPct": 0.2424,
+        "equilibriumMaxStretchPct": 9.1743
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0213,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0085,
+        "finalBendingEnergyJ": 0.0009
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.3773,
+        "equilibriumMaxDepthMm": 1.1701,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.2489,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.1838,
+        "meanAbsDihedralDeg": 8.6821
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": false,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__SHOULDER_CAPE_0PIN_ALT_C__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "SHOULDER_CAPE_0PIN_ALT_C",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 32,
+      "usesTorsoCollisionAltC": true,
+      "substeps": 16,
+      "totalFrames": 300,
+      "timingMs": {
+        "physicsStepMean": 21.5239,
+        "physicsStepP95": 29.3102,
+        "collisionMean": 0.6857,
+        "collisionP95": 1.667,
+        "totalStepMean": 22.2096,
+        "totalStepP95": 31.3584,
+        "bendingMean": 6.0475,
+        "stretchMean": 10.0315,
+        "strainGuardMean": 0.7222
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.5834,
+        "transientPeakStretchPct": 7.478,
+        "transientPeakFrame": 57,
+        "framesOver5PctCount": 14,
+        "equilibriumMeanStretchPct": 0.0023,
+        "equilibriumMaxStretchPct": 0.0828
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 5.4156,
+        "finalKineticEnergyJ": 1.7617,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0
+      },
+      "penetrationGt": {
+        "evaluated": true,
+        "maxDepthAllFramesMm": 1.4408,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 18.3257,
+        "tipDropM": null,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": 0.4634,
+        "meanAbsDihedralDeg": 0.0377
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": false,
+        "stableSettlingRmsVelLe008": false
+      },
+      "strictPass": false,
+      "statusLabel": "FAIL"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__CANTILEVER_16__ARCH1_FLUID_LIGHT",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 3.1809,
+        "physicsStepP95": 4.429,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 3.1809,
+        "totalStepP95": 4.429,
+        "bendingMean": 0.9054,
+        "stretchMean": 1.5518,
+        "strainGuardMean": 0.1249
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0469,
+        "transientPeakStretchPct": 0.5676,
+        "transientPeakFrame": 13,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0237,
+        "equilibriumMaxStretchPct": 0.4057
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.065,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1306,
+        "tipDropM": 0.1306,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.1385
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__CANTILEVER_16__ARCH3_STRUCTURED_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 3.1253,
+        "physicsStepP95": 3.9924,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 3.1253,
+        "totalStepP95": 3.9924,
+        "bendingMean": 0.8853,
+        "stretchMean": 1.5522,
+        "strainGuardMean": 0.119
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1009,
+        "transientPeakStretchPct": 1.297,
+        "transientPeakFrame": 88,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0325,
+        "equilibriumMaxStretchPct": 1.2633
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0459,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0.0001,
+        "finalBendingEnergyJ": 0.0015
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1183,
+        "tipDropM": 0.1182,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.2271
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__CANTILEVER_16__ARCH4_ASYM_FACE_UP_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 3.1101,
+        "physicsStepP95": 4.8516,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 3.1101,
+        "totalStepP95": 4.8516,
+        "bendingMean": 0.8861,
+        "stretchMean": 1.53,
+        "strainGuardMean": 0.1258
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0848,
+        "transientPeakStretchPct": 1.1921,
+        "transientPeakFrame": 42,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0326,
+        "equilibriumMaxStretchPct": 1.0007
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0432,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0014
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1141,
+        "tipDropM": 0.1138,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.2051
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__CANTILEVER_16__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 3.3111,
+        "physicsStepP95": 4.7996,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 3.3111,
+        "totalStepP95": 4.7996,
+        "bendingMean": 0.9273,
+        "stretchMean": 1.6242,
+        "strainGuardMean": 0.1315
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.0833,
+        "transientPeakStretchPct": 1.1672,
+        "transientPeakFrame": 33,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0175,
+        "equilibriumMaxStretchPct": 0.3288
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0598,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0001
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1315,
+        "tipDropM": 0.1315,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.0507
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    },
+    {
+      "runId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL__CANTILEVER_16__ARCH4_FORBIDDEN_AVG_CONTROL",
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "sceneId": "CANTILEVER_16",
+      "archetypeId": "ARCH4_FORBIDDEN_AVG_CONTROL",
+      "gridSize": 16,
+      "usesTorsoCollisionAltC": false,
+      "substeps": 16,
+      "totalFrames": 180,
+      "timingMs": {
+        "physicsStepMean": 3.2977,
+        "physicsStepP95": 5.283,
+        "collisionMean": 0,
+        "collisionP95": 0,
+        "totalStepMean": 3.2977,
+        "totalStepP95": 5.283,
+        "bendingMean": 0.9306,
+        "stretchMean": 1.6321,
+        "strainGuardMean": 0.132
+      },
+      "strain": {
+        "transientMeanStretchPctMax": 0.1069,
+        "transientPeakStretchPct": 1.253,
+        "transientPeakFrame": 24,
+        "framesOver5PctCount": 0,
+        "equilibriumMeanStretchPct": 0.0324,
+        "equilibriumMaxStretchPct": 1.1937
+      },
+      "stability": {
+        "nanVertexCountTotal": 0,
+        "equilibriumRmsVelocityMS": 0.0464,
+        "finalKineticEnergyJ": 0,
+        "finalStretchEnergyJ": 0,
+        "finalBendingEnergyJ": 0.0008
+      },
+      "penetrationGt": {
+        "evaluated": false,
+        "maxDepthAllFramesMm": 0,
+        "equilibriumMaxDepthMm": 0,
+        "equilibriumSevereFramesCount": 0
+      },
+      "drape": {
+        "centerBottomDropM": 0.1195,
+        "tipDropM": 0.1194,
+        "subBustAirGapMm": null,
+        "perimeterMeanRadiusM": null,
+        "meanAbsDihedralDeg": 2.2363
+      },
+      "checks": {
+        "zeroNan": true,
+        "collisionBudgetMeanLe6ms": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "equilibriumMeanStretchLe2Pct": true,
+        "equilibriumPeakStretchLe5Pct": true,
+        "transientPeakStretchLe5Pct": true,
+        "stableSettlingRmsVelLe008": true
+      },
+      "strictPass": true,
+      "statusLabel": "PASS"
+    }
+  ],
+  "scorecards": [
+    {
+      "solverId": "H1B_ORIGINAL",
+      "totalRuns": 17,
+      "strictPassCount": 4,
+      "strictPassRatePct": 23.5294,
+      "nanFailures": 0,
+      "microMeshPass": false,
+      "microMeshPeakStretchPct": 2831.9765,
+      "scene0Pass": false,
+      "gatheredPassCount": 0,
+      "bodicePassCount": 0,
+      "shoulderAnchoredPassCount": 0,
+      "shoulderCape0PinPassCount": 0,
+      "asymmetryDirectionalPass": true,
+      "contrastBodiceMonotonicPass": true,
+      "contrastCantileverMonotonicPass": true,
+      "worstTotalStepMeanMs": 10.901,
+      "worstTotalStepP95Ms": 18.3805,
+      "meanTotalStepTorso32Ms": 10.2449,
+      "meanCollisionTorso32Ms": 0.6087
+    },
+    {
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "totalRuns": 17,
+      "strictPassCount": 5,
+      "strictPassRatePct": 29.4118,
+      "nanFailures": 0,
+      "microMeshPass": false,
+      "microMeshPeakStretchPct": 127.4452,
+      "scene0Pass": false,
+      "gatheredPassCount": 0,
+      "bodicePassCount": 0,
+      "shoulderAnchoredPassCount": 0,
+      "shoulderCape0PinPassCount": 0,
+      "asymmetryDirectionalPass": true,
+      "contrastBodiceMonotonicPass": true,
+      "contrastCantileverMonotonicPass": true,
+      "worstTotalStepMeanMs": 16.6337,
+      "worstTotalStepP95Ms": 23.2187,
+      "meanTotalStepTorso32Ms": 13.9051,
+      "meanCollisionTorso32Ms": 0.5828
+    },
+    {
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "totalRuns": 17,
+      "strictPassCount": 6,
+      "strictPassRatePct": 35.2941,
+      "nanFailures": 0,
+      "microMeshPass": true,
+      "microMeshPeakStretchPct": 4.0416,
+      "scene0Pass": false,
+      "gatheredPassCount": 0,
+      "bodicePassCount": 0,
+      "shoulderAnchoredPassCount": 0,
+      "shoulderCape0PinPassCount": 0,
+      "asymmetryDirectionalPass": true,
+      "contrastBodiceMonotonicPass": true,
+      "contrastCantileverMonotonicPass": true,
+      "worstTotalStepMeanMs": 17.2866,
+      "worstTotalStepP95Ms": 24.6064,
+      "meanTotalStepTorso32Ms": 16.3273,
+      "meanCollisionTorso32Ms": 0.6068
+    },
+    {
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "totalRuns": 17,
+      "strictPassCount": 5,
+      "strictPassRatePct": 29.4118,
+      "nanFailures": 0,
+      "microMeshPass": false,
+      "microMeshPeakStretchPct": 2.5588,
+      "scene0Pass": false,
+      "gatheredPassCount": 0,
+      "bodicePassCount": 0,
+      "shoulderAnchoredPassCount": 0,
+      "shoulderCape0PinPassCount": 0,
+      "asymmetryDirectionalPass": true,
+      "contrastBodiceMonotonicPass": true,
+      "contrastCantileverMonotonicPass": true,
+      "worstTotalStepMeanMs": 25.4939,
+      "worstTotalStepP95Ms": 38.8501,
+      "meanTotalStepTorso32Ms": 23.4076,
+      "meanCollisionTorso32Ms": 1.3067
+    }
+  ],
+  "asymmetryBySolver": [
+    {
+      "solverId": "H1B_ORIGINAL",
+      "cantileverFaceUpTipDropM": 0.1109,
+      "cantileverFaceDownTipDropM": 0.1315,
+      "cantileverForbiddenAvgTipDropM": 0.1186,
+      "diffMm": 20.6,
+      "strictOrderAndNoAvgCollapsePass": true
+    },
+    {
+      "solverId": "EXP1_BEND_FIRST_CLEANUP",
+      "cantileverFaceUpTipDropM": 0.1109,
+      "cantileverFaceDownTipDropM": 0.1316,
+      "cantileverForbiddenAvgTipDropM": 0.1185,
+      "diffMm": 20.7,
+      "strictOrderAndNoAvgCollapsePass": true
+    },
+    {
+      "solverId": "EXP2_RAYLEIGH_BEND_FIRST",
+      "cantileverFaceUpTipDropM": 0.1172,
+      "cantileverFaceDownTipDropM": 0.1315,
+      "cantileverForbiddenAvgTipDropM": 0.1204,
+      "diffMm": 14.3,
+      "strictOrderAndNoAvgCollapsePass": true
+    },
+    {
+      "solverId": "EXP3_SUB16_STRAIN_GUARD_DUAL_COL",
+      "cantileverFaceUpTipDropM": 0.1138,
+      "cantileverFaceDownTipDropM": 0.1315,
+      "cantileverForbiddenAvgTipDropM": 0.1194,
+      "diffMm": 17.7,
+      "strictOrderAndNoAvgCollapsePass": true
+    }
+  ],
+  "recommendation": {
+    "recommendedCandidateForT5": "EXP2_RAYLEIGH_BEND_FIRST",
+    "rationale": "Candidato con mayor tasa de cumplimiento estricto (6/17 corridas, 35.2941%) preservando separación asimétrica FACE_UP/FACE_DOWN y contraste textil.",
+    "t5BlockingDefectsRemaining": [
+      "GATHERED_PLEAT_DRAPE/ARCH2_MEDIUM_BALANCED: peak=5.2825%, eqMax=2.2705%, rmsVel=0.1741, gtEqFrames=0, meanMs=14.4642",
+      "GATHERED_PLEAT_DRAPE/ARCH3_STRUCTURED_STIFF: peak=4.4645%, eqMax=1.0301%, rmsVel=0.174, gtEqFrames=0, meanMs=14.4769",
+      "BODICE_ALT_C/ARCH1_FLUID_LIGHT: peak=6.0477%, eqMax=4.8026%, rmsVel=0.0449, gtEqFrames=0, meanMs=15.8122",
+      "BODICE_ALT_C/ARCH2_MEDIUM_BALANCED: peak=4.752%, eqMax=2.8228%, rmsVel=0.0058, gtEqFrames=0, meanMs=16.7585",
+      "BODICE_ALT_C/ARCH3_STRUCTURED_STIFF: peak=5.9942%, eqMax=2.8796%, rmsVel=0.0074, gtEqFrames=0, meanMs=17.2866",
+      "BODICE_ALT_C/ARCH4_ASYM_FACE_UP_STIFF: peak=6.1287%, eqMax=3.1336%, rmsVel=0.0072, gtEqFrames=0, meanMs=16.1981",
+      "SHOULDER_ANCHORED_ALT_C/ARCH2_MEDIUM_BALANCED: peak=26.0469%, eqMax=11.8806%, rmsVel=0.0235, gtEqFrames=0, meanMs=16.7459",
+      "SHOULDER_CAPE_0PIN_ALT_C/ARCH1_FLUID_LIGHT: peak=14.2684%, eqMax=11.3414%, rmsVel=0.0172, gtEqFrames=0, meanMs=16.0103"
+    ],
+    "documentableLimitationsRemaining": [
+      "SHOULDER_ANCHORED_ALT_C/ARCH2_MEDIUM_BALANCED: peak=26.0469%, eqMax=11.8806%, gtEqFrames=0 (concentración geométrica en 2 pines de 1 vértice o paño plano sin escote sobre silla de montar del cuello)",
+      "SHOULDER_ANCHORED_ALT_C/ARCH3_STRUCTURED_STIFF: peak=14.2791%, eqMax=7.942%, gtEqFrames=0 (concentración geométrica en 2 pines de 1 vértice o paño plano sin escote sobre silla de montar del cuello)",
+      "SHOULDER_CAPE_0PIN_ALT_C/ARCH1_FLUID_LIGHT: peak=14.2684%, eqMax=11.3414%, gtEqFrames=0 (concentración geométrica en 2 pines de 1 vértice o paño plano sin escote sobre silla de montar del cuello)",
+      "SHOULDER_CAPE_0PIN_ALT_C/ARCH3_STRUCTURED_STIFF: peak=20.7234%, eqMax=0.6255%, gtEqFrames=0 (concentración geométrica en 2 pines de 1 vértice o paño plano sin escote sobre silla de montar del cuello)"
+    ]
+  }
+}

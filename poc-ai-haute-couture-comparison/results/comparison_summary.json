@@ -1,0 +1,225 @@
+{
+  "status": "PARTIAL_BLOCKED_BY_PROVIDER_QUOTA",
+  "generatedAtIso": "2026-11-16T19:30:16.490Z",
+  "caseId": "SYNTH_COUTURE_HOURGLASS_01__VESTIDO_GALA_KC_01",
+  "parityConditions": {
+    "imageSize": "1024x1536",
+    "quality": "high",
+    "geminiAspectRatio": "2:3"
+  },
+  "providers": {
+    "openai": {
+      "requestedImageModels": [
+        "gpt-image-2.6-sunburst",
+        "gpt-image-2.5-sunburst",
+        "gpt-image-2.5",
+        "gpt-image-1"
+      ],
+      "imageModel": "gpt-image-2.6-sunburst",
+      "research": {
+        "status": "ERROR",
+        "httpStatus": 429,
+        "errorMessage": "OpenAI Research HTTP 429: You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.",
+        "attemptedModels": [
+          {
+            "model": "gpt-4.1",
+            "httpStatus": 429,
+            "elapsedMs": 1611,
+            "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+          }
+        ],
+        "model": "gpt-4.1",
+        "endpoint": "POST /v1/responses (web_search_preview)",
+        "elapsedMs": 1611,
+        "groundingNote": null,
+        "citations": [],
+        "reportPreview": "",
+        "usage": {
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "totalTokens": 0
+        },
+        "costUsd": null,
+        "pricingSource": "NO_EJECUTADO_POR_ERROR"
+      },
+      "v1": {
+        "status": "ERROR",
+        "httpStatus": 429,
+        "errorMessage": "OpenAI Image Edit HTTP 429: You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.",
+        "attemptedModels": [
+          {
+            "model": "gpt-image-2.6-sunburst",
+            "httpStatus": 429,
+            "elapsedMs": 2311,
+            "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+          }
+        ],
+        "model": "gpt-image-2.6-sunburst",
+        "ext": null,
+        "elapsedMs": 2311,
+        "usage": {
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "totalTokens": 0
+        },
+        "costUsd": null,
+        "pricingSource": "NO_EJECUTADO_POR_ERROR",
+        "geometricAudit": {
+          "audited": false,
+          "reason": "OpenAI Image Edit HTTP 429: You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
+        }
+      },
+      "v2": {
+        "status": "SKIPPED",
+        "httpStatus": null,
+        "errorMessage": "Omitido porque v1 falló (HTTP 429)",
+        "attemptedModels": [],
+        "model": "gpt-image-2.6-sunburst",
+        "ext": null,
+        "elapsedMs": 0,
+        "usage": {
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "totalTokens": 0
+        },
+        "costUsd": null,
+        "pricingSource": "OMITIDO_POR_DEPENDENCIA_V1",
+        "geometricAudit": {
+          "audited": false,
+          "reason": "Omitido porque v1 falló (HTTP 429)"
+        }
+      },
+      "totalCostUsd": null
+    },
+    "gemini": {
+      "requestedImageModels": [
+        "gemini-3-pro-image",
+        "gemini-3-pro-image-preview",
+        "gemini-3.1-flash-image",
+        "gemini-2.5-flash-image"
+      ],
+      "imageModel": "gemini-3-pro-image",
+      "research": {
+        "status": "OK",
+        "httpStatus": 200,
+        "errorMessage": null,
+        "attemptedModels": [
+          {
+            "model": "gemini-3.5-flash",
+            "withGoogleSearch": true,
+            "httpStatus": 429,
+            "elapsedMs": 256,
+            "error": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+          },
+          {
+            "model": "gemini-3.5-flash",
+            "withGoogleSearch": false,
+            "httpStatus": 200,
+            "elapsedMs": 123442,
+            "error": "Respuesta vacía del modelo"
+          },
+          {
+            "model": "gemini-3.1-flash-lite",
+            "withGoogleSearch": false,
+            "httpStatus": 200,
+            "elapsedMs": 10328
+          }
+        ],
+        "model": "gemini-3.1-flash-lite",
+        "endpoint": "POST /v1beta/models/gemini-3.1-flash-lite:generateContent (sin googleSearch por cuota 429)",
+        "elapsedMs": 10328,
+        "groundingNote": "googleSearch bloqueado por cuota (HTTP 429); ejecutado con conocimiento interno del modelo sin inventar citas web",
+        "citations": [],
+        "reportPreview": "**INFORME TÉCNICO DE TALLER: DESARROLLO DE VESTIDO SIRENA (GALA/ALTA COSTURA)**\n\n**Fecha:** 24 de mayo de 2024\n**Asunto:** Especificaciones técnicas para construcción sobre medidas (96-68-102 cm) en tejido Mikado de seda.\n\n---\n\n### 1. Comportamiento mecánico: Mikado de seda 280 gsm\nEl Mikado de seda (280 gsm) es un tejido de ligamento sarga con alta densidad de trama, lo que le confiere una estructura rígida y gran capacidad de mantener volumen.\n\n*   **Hechos verificados:** Dada su rigidez, el Mikado de 280 gsm no es un tejido que \"caiga\" por gravedad, sino que \"construye\" formas. En cortes princesa, la curvatura del panel lateral debe ser precisa; si no se compensa la tensión, el tejido tiende a crear \"picos\" en las costuras si la curvatur...",
+        "usage": {
+          "inputTokens": 307,
+          "outputTokens": 1265,
+          "thoughtsTokenCount": 0,
+          "totalTokens": 1572,
+          "raw": {
+            "promptTokenCount": 307,
+            "candidatesTokenCount": 1265,
+            "totalTokenCount": 1572,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 307
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        },
+        "costUsd": null,
+        "pricingSource": "TARIFA_NO_CONFIGURADA_EN_ENV"
+      },
+      "v1": {
+        "status": "ERROR",
+        "httpStatus": 429,
+        "errorMessage": "Gemini Image HTTP 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-3-pro-image, description: Generate content input tokens per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 12h26m34.969773039s.",
+        "attemptedModels": [
+          {
+            "model": "gemini-3-pro-image",
+            "httpStatus": 429,
+            "elapsedMs": 674,
+            "error": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-3-pro-image, description: Generate content input tokens per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 12h26m34.969773039s."
+          },
+          {
+            "model": "gemini-3-pro-image-preview",
+            "httpStatus": 429,
+            "elapsedMs": 669,
+            "error": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-3-pro-image, description: Generate content input tokens per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 12h26m34.292585453s."
+          },
+          {
+            "model": "gemini-3.1-flash-image",
+            "httpStatus": 429,
+            "elapsedMs": 627,
+            "error": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-3.1-flash-image, description: Generate content input tokens per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3.1-flash-image, description: Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3.1-flash-image, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 12h26m33.662432458s."
+          },
+          {
+            "model": "gemini-2.5-flash-image",
+            "httpStatus": 429,
+            "elapsedMs": 634,
+            "error": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.5-flash-preview-image, description: Generate content input tokens per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.5-flash-preview-image, description: Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.5-flash-preview-image, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 12h26m33.025305223s."
+          }
+        ],
+        "model": "gemini-3-pro-image",
+        "ext": null,
+        "mimeType": null,
+        "elapsedMs": 2604,
+        "usage": {
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "totalTokens": 0
+        },
+        "costUsd": null,
+        "pricingSource": "NO_EJECUTADO_POR_ERROR",
+        "geometricAudit": {
+          "audited": false,
+          "reason": "Gemini Image HTTP 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-3-pro-image, description: Generate content input tokens per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-3-pro-image, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 12h26m34.969773039s."
+        }
+      },
+      "v2": {
+        "status": "SKIPPED",
+        "httpStatus": null,
+        "errorMessage": "Omitido porque v1 falló (HTTP 429)",
+        "attemptedModels": [],
+        "model": "gemini-3-pro-image",
+        "ext": null,
+        "mimeType": null,
+        "elapsedMs": 0,
+        "usage": {
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "totalTokens": 0
+        },
+        "costUsd": null,
+        "pricingSource": "OMITIDO_POR_DEPENDENCIA_V1",
+        "geometricAudit": {
+          "audited": false,
+          "reason": "Omitido porque v1 falló (HTTP 429)"
+        }
+      },
+      "totalCostUsd": null
+    }
+  }
+}

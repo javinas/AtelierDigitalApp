@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1536" width="1024" height="1536">
+  <rect x="2" y="2" width="1020" height="1532" fill="none" stroke="#C5A880" stroke-width="2" stroke-dasharray="8 8" opacity="0.5" />
+  <line x1="512" y1="100" x2="512" y2="1360" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="6 6" opacity="0.6" />
+  <line x1="64" y1="100" x2="64" y2="1360" stroke="#1F2937" stroke-width="1.8" />
+  <text x="74" y="114" font-family="sans-serif" font-size="13" font-weight="700" fill="#1F2937">Estatura 168.0 cm (1260 px @ 0.75 px/mm)</text>
+  <line x1="64" y1="1360" x2="960" y2="1360" stroke="#1F2937" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6" />
+  
+  <g>
+    <line x1="467.5" y1="300" x2="556.5" y2="300" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.65" />
+    <line x1="470.0" y1="300" x2="554.0" y2="300" stroke="#D97706" stroke-width="2.5" />
+    <circle cx="470.0" cy="300" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <circle cx="554.0" cy="300" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <rect x="568.0" y="288" width="210" height="24" rx="4" fill="rgba(255,255,255,0.88)" stroke="#D97706" stroke-width="1" />
+    <text x="576.0" y="304" font-family="sans-serif" font-size="12" font-weight="700" fill="#1F2937">Cuello · 84 px</text>
+  </g>
+
+  <g>
+    <line x1="358.5" y1="332" x2="665.5" y2="332" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.65" />
+    <line x1="367.2" y1="332" x2="656.8" y2="332" stroke="#D97706" stroke-width="2.5" />
+    <circle cx="367.2" cy="332" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <circle cx="656.8" cy="332" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <rect x="670.8" y="320" width="210" height="24" rx="4" fill="rgba(255,255,255,0.88)" stroke="#D97706" stroke-width="1" />
+    <text x="678.8" y="336" font-family="sans-serif" font-size="12" font-weight="700" fill="#1F2937">Hombros (38.0 cm) · 290 px</text>
+  </g>
+
+  <g>
+    <line x1="376.9" y1="472" x2="647.1" y2="472" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.65" />
+    <line x1="384.5" y1="472" x2="639.5" y2="472" stroke="#D97706" stroke-width="2.5" />
+    <circle cx="384.5" cy="472" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <circle cx="639.5" cy="472" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <rect x="653.5" y="460" width="210" height="24" rx="4" fill="rgba(255,255,255,0.88)" stroke="#D97706" stroke-width="1" />
+    <text x="661.5" y="476" font-family="sans-serif" font-size="12" font-weight="700" fill="#1F2937">Busto (96.0 cm) · 255 px</text>
+  </g>
+
+  <g>
+    <line x1="416.6" y1="604" x2="607.4" y2="604" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.65" />
+    <line x1="422.0" y1="604" x2="602.0" y2="604" stroke="#D97706" stroke-width="2.5" />
+    <circle cx="422.0" cy="604" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <circle cx="602.0" cy="604" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <rect x="616.0" y="592" width="210" height="24" rx="4" fill="rgba(255,255,255,0.88)" stroke="#D97706" stroke-width="1" />
+    <text x="624.0" y="608" font-family="sans-serif" font-size="12" font-weight="700" fill="#1F2937">Cintura (68.0 cm) · 180 px</text>
+  </g>
+
+  <g>
+    <line x1="366.5" y1="758" x2="657.5" y2="758" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.65" />
+    <line x1="374.7" y1="758" x2="649.3" y2="758" stroke="#D97706" stroke-width="2.5" />
+    <circle cx="374.7" cy="758" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <circle cx="649.3" cy="758" r="4.5" fill="#10B981" stroke="#FFFFFF" stroke-width="1.2" />
+    <rect x="663.3" y="746" width="210" height="24" rx="4" fill="rgba(255,255,255,0.88)" stroke="#D97706" stroke-width="1" />
+    <text x="671.3" y="762" font-family="sans-serif" font-size="12" font-weight="700" fill="#1F2937">Cadera (102.0 cm) · 275 px</text>
+  </g>
+</svg>

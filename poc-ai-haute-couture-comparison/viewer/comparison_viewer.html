@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>PoC Comparativa Controlada — OpenAI vs. Google Gemini</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #FAF7F2;
+      color: #1F2937;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+      line-height: 1.45;
+    }
+    .header {
+      background: #FFFFFF;
+      border: 1px solid #E5DED5;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .eyebrow { font-size: 11px; letter-spacing: 1px; font-weight: 700; color: #A78350; text-transform: uppercase; }
+    h1 { font-size: 20px; color: #171411; margin-top: 2px; }
+    .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    button {
+      border: 1px solid #D1C5B4;
+      background: #FFFFFF;
+      color: #171411;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.active { background: #171411; color: #FAF7F2; border-color: #171411; }
+    .banner {
+      background: #FEF3C7;
+      border: 1px solid #F59E0B;
+      color: #92400E;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .panel {
+      background: #FFFFFF;
+      border: 1px solid #E5DED5;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .panel h2 { font-size: 15px; margin-bottom: 4px; color: #171411; }
+    .meta { font-size: 12px; color: #6B7280; margin-bottom: 10px; }
+    .stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      background: #FAF7F2;
+      border: 1px solid #EFECE6;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .stage img.main {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .stage img.overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+    .hidden { display: none !important; }
+    .metrics {
+      margin-top: 10px;
+      font-size: 12px;
+      background: #F9F6F1;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .badge-pass { color: #15803D; font-weight: 700; }
+    .badge-warn { color: #B45309; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border-bottom: 1px solid #E5DED5; padding: 8px 10px; text-align: left; }
+    th { background: #F5EFE6; color: #171411; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="eyebrow">Atelier Digital · PoC Aislada de Selección de Modelo</div>
+      <h1>Comparativa Controlada: OpenAI GPT Image vs. Google Gemini Image</h1>
+    </div>
+    <div class="controls">
+      <button id="btn-stage-v1" class="active">Generación Inicial (v1)</button>
+      <button id="btn-stage-v2">Edición Conversacional (v2)</button>
+      <button id="btn-toggle-cage" class="active">Jaula Antropométrica 1:1</button>
+    </div>
+  </div>
+
+  <div id="status-banner" class="banner hidden"></div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>Referencia Sintética Base (0.75 px/mm)</h2>
+      <div class="meta">Maniquí 168 cm · 96-68-102 cm · Espalda 38 cm · Swatch Mikado #124E3F</div>
+      <div class="stage">
+        <img class="main" src="../inputs/reference_mannequin_1024x1536.png" alt="Maniquí sintético de referencia" />
+        <img class="overlay cage-layer" src="../inputs/reference_body_cage_overlay.svg" alt="Jaula 1:1" />
+      </div>
+      <div id="ref-audit" class="metrics">Cargando calibración base...</div>
+    </div>
+
+    <div class="panel">
+      <h2 id="oai-title">OpenAI (GPT Image)</h2>
+      <div class="meta" id="oai-meta">Pendiente de credenciales reales</div>
+      <div class="stage">
+        <img id="oai-img" class="main" src="../inputs/reference_mannequin_1024x1536.png" alt="Resultado OpenAI" />
+        <img class="overlay cage-layer" src="../inputs/reference_body_cage_overlay.svg" alt="Jaula 1:1" />
+      </div>
+      <div id="oai-audit" class="metrics">Sin ejecución aún.</div>
+    </div>
+
+    <div class="panel">
+      <h2 id="gem-title">Google Gemini (Image)</h2>
+      <div class="meta" id="gem-meta">Pendiente de credenciales reales</div>
+      <div class="stage">
+        <img id="gem-img" class="main" src="../inputs/reference_mannequin_1024x1536.png" alt="Resultado Gemini" />
+        <img class="overlay cage-layer" src="../inputs/reference_body_cage_overlay.svg" alt="Jaula 1:1" />
+      </div>
+      <div id="gem-audit" class="metrics">Sin ejecución aún.</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom: 18px;">
+    <h2>Separación de Resultados: Investigación Técnica Documentada</h2>
+    <div class="grid" style="margin-top: 12px; margin-bottom: 0;">
+      <div class="metrics" id="oai-research-box">OpenAI Research: pendiente</div>
+      <div class="metrics" id="gem-research-box">Gemini Research: pendiente</div>
+    </div>
+  </div>
+
+  <script type="module">
+    let currentStage = 'v1';
+    let showCage = true;
+    let summary = null;
+
+    const btnV1 = document.getElementById('btn-stage-v1');
+    const btnV2 = document.getElementById('btn-stage-v2');
+    const btnCage = document.getElementById('btn-toggle-cage');
+    const banner = document.getElementById('status-banner');
+
+    function updateCageVisibility() {
+      document.querySelectorAll('.cage-layer').forEach((el) => {
+        el.classList.toggle('hidden', !showCage);
+      });
+      btnCage.classList.toggle('active', showCage);
+    }
+
+    function escHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderMetrics(audit) {
+      if (!audit) return 'Sin datos de ejecución.';
+      if (!audit.audited) return `Auditoría omitida: ${escHtml(audit.reason)}`;
+      const cls = audit.verdict === 'FIDELITY_PASS' ? 'badge-pass' : 'badge-warn';
+      const rows = (audit.zones || [])
+        .map((z) => `<li>${escHtml(z.label)}: objetivo <b>${z.targetWidthPx} px</b> vs medido <b>${z.measuredWidthPx} px</b> (${z.deviationPct}%)</li>`)
+        .join('');
+      return `<span class="${cls}">${escHtml(audit.verdict)}</span> · Máx desv: ${audit.maxDeviationPct}%<ul style="margin:6px 0 0 16px">${rows}</ul>`;
+    }
+
+    function renderProviderStage(prefix, label, modelName, stageRun, slug) {
+      const titleEl = document.getElementById(`${prefix}-title`);
+      const metaEl = document.getElementById(`${prefix}-meta`);
+      const imgEl = document.getElementById(`${prefix}-img`);
+      const auditEl = document.getElementById(`${prefix}-audit`);
+
+      titleEl.textContent = `${label} · ${stageRun?.model || modelName || 'N/D'} (${currentStage})`;
+      if (!stageRun || stageRun.status !== 'OK' || !stageRun.ext) {
+        imgEl.src = '../inputs/reference_mannequin_1024x1536.png';
+        imgEl.style.opacity = '0.28';
+        metaEl.textContent = stageRun
+          ? `${stageRun.status} (HTTP ${stageRun.httpStatus ?? 'N/A'}) · Tiempo intento: ${stageRun.elapsedMs ?? 0} ms`
+          : 'Sin ejecución.';
+        auditEl.innerHTML = `<span class="badge-warn">${escHtml(stageRun?.status || 'NO_DATA')}</span> · ${escHtml(stageRun?.errorMessage || 'No se generó imagen.')}`;
+        return;
+      }
+
+      imgEl.style.opacity = '1';
+      imgEl.src = `../results/${slug}.${stageRun.ext}`;
+      metaEl.textContent = `Tiempo: ${stageRun.elapsedMs} ms · Tokens: ${stageRun.usage?.totalTokens ?? 0} · Costo: ${stageRun.costUsd ?? 'N/D'}`;
+      auditEl.innerHTML = renderMetrics(stageRun.geometricAudit);
+    }
+
+    function renderResearchBox(elId, label, r) {
+      const el = document.getElementById(elId);
+      if (!r) {
+        el.textContent = `${label} Research: sin datos`;
+        return;
+      }
+      if (r.status !== 'OK') {
+        el.innerHTML = `<span class="badge-warn">${escHtml(label)} · ${escHtml(r.status)} (HTTP ${escHtml(r.httpStatus ?? 'N/A')})</span>` +
+          `<div style="margin-top:6px">Modelo: <code>${escHtml(r.model || 'N/D')}</code><br/>${escHtml(r.errorMessage)}</div>`;
+        return;
+      }
+      const note = r.groundingNote ? `<div style="margin-top:4px;color:#B45309">${escHtml(r.groundingNote)}</div>` : '';
+      const preview = r.reportPreview ? `<div style="margin-top:6px;white-space:pre-wrap;color:#374151">${escHtml(r.reportPreview)}</div>` : '';
+      el.innerHTML = `<span class="badge-pass">${escHtml(label)} · OK (${escHtml(r.model)})</span> · ${r.elapsedMs} ms · ${r.citations?.length ?? 0} citas · Tokens ${r.usage?.totalTokens ?? 0}${note}${preview}`;
+    }
+
+    function renderStage() {
+      btnV1.classList.toggle('active', currentStage === 'v1');
+      btnV2.classList.toggle('active', currentStage === 'v2');
+      if (!summary) return;
+      if (summary.status !== 'COMPLETED' && summary.status !== 'PARTIAL_BLOCKED_BY_PROVIDER_QUOTA' && summary.status !== 'PARTIAL_WITH_ERRORS') {
+        return;
+      }
+
+      const oaiRun = summary.providers?.openai?.[currentStage];
+      const gemRun = summary.providers?.gemini?.[currentStage];
+      const slugSuffix = currentStage === 'v1' ? 'v1_initial' : 'v2_edited';
+      renderProviderStage('oai', 'OpenAI', summary.providers?.openai?.imageModel, oaiRun, `openai_${slugSuffix}`);
+      renderProviderStage('gem', 'Google Gemini', summary.providers?.gemini?.imageModel, gemRun, `gemini_${slugSuffix}`);
+    }
+
+    btnV1.onclick = () => { currentStage = 'v1'; renderStage(); };
+    btnV2.onclick = () => { currentStage = 'v2'; renderStage(); };
+    btnCage.onclick = () => { showCage = !showCage; updateCageVisibility(); };
+    updateCageVisibility();
+
+    try {
+      const cageRes = await fetch('../inputs/cage_spec.json');
+      if (cageRes.ok) {
+        const cageData = await cageRes.json();
+        document.getElementById('ref-audit').innerHTML = renderMetrics(cageData.mannequinSelfAudit);
+      }
+      const sumRes = await fetch('../results/comparison_summary.json');
+      if (sumRes.ok) {
+        summary = await sumRes.json();
+        renderStage();
+        const oR = summary.providers?.openai?.research;
+        const gR = summary.providers?.gemini?.research;
+        renderResearchBox('oai-research-box', 'OpenAI', oR);
+        renderResearchBox('gem-research-box', 'Google Gemini', gR);
+
+        if (summary.status !== 'COMPLETED') {
+          const phaseNotes = [
+            `OpenAI Research: ${oR?.status} (HTTP ${oR?.httpStatus ?? 'N/A'})`,
+            `OpenAI v1: ${summary.providers?.openai?.v1?.status} (HTTP ${summary.providers?.openai?.v1?.httpStatus ?? 'N/A'})`,
+            `Gemini Research: ${gR?.status} (HTTP ${gR?.httpStatus ?? 'N/A'})`,
+            `Gemini v1: ${summary.providers?.gemini?.v1?.status} (HTTP ${summary.providers?.gemini?.v1?.httpStatus ?? 'N/A'})`,
+          ];
+          banner.classList.remove('hidden');
+          banner.innerHTML =
+            `<strong>Estado: ${escHtml(summary.status)}</strong> · ${escHtml(phaseNotes.join(' | '))}. ` +
+            `Mostrando únicamente resultados reales registrados sin simular imágenes ni costos.`;
+        }
+      } else {
+        const preRes = await fetch('../results/preflight_status.json');
+        const pre = preRes.ok ? await preRes.json() : null;
+        banner.classList.remove('hidden');
+        banner.innerHTML =
+          `<strong>Estado: ${escHtml(pre?.status || 'WAITING_FOR_API_KEYS')}</strong> · Faltan credenciales reales (${escHtml((pre?.missingKeys || ['OPENAI_API_KEY', 'GEMINI_API_KEY']).join(', '))}). ` +
+          `Mostrando únicamente los insumos sintéticos calibrados sin resultados simulados.`;
+      }
+    } catch (e) {
+      banner.classList.remove('hidden');
+      banner.textContent = `Carga parcial (${e.message}). Ejecuta primero un servidor estático en poc-ai-haute-couture-comparison/.`;
+    }
+  </script>
+</body>
+</html>

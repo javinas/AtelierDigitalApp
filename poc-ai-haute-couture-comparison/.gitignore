@@ -1,0 +1,5 @@
+# Secretos locales protegidos para la PoC comparativa
+.env
+.env.local
+.env.*.local
+!.env.example

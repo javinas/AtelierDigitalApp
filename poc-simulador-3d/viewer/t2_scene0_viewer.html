@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Atelier Digital PoC T2 — Escena 0: XPBD vs PBD Clásico</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #FAF7F2;
+      color: #2A1F18;
+      overflow: hidden;
+    }
+    #hud {
+      position: fixed;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .badge {
+      background: rgba(255, 252, 247, 0.92);
+      border: 1px solid #C5A880;
+      border-radius: 8px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 10px rgba(42, 31, 24, 0.08);
+      max-width: 720px;
+    }
+    .title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 12px;
+      color: #5A4E44;
+      line-height: 1.4;
+    }
+    .cards {
+      position: fixed;
+      bottom: 14px;
+      left: 16px;
+      right: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .card {
+      background: rgba(255, 252, 247, 0.92);
+      border: 1px solid #D8CBB8;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .card strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 2px;
+      color: #2A1F18;
+    }
+    .pass { color: #1E6B3A; font-weight: 700; }
+    .fail { color: #A62626; font-weight: 700; }
+    #canvas-host { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="badge">
+      <div class="title" id="hud-title">Atelier Digital PoC T2 — Escena 0 (50 × 50 cm, t = 10.0 s)</div>
+      <div class="subtitle" id="hud-subtitle">Cargando mallas simuladas...</div>
+    </div>
+    <div class="badge">
+      <div class="title">Referencia Geométrica</div>
+      <div class="subtitle">
+        Contorno punteado: posición inicial plana (y = 1.00 m)<br/>
+        Esferas verdes: 2 esquinas fijas · Suelo en cuadrícula de 0.10 m
+      </div>
+    </div>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div id="canvas-host"></div>
+
+  <script type="module">
+    import * as THREE from '/node_modules/three/build/three.module.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('mode') || 'compare';
+    const kfIndex = Number(params.get('kf') ?? 4);
+    const singleRunId = params.get('run') || 'xpbd_32x32';
+
+    const response = await fetch('/results/t2/t2_keyframe_meshes.json');
+    const bundle = await response.json();
+
+    const host = document.getElementById('canvas-host');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#FAF7F2');
+
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.05, 30);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(1);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    host.appendChild(renderer.domElement);
+
+    // Iluminación estudio
+    scene.add(new THREE.AmbientLight('#FFF8F0', 0.9));
+    const keyLight = new THREE.DirectionalLight('#FFF2DC', 1.35);
+    keyLight.position.set(2.2, 3.8, 3.0);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight('#DCE6F5', 0.6);
+    fillLight.position.set(-2.5, 1.8, -1.8);
+    scene.add(fillLight);
+
+    // Suelo referencia
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(8, 8),
+      new THREE.ShadowMaterial({ opacity: 0.16 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = 0.0;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const gridHelper = new THREE.GridHelper(4, 40, 0xC5A880, 0xE6DDD0);
+    gridHelper.position.y = 0.001;
+    scene.add(gridHelper);
+
+    const runOrder = [
+      { id: 'xpbd_16x16', title: 'XPBD · 16×16', color: '#2E5A39', xOffset: -1.12 },
+      { id: 'xpbd_32x32', title: 'XPBD · 32×32', color: '#1B4332', xOffset: -0.38 },
+      { id: 'pbd_16x16', title: 'PBD Clásico · 16×16', color: '#8C4A27', xOffset: 0.38 },
+      { id: 'pbd_32x32', title: 'PBD Clásico · 32×32', color: '#5C2B14', xOffset: 1.12 },
+    ];
+
+    function buildClothVisual(runData, xOffset, colorHex, targetKfIndex) {
+      const group = new THREE.Group();
+      group.position.set(xOffset, 0, 0);
+
+      const kf = runData.keyframes[Math.min(targetKfIndex, runData.keyframes.length - 1)];
+      const geo = new THREE.BufferGeometry();
+      geo.setIndex(runData.triangleIndices);
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(kf.positionsM, 3));
+      geo.computeVertexNormals();
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: colorHex,
+        roughness: 0.72,
+        metalness: 0.04,
+        side: THREE.DoubleSide,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      group.add(mesh);
+
+      const wire = new THREE.Mesh(
+        geo,
+        new THREE.MeshBasicMaterial({
+          color: '#FFFFFF',
+          wireframe: true,
+          transparent: true,
+          opacity: 0.25,
+        })
+      );
+      group.add(wire);
+
+      // Marco punteado horizontal de posición inicial en reposo (y = 1.0 m)
+      const restLineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-0.25, 1.0, 0.0),
+        new THREE.Vector3(0.25, 1.0, 0.0),
+        new THREE.Vector3(0.25, 1.0, 0.5),
+        new THREE.Vector3(-0.25, 1.0, 0.5),
+        new THREE.Vector3(-0.25, 1.0, 0.0),
+      ]);
+      const restOutline = new THREE.Line(
+        restLineGeo,
+        new THREE.LineDashedMaterial({ color: '#7A6C5D', dashSize: 0.03, gapSize: 0.02 })
+      );
+      restOutline.computeLineDistances();
+      group.add(restOutline);
+
+      // Pines verdes en esquinas fijas
+      const pinGeo = new THREE.SphereGeometry(0.015, 16, 16);
+      const pinMat = new THREE.MeshBasicMaterial({ color: '#1E824C' });
+      const pinL = new THREE.Mesh(pinGeo, pinMat);
+      pinL.position.set(-0.25, 1.0, 0.0);
+      const pinR = new THREE.Mesh(pinGeo, pinMat);
+      pinR.position.set(0.25, 1.0, 0.0);
+      group.add(pinL, pinR);
+
+      scene.add(group);
+      return { geo, mesh, kf };
+    }
+
+    const cardsEl = document.getElementById('cards');
+    const titleEl = document.getElementById('hud-title');
+    const subEl = document.getElementById('hud-subtitle');
+
+    if (mode === 'single') {
+      const meta = runOrder.find((r) => r.id === singleRunId) || runOrder[1];
+      const runData = bundle[meta.id];
+      const { kf } = buildClothVisual(runData, 0, meta.color, kfIndex);
+      camera.position.set(0.75, 0.85, 1.05);
+      camera.lookAt(0, 0.65, 0.12);
+      titleEl.textContent = `${meta.title} — t = ${kf.simTimeS.toFixed(2)} s (frame ${kf.frameIndex})`;
+      const s = runData.summary;
+      subEl.innerHTML =
+        `Vértices: ${s.vertexCount} · Triángulos: ${s.triangleCount} · Aristas: ${s.edgeCount} · ` +
+        `physicsStepMs media: ${s.physicsStepMsMean} ms (p95: ${s.physicsStepMsP95} ms)<br/>` +
+        `Elongación equilibrio: media ${s.equilibriumMeanStretchPct}% / pico ${s.equilibriumMaxStretchPct}% · ` +
+        `Pico transitorio 10s: ${s.transientPeakStretchPct}% · Caída centro-bajo: ${s.centerBottomDropM} m`;
+      cardsEl.style.display = 'none';
+      renderer.render(scene, camera);
+      window.__T2_READY__ = { mode, runId: meta.id, simTimeS: kf.simTimeS };
+    } else if (mode === 'bench') {
+      const meta = runOrder.find((r) => r.id === singleRunId) || runOrder[1];
+      const runData = bundle[meta.id];
+      const built = buildClothVisual(runData, 0, meta.color, runData.keyframes.length - 1);
+      camera.position.set(0.75, 0.85, 1.05);
+      camera.lookAt(0, 0.65, 0.12);
+
+      // Medir 60 frames reales WebGL incluyendo actualización dinámica de vértices y normales
+      const posAttr = built.geo.getAttribute('position');
+      const durations = [];
+      for (let i = 0; i < 65; i++) {
+        const t0 = performance.now();
+        posAttr.needsUpdate = true;
+        built.geo.computeVertexNormals();
+        renderer.render(scene, camera);
+        const t1 = performance.now();
+        if (i >= 5) durations.push(t1 - t0); // descartar warmup de 5 frames
+      }
+      const sorted = [...durations].sort((a, b) => a - b);
+      const mean = durations.reduce((a, b) => a + b, 0) / durations.length;
+      const p50 = sorted[Math.floor(sorted.length * 0.5)];
+      const p95 = sorted[Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1)];
+      window.__T2_READY__ = {
+        mode: 'bench',
+        runId: meta.id,
+        vertexCount: runData.summary.vertexCount,
+        triangleCount: runData.summary.triangleCount,
+        renderMsMean: Math.round(mean * 1000) / 1000,
+        renderMsP50: Math.round(p50 * 1000) / 1000,
+        renderMsP95: Math.round(p95 * 1000) / 1000,
+      };
+    } else {
+      let activeSimTime = 0;
+      for (const meta of runOrder) {
+        const runData = bundle[meta.id];
+        const { kf } = buildClothVisual(runData, meta.xOffset, meta.color, kfIndex);
+        activeSimTime = kf.simTimeS;
+        const s = runData.summary;
+        const card = document.createElement('div');
+        card.className = 'card';
+        const meanOk = s.equilibriumMeanStretchPct <= 2;
+        const peakOk = s.equilibriumMaxStretchPct <= 5;
+        const tPeakOk = s.transientPeakStretchPct <= 5;
+        card.innerHTML =
+          `<strong>${meta.title} (${s.vertexCount} v / ${s.triangleCount} tri)</strong>` +
+          `NaN: <span class="${s.checks.zeroNan ? 'pass' : 'fail'}">${s.nanVertexCountTotal}</span> · ` +
+          `Step media/p95: ${s.physicsStepMsMean}/${s.physicsStepMsP95} ms<br/>` +
+          `Eq media/pico: <span class="${meanOk ? 'pass' : 'fail'}">${s.equilibriumMeanStretchPct}%</span> / ` +
+          `<span class="${peakOk ? 'pass' : 'fail'}">${s.equilibriumMaxStretchPct}%</span><br/>` +
+          `Transitorio pico: <span class="${tPeakOk ? 'pass' : 'fail'}">${s.transientPeakStretchPct}%</span> · ` +
+          `Caída centro: ${s.centerBottomDropM} m`;
+        cardsEl.appendChild(card);
+      }
+
+      camera.position.set(0.0, 0.95, 3.05);
+      camera.lookAt(0.0, 0.62, 0.12);
+      titleEl.textContent = `Atelier Digital PoC T2 — Comparativa Escena 0 (t = ${activeSimTime.toFixed(2)} s)`;
+      subEl.textContent = 'Izquierda: XPBD (16×16 y 32×32) · Derecha: PBD Clásico (16×16 y 32×32) · Umbrales Gate 1: media <= 2%, pico <= 5%, variación <= 10%';
+      renderer.render(scene, camera);
+      window.__T2_READY__ = { mode: 'compare', simTimeS: activeSimTime };
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,3765 @@
+{
+  "benchmarkId": "T5_2_CORRECTIVE_BENCHMARK",
+  "generatedAtIso": "2026-11-16T01:45:13.536Z",
+  "evidenceQuality": "TIER_3_ESTIMATED",
+  "disclaimer": "Todos los parámetros textiles corresponden a arquetipos sintéticos TIER_3_ESTIMATED. restLengthM proviene estrictamente de flatPattern2dM sin sobrescritura. Los umbrales de Gate 1 se mantienen intactos sin relajar.",
+  "gateStatusNote": "Al menos un criterio estricto de Gate 1 sigue pendiente; Gate 1 NO se declara aprobado y no se inicia T6.",
+  "geometries": {
+    "conformal_base": {
+      "topologyKey": "conformal_base",
+      "contourMode": "conformal",
+      "conformalRegularized": false,
+      "garmentStats": {
+        "frontVertexCount": 559,
+        "backVertexCount": 586,
+        "frontTriangleCount": 1018,
+        "backTriangleCount": 1074,
+        "panelEdgeCount": 3235,
+        "seamEdgeCount": 40,
+        "hingeCount": 3041,
+        "pinnedSupportCount": 16,
+        "initialMaxStretchPct": 12.668,
+        "initialMeanStretchPct": 1.683,
+        "bustEaseGirthRatio": 1.239
+      },
+      "qualityStats": {
+        "minPanelEdgeLenMm": 8.089,
+        "maxPanelEdgeLenMm": 79.749,
+        "minTriangleAreaMm2": 91.051,
+        "minAngleDeg": 4.69,
+        "degenerateTriangleCount": 0,
+        "warpEdgeCount": 1073,
+        "weftEdgeCount": 1078,
+        "shearEdgeCount": 1084
+      },
+      "trianglesBelow12DegCount": 16,
+      "trianglesBelow14DegCount": 34,
+      "maxAbsPattern2dVsXpbdRestLenMm": 0,
+      "initial3dPreStrain": {
+        "minPreStrainPct": -12.6679,
+        "maxPreStrainPct": 10.4333,
+        "meanAbsPreStrainPct": 1.7035,
+        "edgesGe3PctCount": 606,
+        "edgesGe5PctCount": 244,
+        "frontWorstEdgeIndex": 308,
+        "frontWorstPreStrainPct": -12.6679,
+        "backWorstEdgeIndex": 1647,
+        "backWorstPreStrainPct": -7.9947
+      },
+      "nodalMassStats": {
+        "referenceArealMassKgPerSqM": 0.16,
+        "minMassG": 0.005,
+        "maxMassG": 0.234,
+        "maxToMinRatio": 46.5434,
+        "minMassVertexIndex": 559,
+        "minMassPanel": "BACK"
+      },
+      "initialGtClearance": {
+        "minSignedDistanceMm": 5.4985,
+        "initialPenetratingCountGt0": 0,
+        "initialSevereCountGt3mm": 0
+      }
+    },
+    "conformal_regularized": {
+      "topologyKey": "conformal_regularized",
+      "contourMode": "conformal",
+      "conformalRegularized": true,
+      "garmentStats": {
+        "frontVertexCount": 553,
+        "backVertexCount": 580,
+        "frontTriangleCount": 1008,
+        "backTriangleCount": 1062,
+        "panelEdgeCount": 3201,
+        "seamEdgeCount": 40,
+        "hingeCount": 3009,
+        "pinnedSupportCount": 16,
+        "initialMaxStretchPct": 9.055,
+        "initialMeanStretchPct": 0.718,
+        "bustEaseGirthRatio": 1.235
+      },
+      "qualityStats": {
+        "minPanelEdgeLenMm": 10.169,
+        "maxPanelEdgeLenMm": 95.978,
+        "minTriangleAreaMm2": 111.168,
+        "minAngleDeg": 12.86,
+        "degenerateTriangleCount": 0,
+        "warpEdgeCount": 1035,
+        "weftEdgeCount": 1066,
+        "shearEdgeCount": 1100
+      },
+      "trianglesBelow12DegCount": 0,
+      "trianglesBelow14DegCount": 10,
+      "maxAbsPattern2dVsXpbdRestLenMm": 0,
+      "initial3dPreStrain": {
+        "minPreStrainPct": -9.0554,
+        "maxPreStrainPct": 6.6588,
+        "meanAbsPreStrainPct": 0.7269,
+        "edgesGe3PctCount": 88,
+        "edgesGe5PctCount": 22,
+        "frontWorstEdgeIndex": 1526,
+        "frontWorstPreStrainPct": -9.0554,
+        "backWorstEdgeIndex": 1620,
+        "backWorstPreStrainPct": -3.9537
+      },
+      "nodalMassStats": {
+        "referenceArealMassKgPerSqM": 0.16,
+        "minMassG": 0.0137,
+        "maxMassG": 0.2143,
+        "maxToMinRatio": 15.6154,
+        "minMassVertexIndex": 632,
+        "minMassPanel": "BACK"
+      },
+      "initialGtClearance": {
+        "minSignedDistanceMm": 5.1511,
+        "initialPenetratingCountGt0": 0,
+        "initialSevereCountGt3mm": 0
+      }
+    }
+  },
+  "collisionProxy": {
+    "id": "ALT_C_SDF_GRID_3D",
+    "initMs": 2830.4326,
+    "memoryBytes": 790856,
+    "summary": "43x121x38 = 197,714 voxeles (12 mm)",
+    "params": {
+      "contactThicknessM": 0.002,
+      "frictionCoeff": 0.35
+    }
+  },
+  "runs": [
+    {
+      "runId": "BASE_T51_RESEAL__ARCH1_FLUID_LIGHT",
+      "configId": "BASE_T51_RESEAL",
+      "configLabel": "Base T5.1 (F1+F2+Re-sellado · Sin Cambio 1 ni 2 · Sin Rampa)",
+      "topologyKey": "conformal_base",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.003,
+        "transientPeakGapFrame": 1,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0205,
+        "transientPeakStretchPct": 2.3446,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.017
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.001,
+            "maxStretchPct": 0.003
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.01,
+            "maxStretchPct": 0.02
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.01,
+            "maxStretchPct": 0.018
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 10.1975,
+        "equilibriumMeanStretchPct": 0.3813,
+        "equilibriumMaxStretchPct": 5.8106,
+        "finalFrameMaxStretchPct": 5.8098,
+        "transientPeakEdge": {
+          "edgeIndex": 1652,
+          "vertices": [
+            606,
+            625
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 9.6767,
+          "stretchPct": 10.1975,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1680,
+          "vertices": [
+            616,
+            636
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.3643,
+          "stretchPct": 5.8106,
+          "frame": 266
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 10.1975,
+        "equilibriumMeanStretchPct": 0.3767,
+        "equilibriumMaxStretchPct": 5.8106,
+        "framesOver5PctCount": 300
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 1.1146,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0004,
+        "equilibriumMeanRmsVelocityMS": 0.0007,
+        "finalTotalEnergyJ": 0.0147,
+        "finalBendingEnergyJ": 0.0003,
+        "finalMeanAbsDihedralDeg": 4.6036
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 49.061,
+        "hemDropMeanM": 0.0118,
+        "frontNeckDropMm": 6.983,
+        "leftArmholeDropMm": 7.513,
+        "rightArmholeDropMm": 7.019
+      },
+      "timingMs": {
+        "physicsStepMean": 15.4435,
+        "collisionMean": 1.3179,
+        "bendingMean": 7.0329,
+        "stretchMean": 7.0486,
+        "strainGuardMean": 0.9303,
+        "totalStepMean": 16.7614,
+        "totalStepP95": 29.7722,
+        "collisionP95": 2.6228
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": false,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "BASE_T51_RESEAL__ARCH2_MEDIUM_BALANCED",
+      "configId": "BASE_T51_RESEAL",
+      "configLabel": "Base T5.1 (F1+F2+Re-sellado · Sin Cambio 1 ni 2 · Sin Rampa)",
+      "topologyKey": "conformal_base",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3.001,
+        "equilibriumMaxGapMm": 3.002,
+        "transientPeakGapMm": 3.006,
+        "transientPeakGapFrame": 1,
+        "finalMaxGapMm": 3.002,
+        "equilibriumMaxStretchPct": 0.0509,
+        "transientPeakStretchPct": 1.9177,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.039
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.004,
+            "maxStretchPct": 0.024
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.022,
+            "maxStretchPct": 0.051
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.023,
+            "maxStretchPct": 0.045
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 10.4356,
+        "equilibriumMeanStretchPct": 0.421,
+        "equilibriumMaxStretchPct": 5.8728,
+        "finalFrameMaxStretchPct": 5.8725,
+        "transientPeakEdge": {
+          "edgeIndex": 1652,
+          "vertices": [
+            606,
+            625
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 9.6767,
+          "stretchPct": 10.4356,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1680,
+          "vertices": [
+            616,
+            636
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.3643,
+          "stretchPct": 5.8728,
+          "frame": 255
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 10.4356,
+        "equilibriumMeanStretchPct": 0.4161,
+        "equilibriumMaxStretchPct": 5.8728,
+        "framesOver5PctCount": 300
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 1.1213,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0013,
+        "equilibriumMeanRmsVelocityMS": 0.001,
+        "finalTotalEnergyJ": 0.0339,
+        "finalBendingEnergyJ": 0.0012,
+        "finalMeanAbsDihedralDeg": 3.7678
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 52.694,
+        "hemDropMeanM": 0.012,
+        "frontNeckDropMm": 3.446,
+        "leftArmholeDropMm": 7.223,
+        "rightArmholeDropMm": 6.626
+      },
+      "timingMs": {
+        "physicsStepMean": 16.0712,
+        "collisionMean": 1.4389,
+        "bendingMean": 7.4426,
+        "stretchMean": 7.2394,
+        "strainGuardMean": 0.9776,
+        "totalStepMean": 17.5101,
+        "totalStepP95": 31.7047,
+        "collisionP95": 2.6119
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": false,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "BASE_T51_RESEAL__ARCH3_STRUCTURED_STIFF",
+      "configId": "BASE_T51_RESEAL",
+      "configLabel": "Base T5.1 (F1+F2+Re-sellado · Sin Cambio 1 ni 2 · Sin Rampa)",
+      "topologyKey": "conformal_base",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3.001,
+        "equilibriumMaxGapMm": 3.003,
+        "transientPeakGapMm": 3.007,
+        "transientPeakGapFrame": 2,
+        "finalMaxGapMm": 3.003,
+        "equilibriumMaxStretchPct": 0.0882,
+        "transientPeakStretchPct": 4.0528,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.003,
+            "meanStretchPct": 0.015,
+            "maxStretchPct": 0.088
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.013,
+            "maxStretchPct": 0.075
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.03,
+            "maxStretchPct": 0.08
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.028,
+            "maxStretchPct": 0.071
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 10.3179,
+        "equilibriumMeanStretchPct": 0.4712,
+        "equilibriumMaxStretchPct": 5.8336,
+        "finalFrameMaxStretchPct": 5.8326,
+        "transientPeakEdge": {
+          "edgeIndex": 1652,
+          "vertices": [
+            606,
+            625
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 9.6767,
+          "stretchPct": 10.3179,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1680,
+          "vertices": [
+            616,
+            636
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.3643,
+          "stretchPct": 5.8336,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 10.3179,
+        "equilibriumMeanStretchPct": 0.4657,
+        "equilibriumMaxStretchPct": 5.8336,
+        "framesOver5PctCount": 300
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.9599,
+        "equilibriumMaxPenetrationDepthMm": 0.048,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 1,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0017,
+        "equilibriumMeanRmsVelocityMS": 0.0018,
+        "finalTotalEnergyJ": 0.087,
+        "finalBendingEnergyJ": 0.007,
+        "finalMeanAbsDihedralDeg": 3.1759
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 53.463,
+        "hemDropMeanM": 0.0119,
+        "frontNeckDropMm": 1.604,
+        "leftArmholeDropMm": 6.436,
+        "rightArmholeDropMm": 5.999
+      },
+      "timingMs": {
+        "physicsStepMean": 16.762,
+        "collisionMean": 1.5959,
+        "bendingMean": 7.6212,
+        "stretchMean": 7.6634,
+        "strainGuardMean": 1.0249,
+        "totalStepMean": 18.3579,
+        "totalStepP95": 38.3148,
+        "collisionP95": 3.1955
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": false,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "BASE_T51_RESEAL__ARCH4_ASYM_FACE_UP_STIFF",
+      "configId": "BASE_T51_RESEAL",
+      "configLabel": "Base T5.1 (F1+F2+Re-sellado · Sin Cambio 1 ni 2 · Sin Rampa)",
+      "topologyKey": "conformal_base",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3.001,
+        "equilibriumMaxGapMm": 3.003,
+        "transientPeakGapMm": 3.008,
+        "transientPeakGapFrame": 2,
+        "finalMaxGapMm": 3.003,
+        "equilibriumMaxStretchPct": 0.0953,
+        "transientPeakStretchPct": 2.9283,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.003,
+            "meanStretchPct": 0.016,
+            "maxStretchPct": 0.095
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.012,
+            "maxStretchPct": 0.073
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.003,
+            "meanStretchPct": 0.032,
+            "maxStretchPct": 0.084
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.029,
+            "maxStretchPct": 0.074
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 10.9403,
+        "equilibriumMeanStretchPct": 0.4831,
+        "equilibriumMaxStretchPct": 5.9251,
+        "finalFrameMaxStretchPct": 5.9241,
+        "transientPeakEdge": {
+          "edgeIndex": 1652,
+          "vertices": [
+            606,
+            625
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 9.6767,
+          "stretchPct": 10.9403,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1680,
+          "vertices": [
+            616,
+            636
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.3643,
+          "stretchPct": 5.9251,
+          "frame": 218
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 10.9403,
+        "equilibriumMeanStretchPct": 0.4776,
+        "equilibriumMaxStretchPct": 5.9251,
+        "framesOver5PctCount": 300
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 1.0429,
+        "equilibriumMaxPenetrationDepthMm": 0.0866,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0003,
+        "equilibriumMeanRmsVelocityMS": 0.0004,
+        "finalTotalEnergyJ": 0.0472,
+        "finalBendingEnergyJ": 0.0056,
+        "finalMeanAbsDihedralDeg": 3.3971
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 53.458,
+        "hemDropMeanM": 0.0123,
+        "frontNeckDropMm": 1.384,
+        "leftArmholeDropMm": 6.592,
+        "rightArmholeDropMm": 5.988
+      },
+      "timingMs": {
+        "physicsStepMean": 11.488,
+        "collisionMean": 0.9454,
+        "bendingMean": 5.3062,
+        "stretchMean": 5.2054,
+        "strainGuardMean": 0.685,
+        "totalStepMean": 12.4335,
+        "totalStepP95": 18.6624,
+        "collisionP95": 1.6524
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": false,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "BASE_T51_RESEAL__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "configId": "BASE_T51_RESEAL",
+      "configLabel": "Base T5.1 (F1+F2+Re-sellado · Sin Cambio 1 ni 2 · Sin Rampa)",
+      "topologyKey": "conformal_base",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3.001,
+        "equilibriumMaxGapMm": 3.002,
+        "transientPeakGapMm": 3.006,
+        "transientPeakGapFrame": 0,
+        "finalMaxGapMm": 3.002,
+        "equilibriumMaxStretchPct": 0.0666,
+        "transientPeakStretchPct": 2.032,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.011,
+            "maxStretchPct": 0.067
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.01,
+            "maxStretchPct": 0.056
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.002,
+            "meanStretchPct": 0.023,
+            "maxStretchPct": 0.052
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.021,
+            "maxStretchPct": 0.044
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 9.8323,
+        "equilibriumMeanStretchPct": 0.4266,
+        "equilibriumMaxStretchPct": 5.9257,
+        "finalFrameMaxStretchPct": 5.9248,
+        "transientPeakEdge": {
+          "edgeIndex": 1652,
+          "vertices": [
+            606,
+            625
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 9.6767,
+          "stretchPct": 9.8323,
+          "frame": 3
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1680,
+          "vertices": [
+            616,
+            636
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.3643,
+          "stretchPct": 5.9257,
+          "frame": 247
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 9.8323,
+        "equilibriumMeanStretchPct": 0.4216,
+        "equilibriumMaxStretchPct": 5.9257,
+        "framesOver5PctCount": 300
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.9244,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0021,
+        "equilibriumMeanRmsVelocityMS": 0.0022,
+        "finalTotalEnergyJ": 0.0381,
+        "finalBendingEnergyJ": 0.0015,
+        "finalMeanAbsDihedralDeg": 3.545
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 52.46,
+        "hemDropMeanM": 0.0119,
+        "frontNeckDropMm": 3.7,
+        "leftArmholeDropMm": 7.202,
+        "rightArmholeDropMm": 6.728
+      },
+      "timingMs": {
+        "physicsStepMean": 11.3896,
+        "collisionMean": 0.8996,
+        "bendingMean": 5.2774,
+        "stretchMean": 5.1643,
+        "strainGuardMean": 0.6615,
+        "totalStepMean": 12.2892,
+        "totalStepP95": 20.4,
+        "collisionP95": 1.496
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": false,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": false
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY__ARCH1_FLUID_LIGHT",
+      "configId": "GEOM_ONLY",
+      "configLabel": "Cambio 1 Aislado (Conformal Regularizado · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3,
+        "transientPeakGapMm": 3.001,
+        "transientPeakGapFrame": 0,
+        "finalMaxGapMm": 3,
+        "equilibriumMaxStretchPct": 0.0061,
+        "transientPeakStretchPct": 0.9921,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0,
+            "maxStretchPct": 0.001
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.001,
+            "maxStretchPct": 0.006
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.9652,
+        "equilibriumMeanStretchPct": 0.3253,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 1653,
+          "vertices": [
+            609,
+            626
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8984,
+          "stretchPct": 5.9652,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.9652,
+        "equilibriumMeanStretchPct": 0.3214,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 2
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.2552,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0006,
+        "finalTotalEnergyJ": 0.0113,
+        "finalBendingEnergyJ": 0.0006,
+        "finalMeanAbsDihedralDeg": 4.6744
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 51.583,
+        "hemDropMeanM": 0.0093,
+        "frontNeckDropMm": 4.314,
+        "leftArmholeDropMm": 7.639,
+        "rightArmholeDropMm": 8.021
+      },
+      "timingMs": {
+        "physicsStepMean": 10.9026,
+        "collisionMean": 0.9357,
+        "bendingMean": 5.0732,
+        "stretchMean": 4.9333,
+        "strainGuardMean": 0.6201,
+        "totalStepMean": 11.8384,
+        "totalStepP95": 15.9666,
+        "collisionP95": 1.5156
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY__ARCH2_MEDIUM_BALANCED",
+      "configId": "GEOM_ONLY",
+      "configLabel": "Cambio 1 Aislado (Conformal Regularizado · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.002,
+        "transientPeakGapFrame": 5,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0474,
+        "transientPeakStretchPct": 1.0549,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.047
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.031
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.011
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.015
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.9691,
+        "equilibriumMeanStretchPct": 0.3466,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 1653,
+          "vertices": [
+            609,
+            626
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8984,
+          "stretchPct": 5.9691,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.9691,
+        "equilibriumMeanStretchPct": 0.3424,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 2
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.3434,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0001,
+        "equilibriumMeanRmsVelocityMS": 0.0004,
+        "finalTotalEnergyJ": 0.0273,
+        "finalBendingEnergyJ": 0.0036,
+        "finalMeanAbsDihedralDeg": 3.5308
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.594,
+        "hemDropMeanM": 0.0089,
+        "frontNeckDropMm": 0.047,
+        "leftArmholeDropMm": 7.502,
+        "rightArmholeDropMm": 7.737
+      },
+      "timingMs": {
+        "physicsStepMean": 10.7546,
+        "collisionMean": 0.8689,
+        "bendingMean": 4.9719,
+        "stretchMean": 4.8918,
+        "strainGuardMean": 0.6163,
+        "totalStepMean": 11.6234,
+        "totalStepP95": 16.0455,
+        "collisionP95": 1.3496
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY__ARCH3_STRUCTURED_STIFF",
+      "configId": "GEOM_ONLY",
+      "configLabel": "Cambio 1 Aislado (Conformal Regularizado · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.004,
+        "transientPeakGapMm": 3.004,
+        "transientPeakGapFrame": 8,
+        "finalMaxGapMm": 3.004,
+        "equilibriumMaxStretchPct": 0.1211,
+        "transientPeakStretchPct": 1.547,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.02,
+            "maxStretchPct": 0.121
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.003,
+            "meanStretchPct": 0.019,
+            "maxStretchPct": 0.113
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.028
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.033
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.7674,
+        "equilibriumMeanStretchPct": 0.3831,
+        "equilibriumMaxStretchPct": 4.8813,
+        "finalFrameMaxStretchPct": 4.8806,
+        "transientPeakEdge": {
+          "edgeIndex": 1653,
+          "vertices": [
+            609,
+            626
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8984,
+          "stretchPct": 5.7674,
+          "frame": 3
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 65,
+          "vertices": [
+            50,
+            60
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 22.903,
+          "stretchPct": -4.8813,
+          "frame": 230
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.7674,
+        "equilibriumMeanStretchPct": 0.3785,
+        "equilibriumMaxStretchPct": 4.8813,
+        "framesOver5PctCount": 15
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.3822,
+        "equilibriumMaxPenetrationDepthMm": 0.1986,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0013,
+        "equilibriumMeanRmsVelocityMS": 0.0013,
+        "finalTotalEnergyJ": 0.0897,
+        "finalBendingEnergyJ": 0.0244,
+        "finalMeanAbsDihedralDeg": 3.2069
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 55.072,
+        "hemDropMeanM": 0.008,
+        "frontNeckDropMm": -1.649,
+        "leftArmholeDropMm": 6.732,
+        "rightArmholeDropMm": 7.082
+      },
+      "timingMs": {
+        "physicsStepMean": 10.8327,
+        "collisionMean": 0.8989,
+        "bendingMean": 5.0155,
+        "stretchMean": 4.9091,
+        "strainGuardMean": 0.6299,
+        "totalStepMean": 11.7315,
+        "totalStepP95": 16.0453,
+        "collisionP95": 1.355
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY__ARCH4_ASYM_FACE_UP_STIFF",
+      "configId": "GEOM_ONLY",
+      "configLabel": "Cambio 1 Aislado (Conformal Regularizado · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.002,
+        "transientPeakGapFrame": 1,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0416,
+        "transientPeakStretchPct": 1.1676,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.004,
+            "maxStretchPct": 0.015
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.019
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.036
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.009,
+            "maxStretchPct": 0.042
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.7052,
+        "equilibriumMeanStretchPct": 0.3937,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 1653,
+          "vertices": [
+            609,
+            626
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8984,
+          "stretchPct": 5.7052,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.7052,
+        "equilibriumMeanStretchPct": 0.389,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 3
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.3741,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0003,
+        "finalTotalEnergyJ": 0.0471,
+        "finalBendingEnergyJ": 0.0158,
+        "finalMeanAbsDihedralDeg": 3.2742
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.479,
+        "hemDropMeanM": 0.009,
+        "frontNeckDropMm": -0.233,
+        "leftArmholeDropMm": 6.977,
+        "rightArmholeDropMm": 7.134
+      },
+      "timingMs": {
+        "physicsStepMean": 13.1781,
+        "collisionMean": 1.0638,
+        "bendingMean": 5.9346,
+        "stretchMean": 6.1323,
+        "strainGuardMean": 0.786,
+        "totalStepMean": 14.2419,
+        "totalStepP95": 23.8701,
+        "collisionP95": 2.1582
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "configId": "GEOM_ONLY",
+      "configLabel": "Cambio 1 Aislado (Conformal Regularizado · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.008,
+        "transientPeakGapMm": 3.009,
+        "transientPeakGapFrame": 3,
+        "finalMaxGapMm": 3.008,
+        "equilibriumMaxStretchPct": 0.27,
+        "transientPeakStretchPct": 1.7976,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.008,
+            "meanStretchPct": 0.045,
+            "maxStretchPct": 0.27
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.023,
+            "maxStretchPct": 0.126
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.011
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.006,
+            "maxStretchPct": 0.013
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 6.3691,
+        "equilibriumMeanStretchPct": 0.3517,
+        "equilibriumMaxStretchPct": 6.0666,
+        "finalFrameMaxStretchPct": 6.0633,
+        "transientPeakEdge": {
+          "edgeIndex": 180,
+          "vertices": [
+            86,
+            103
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.7087,
+          "stretchPct": 6.3691,
+          "frame": 24
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 180,
+          "vertices": [
+            86,
+            103
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.7087,
+          "stretchPct": 6.0666,
+          "frame": 222
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 6.3691,
+        "equilibriumMeanStretchPct": 0.3476,
+        "equilibriumMaxStretchPct": 6.0666,
+        "framesOver5PctCount": 294
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 2.5052,
+        "equilibriumMaxPenetrationDepthMm": 1.7746,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0003,
+        "equilibriumMeanRmsVelocityMS": 0.0005,
+        "finalTotalEnergyJ": 0.0326,
+        "finalBendingEnergyJ": 0.0041,
+        "finalMeanAbsDihedralDeg": 3.7365
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.001,
+        "hemDropMeanM": 0.0068,
+        "frontNeckDropMm": 3.855,
+        "leftArmholeDropMm": 6.881,
+        "rightArmholeDropMm": 7.148
+      },
+      "timingMs": {
+        "physicsStepMean": 12.9182,
+        "collisionMean": 1.1723,
+        "bendingMean": 6.0257,
+        "stretchMean": 5.8158,
+        "strainGuardMean": 0.7646,
+        "totalStepMean": 14.0905,
+        "totalStepP95": 30.2967,
+        "collisionP95": 2.7523
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY_RAMP10__ARCH1_FLUID_LIGHT",
+      "configId": "GEOM_ONLY_RAMP10",
+      "configLabel": "Cambio 1 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3,
+        "transientPeakGapMm": 3.001,
+        "transientPeakGapFrame": 0,
+        "finalMaxGapMm": 3,
+        "equilibriumMaxStretchPct": 0.0121,
+        "transientPeakStretchPct": 1.0078,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.002,
+            "maxStretchPct": 0.012
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0,
+            "maxStretchPct": 0.001
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 4.8558,
+        "equilibriumMeanStretchPct": 0.3259,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 539,
+          "vertices": [
+            12,
+            231
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 18.6105,
+          "stretchPct": 4.8558,
+          "frame": 0
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 4.8558,
+        "equilibriumMeanStretchPct": 0.3219,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 0
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0003,
+        "equilibriumMeanRmsVelocityMS": 0.0007,
+        "finalTotalEnergyJ": 0.0112,
+        "finalBendingEnergyJ": 0.0006,
+        "finalMeanAbsDihedralDeg": 4.6555
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 51.482,
+        "hemDropMeanM": 0.0092,
+        "frontNeckDropMm": 3.994,
+        "leftArmholeDropMm": 7.603,
+        "rightArmholeDropMm": 8.033
+      },
+      "timingMs": {
+        "physicsStepMean": 15.9824,
+        "collisionMean": 1.6211,
+        "bendingMean": 7.352,
+        "stretchMean": 7.2967,
+        "strainGuardMean": 0.9197,
+        "totalStepMean": 17.6034,
+        "totalStepP95": 28.9034,
+        "collisionP95": 3.0186
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": true,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY_RAMP10__ARCH2_MEDIUM_BALANCED",
+      "configId": "GEOM_ONLY_RAMP10",
+      "configLabel": "Cambio 1 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.002,
+        "transientPeakGapFrame": 2,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0474,
+        "transientPeakStretchPct": 1.1644,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.047
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.031
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.011
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.015
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 4.5676,
+        "equilibriumMeanStretchPct": 0.3466,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 539,
+          "vertices": [
+            12,
+            231
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 18.6105,
+          "stretchPct": 4.5676,
+          "frame": 0
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 4.5676,
+        "equilibriumMeanStretchPct": 0.3424,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 0
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0004,
+        "finalTotalEnergyJ": 0.0273,
+        "finalBendingEnergyJ": 0.0036,
+        "finalMeanAbsDihedralDeg": 3.5308
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.595,
+        "hemDropMeanM": 0.0089,
+        "frontNeckDropMm": 0.047,
+        "leftArmholeDropMm": 7.502,
+        "rightArmholeDropMm": 7.737
+      },
+      "timingMs": {
+        "physicsStepMean": 15.3684,
+        "collisionMean": 1.4408,
+        "bendingMean": 7.0588,
+        "stretchMean": 7.0192,
+        "strainGuardMean": 0.8985,
+        "totalStepMean": 16.8092,
+        "totalStepP95": 23.7151,
+        "collisionP95": 2.2241
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": true,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY_RAMP10__ARCH3_STRUCTURED_STIFF",
+      "configId": "GEOM_ONLY_RAMP10",
+      "configLabel": "Cambio 1 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.004,
+        "transientPeakGapMm": 3.005,
+        "transientPeakGapFrame": 10,
+        "finalMaxGapMm": 3.004,
+        "equilibriumMaxStretchPct": 0.1211,
+        "transientPeakStretchPct": 1.6248,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.02,
+            "maxStretchPct": 0.121
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.003,
+            "meanStretchPct": 0.019,
+            "maxStretchPct": 0.113
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.028
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.033
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.594,
+        "equilibriumMeanStretchPct": 0.3831,
+        "equilibriumMaxStretchPct": 4.8811,
+        "finalFrameMaxStretchPct": 4.8807,
+        "transientPeakEdge": {
+          "edgeIndex": 129,
+          "vertices": [
+            69,
+            84
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 22.3859,
+          "stretchPct": 5.594,
+          "frame": 22
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 65,
+          "vertices": [
+            50,
+            60
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 22.903,
+          "stretchPct": -4.8811,
+          "frame": 229
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.594,
+        "equilibriumMeanStretchPct": 0.3785,
+        "equilibriumMaxStretchPct": 4.8811,
+        "framesOver5PctCount": 14
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.272,
+        "equilibriumMaxPenetrationDepthMm": 0.1985,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0013,
+        "equilibriumMeanRmsVelocityMS": 0.0013,
+        "finalTotalEnergyJ": 0.0897,
+        "finalBendingEnergyJ": 0.0244,
+        "finalMeanAbsDihedralDeg": 3.2069
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 55.072,
+        "hemDropMeanM": 0.008,
+        "frontNeckDropMm": -1.649,
+        "leftArmholeDropMm": 6.732,
+        "rightArmholeDropMm": 7.082
+      },
+      "timingMs": {
+        "physicsStepMean": 15.5147,
+        "collisionMean": 1.5741,
+        "bendingMean": 7.2679,
+        "stretchMean": 6.8854,
+        "strainGuardMean": 0.9452,
+        "totalStepMean": 17.0888,
+        "totalStepP95": 29.8158,
+        "collisionP95": 2.9712
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY_RAMP10__ARCH4_ASYM_FACE_UP_STIFF",
+      "configId": "GEOM_ONLY_RAMP10",
+      "configLabel": "Cambio 1 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.003,
+        "transientPeakGapFrame": 4,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0416,
+        "transientPeakStretchPct": 2.0508,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.004,
+            "maxStretchPct": 0.015
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.019
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.036
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.009,
+            "maxStretchPct": 0.042
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.6498,
+        "equilibriumMeanStretchPct": 0.3939,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 539,
+          "vertices": [
+            12,
+            231
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 18.6105,
+          "stretchPct": 5.6498,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 13,
+          "vertices": [
+            43,
+            44
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 24.7793,
+          "stretchPct": -4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.6498,
+        "equilibriumMeanStretchPct": 0.3891,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 3
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0003,
+        "finalTotalEnergyJ": 0.0471,
+        "finalBendingEnergyJ": 0.0158,
+        "finalMeanAbsDihedralDeg": 3.2754
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.48,
+        "hemDropMeanM": 0.009,
+        "frontNeckDropMm": -0.231,
+        "leftArmholeDropMm": 6.997,
+        "rightArmholeDropMm": 7.134
+      },
+      "timingMs": {
+        "physicsStepMean": 12.591,
+        "collisionMean": 1.1287,
+        "bendingMean": 5.8767,
+        "stretchMean": 5.6591,
+        "strainGuardMean": 0.7242,
+        "totalStepMean": 13.7198,
+        "totalStepP95": 24.1849,
+        "collisionP95": 2.1267
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_ONLY_RAMP10__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "configId": "GEOM_ONLY_RAMP10",
+      "configLabel": "Cambio 1 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.006,
+        "transientPeakGapMm": 3.007,
+        "transientPeakGapFrame": 11,
+        "finalMaxGapMm": 3.006,
+        "equilibriumMaxStretchPct": 0.1941,
+        "transientPeakStretchPct": 1.8113,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.006,
+            "meanStretchPct": 0.036,
+            "maxStretchPct": 0.194
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.023,
+            "maxStretchPct": 0.135
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.009
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.014
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 6.662,
+        "equilibriumMeanStretchPct": 0.3528,
+        "equilibriumMaxStretchPct": 6.6336,
+        "finalFrameMaxStretchPct": 5.8303,
+        "transientPeakEdge": {
+          "edgeIndex": 177,
+          "vertices": [
+            85,
+            102
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.8328,
+          "stretchPct": 6.662,
+          "frame": 26
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 177,
+          "vertices": [
+            85,
+            102
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.8328,
+          "stretchPct": 6.6336,
+          "frame": 216
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 6.662,
+        "equilibriumMeanStretchPct": 0.3486,
+        "equilibriumMaxStretchPct": 6.6336,
+        "framesOver5PctCount": 293
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 1.7856,
+        "equilibriumMaxPenetrationDepthMm": 1.0512,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0055,
+        "equilibriumMeanRmsVelocityMS": 0.0055,
+        "finalTotalEnergyJ": 0.0322,
+        "finalBendingEnergyJ": 0.0028,
+        "finalMeanAbsDihedralDeg": 3.9947
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 53.116,
+        "hemDropMeanM": 0.0068,
+        "frontNeckDropMm": 7.857,
+        "leftArmholeDropMm": 6.671,
+        "rightArmholeDropMm": 7.302
+      },
+      "timingMs": {
+        "physicsStepMean": 14.8638,
+        "collisionMean": 1.4317,
+        "bendingMean": 6.8439,
+        "stretchMean": 6.7585,
+        "strainGuardMean": 0.8709,
+        "totalStepMean": 16.2955,
+        "totalStepP95": 23.9222,
+        "collisionP95": 2.3377
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": false
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD__ARCH1_FLUID_LIGHT",
+      "configId": "GEOM_PLUS_GUARD",
+      "configLabel": "Cambio 1 + Cambio 2 (Dynamic Active Guard 4 iters · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3,
+        "transientPeakGapMm": 3.001,
+        "transientPeakGapFrame": 0,
+        "finalMaxGapMm": 3,
+        "equilibriumMaxStretchPct": 0.0061,
+        "transientPeakStretchPct": 1.0079,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0,
+            "maxStretchPct": 0.001
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.001,
+            "maxStretchPct": 0.006
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 4.8293,
+        "equilibriumMeanStretchPct": 0.3253,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 539,
+          "vertices": [
+            12,
+            231
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 18.6105,
+          "stretchPct": 4.8293,
+          "frame": 0
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 4.8293,
+        "equilibriumMeanStretchPct": 0.3214,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 0
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.2526,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0006,
+        "finalTotalEnergyJ": 0.0113,
+        "finalBendingEnergyJ": 0.0006,
+        "finalMeanAbsDihedralDeg": 4.6744
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 51.584,
+        "hemDropMeanM": 0.0093,
+        "frontNeckDropMm": 4.314,
+        "leftArmholeDropMm": 7.639,
+        "rightArmholeDropMm": 8.021
+      },
+      "timingMs": {
+        "physicsStepMean": 12.5307,
+        "collisionMean": 1.0252,
+        "bendingMean": 5.3499,
+        "stretchMean": 5.1392,
+        "strainGuardMean": 1.7471,
+        "totalStepMean": 13.5559,
+        "totalStepP95": 18.2676,
+        "collisionP95": 1.5832
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": true,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": true
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD__ARCH2_MEDIUM_BALANCED",
+      "configId": "GEOM_PLUS_GUARD",
+      "configLabel": "Cambio 1 + Cambio 2 (Dynamic Active Guard 4 iters · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.002,
+        "transientPeakGapFrame": 5,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0474,
+        "transientPeakStretchPct": 1.0498,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.047
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.031
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.011
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.015
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 4.6913,
+        "equilibriumMeanStretchPct": 0.3466,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 1656,
+          "vertices": [
+            610,
+            627
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.7018,
+          "stretchPct": 4.6913,
+          "frame": 3
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 4.6913,
+        "equilibriumMeanStretchPct": 0.3424,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 0
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.3464,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0001,
+        "equilibriumMeanRmsVelocityMS": 0.0004,
+        "finalTotalEnergyJ": 0.0273,
+        "finalBendingEnergyJ": 0.0036,
+        "finalMeanAbsDihedralDeg": 3.5308
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.595,
+        "hemDropMeanM": 0.0089,
+        "frontNeckDropMm": 0.047,
+        "leftArmholeDropMm": 7.502,
+        "rightArmholeDropMm": 7.737
+      },
+      "timingMs": {
+        "physicsStepMean": 20.7926,
+        "collisionMean": 1.8175,
+        "bendingMean": 8.5413,
+        "stretchMean": 8.5949,
+        "strainGuardMean": 3.1921,
+        "totalStepMean": 22.6101,
+        "totalStepP95": 36.6463,
+        "collisionP95": 3.1822
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": true,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD__ARCH3_STRUCTURED_STIFF",
+      "configId": "GEOM_PLUS_GUARD",
+      "configLabel": "Cambio 1 + Cambio 2 (Dynamic Active Guard 4 iters · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.004,
+        "transientPeakGapMm": 3.004,
+        "transientPeakGapFrame": 8,
+        "finalMaxGapMm": 3.004,
+        "equilibriumMaxStretchPct": 0.1206,
+        "transientPeakStretchPct": 1.4985,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.02,
+            "maxStretchPct": 0.121
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.003,
+            "meanStretchPct": 0.019,
+            "maxStretchPct": 0.113
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.028
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.033
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.2899,
+        "equilibriumMeanStretchPct": 0.3828,
+        "equilibriumMaxStretchPct": 4.6206,
+        "finalFrameMaxStretchPct": 4.6023,
+        "transientPeakEdge": {
+          "edgeIndex": 608,
+          "vertices": [
+            13,
+            253
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 17.8742,
+          "stretchPct": 5.2899,
+          "frame": 1
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 33,
+          "vertices": [
+            49,
+            50
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 24.7392,
+          "stretchPct": -4.6206,
+          "frame": 245
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.2899,
+        "equilibriumMeanStretchPct": 0.3783,
+        "equilibriumMaxStretchPct": 4.6206,
+        "framesOver5PctCount": 3
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.3818,
+        "equilibriumMaxPenetrationDepthMm": 0.2009,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0003,
+        "finalTotalEnergyJ": 0.0894,
+        "finalBendingEnergyJ": 0.0244,
+        "finalMeanAbsDihedralDeg": 3.207
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 55.072,
+        "hemDropMeanM": 0.008,
+        "frontNeckDropMm": -1.65,
+        "leftArmholeDropMm": 6.734,
+        "rightArmholeDropMm": 7.082
+      },
+      "timingMs": {
+        "physicsStepMean": 18.703,
+        "collisionMean": 1.4583,
+        "bendingMean": 7.4505,
+        "stretchMean": 7.3806,
+        "strainGuardMean": 3.4692,
+        "totalStepMean": 20.1613,
+        "totalStepP95": 35.2851,
+        "collisionP95": 3.0892
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD__ARCH4_ASYM_FACE_UP_STIFF",
+      "configId": "GEOM_PLUS_GUARD",
+      "configLabel": "Cambio 1 + Cambio 2 (Dynamic Active Guard 4 iters · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.002,
+        "transientPeakGapFrame": 1,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0416,
+        "transientPeakStretchPct": 1.1696,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.004,
+            "maxStretchPct": 0.015
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.019
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.036
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.009,
+            "maxStretchPct": 0.042
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.3417,
+        "equilibriumMeanStretchPct": 0.3937,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 608,
+          "vertices": [
+            13,
+            253
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 17.8742,
+          "stretchPct": 5.3417,
+          "frame": 1
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 13,
+          "vertices": [
+            43,
+            44
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 24.7793,
+          "stretchPct": -4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.3417,
+        "equilibriumMeanStretchPct": 0.389,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 1
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.3771,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0003,
+        "finalTotalEnergyJ": 0.0471,
+        "finalBendingEnergyJ": 0.0158,
+        "finalMeanAbsDihedralDeg": 3.2742
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.479,
+        "hemDropMeanM": 0.009,
+        "frontNeckDropMm": -0.233,
+        "leftArmholeDropMm": 6.977,
+        "rightArmholeDropMm": 7.134
+      },
+      "timingMs": {
+        "physicsStepMean": 15.0106,
+        "collisionMean": 1.1639,
+        "bendingMean": 6.0804,
+        "stretchMean": 6.1385,
+        "strainGuardMean": 2.4599,
+        "totalStepMean": 16.1745,
+        "totalStepP95": 26.3938,
+        "collisionP95": 2.1825
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "configId": "GEOM_PLUS_GUARD",
+      "configLabel": "Cambio 1 + Cambio 2 (Dynamic Active Guard 4 iters · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 0,
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.008,
+        "transientPeakGapMm": 3.009,
+        "transientPeakGapFrame": 3,
+        "finalMaxGapMm": 3.008,
+        "equilibriumMaxStretchPct": 0.2704,
+        "transientPeakStretchPct": 1.7975,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.008,
+            "meanStretchPct": 0.045,
+            "maxStretchPct": 0.27
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.023,
+            "maxStretchPct": 0.128
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.011
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.006,
+            "maxStretchPct": 0.012
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.25,
+        "equilibriumMeanStretchPct": 0.3514,
+        "equilibriumMaxStretchPct": 5.1816,
+        "finalFrameMaxStretchPct": 4.8248,
+        "transientPeakEdge": {
+          "edgeIndex": 135,
+          "vertices": [
+            71,
+            86
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.2059,
+          "stretchPct": 5.25,
+          "frame": 21
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 135,
+          "vertices": [
+            71,
+            86
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.2059,
+          "stretchPct": 5.1816,
+          "frame": 255
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.25,
+        "equilibriumMeanStretchPct": 0.3472,
+        "equilibriumMaxStretchPct": 5.1816,
+        "framesOver5PctCount": 41
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 2.5026,
+        "equilibriumMaxPenetrationDepthMm": 1.7793,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0006,
+        "equilibriumMeanRmsVelocityMS": 0.0011,
+        "finalTotalEnergyJ": 0.0326,
+        "finalBendingEnergyJ": 0.0041,
+        "finalMeanAbsDihedralDeg": 3.7381
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.206,
+        "hemDropMeanM": 0.0068,
+        "frontNeckDropMm": 3.858,
+        "leftArmholeDropMm": 6.878,
+        "rightArmholeDropMm": 7.137
+      },
+      "timingMs": {
+        "physicsStepMean": 15.1079,
+        "collisionMean": 1.2034,
+        "bendingMean": 6.0728,
+        "stretchMean": 5.9051,
+        "strainGuardMean": 2.7986,
+        "totalStepMean": 16.3113,
+        "totalStepP95": 28.9719,
+        "collisionP95": 2.17
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD_RAMP10__ARCH1_FLUID_LIGHT",
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "configLabel": "Cambio 1 + Cambio 2 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH1_FLUID_LIGHT",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3,
+        "transientPeakGapMm": 3.001,
+        "transientPeakGapFrame": 0,
+        "finalMaxGapMm": 3,
+        "equilibriumMaxStretchPct": 0.0121,
+        "transientPeakStretchPct": 1.0219,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.002,
+            "maxStretchPct": 0.012
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0,
+            "maxStretchPct": 0.001
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.003,
+            "maxStretchPct": 0.006
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 4.8545,
+        "equilibriumMeanStretchPct": 0.3259,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 539,
+          "vertices": [
+            12,
+            231
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 18.6105,
+          "stretchPct": 4.8545,
+          "frame": 0
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 4.8545,
+        "equilibriumMeanStretchPct": 0.3219,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 0
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0003,
+        "equilibriumMeanRmsVelocityMS": 0.0007,
+        "finalTotalEnergyJ": 0.0112,
+        "finalBendingEnergyJ": 0.0006,
+        "finalMeanAbsDihedralDeg": 4.6555
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 51.482,
+        "hemDropMeanM": 0.0092,
+        "frontNeckDropMm": 3.994,
+        "leftArmholeDropMm": 7.603,
+        "rightArmholeDropMm": 8.033
+      },
+      "timingMs": {
+        "physicsStepMean": 15.1263,
+        "collisionMean": 1.3812,
+        "bendingMean": 6.4089,
+        "stretchMean": 6.2311,
+        "strainGuardMean": 2.1349,
+        "totalStepMean": 16.5075,
+        "totalStepP95": 24.3699,
+        "collisionP95": 2.0268
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": true,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD_RAMP10__ARCH2_MEDIUM_BALANCED",
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "configLabel": "Cambio 1 + Cambio 2 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH2_MEDIUM_BALANCED",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.002,
+        "transientPeakGapFrame": 2,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0474,
+        "transientPeakStretchPct": 1.1598,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.047
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.031
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.011
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.015
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 4.5656,
+        "equilibriumMeanStretchPct": 0.3466,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 539,
+          "vertices": [
+            12,
+            231
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 18.6105,
+          "stretchPct": 4.5656,
+          "frame": 0
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 4.5656,
+        "equilibriumMeanStretchPct": 0.3424,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 0
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0004,
+        "finalTotalEnergyJ": 0.0273,
+        "finalBendingEnergyJ": 0.0036,
+        "finalMeanAbsDihedralDeg": 3.5308
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.595,
+        "hemDropMeanM": 0.0089,
+        "frontNeckDropMm": 0.047,
+        "leftArmholeDropMm": 7.502,
+        "rightArmholeDropMm": 7.737
+      },
+      "timingMs": {
+        "physicsStepMean": 13.5854,
+        "collisionMean": 1.1796,
+        "bendingMean": 5.7463,
+        "stretchMean": 5.6414,
+        "strainGuardMean": 1.8776,
+        "totalStepMean": 14.765,
+        "totalStepP95": 20.2767,
+        "collisionP95": 1.728
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": true,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": true,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": true
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD_RAMP10__ARCH3_STRUCTURED_STIFF",
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "configLabel": "Cambio 1 + Cambio 2 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH3_STRUCTURED_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.004,
+        "transientPeakGapMm": 3.005,
+        "transientPeakGapFrame": 10,
+        "finalMaxGapMm": 3.004,
+        "equilibriumMaxStretchPct": 0.1206,
+        "transientPeakStretchPct": 1.6099,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.02,
+            "maxStretchPct": 0.121
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.003,
+            "meanStretchPct": 0.019,
+            "maxStretchPct": 0.113
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.028
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.033
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.4612,
+        "equilibriumMeanStretchPct": 0.3828,
+        "equilibriumMaxStretchPct": 4.6206,
+        "finalFrameMaxStretchPct": 4.6115,
+        "transientPeakEdge": {
+          "edgeIndex": 608,
+          "vertices": [
+            13,
+            253
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 17.8742,
+          "stretchPct": 5.4612,
+          "frame": 1
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 33,
+          "vertices": [
+            49,
+            50
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 24.7392,
+          "stretchPct": -4.6206,
+          "frame": 239
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.4612,
+        "equilibriumMeanStretchPct": 0.3783,
+        "equilibriumMaxStretchPct": 4.6206,
+        "framesOver5PctCount": 4
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0.2732,
+        "equilibriumMaxPenetrationDepthMm": 0.2009,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0003,
+        "finalTotalEnergyJ": 0.0895,
+        "finalBendingEnergyJ": 0.0244,
+        "finalMeanAbsDihedralDeg": 3.207
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 55.071,
+        "hemDropMeanM": 0.008,
+        "frontNeckDropMm": -1.65,
+        "leftArmholeDropMm": 6.734,
+        "rightArmholeDropMm": 7.082
+      },
+      "timingMs": {
+        "physicsStepMean": 14.0466,
+        "collisionMean": 1.1199,
+        "bendingMean": 5.6676,
+        "stretchMean": 5.5037,
+        "strainGuardMean": 2.5658,
+        "totalStepMean": 15.1664,
+        "totalStepP95": 22.5185,
+        "collisionP95": 1.7859
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": true,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD_RAMP10__ARCH4_ASYM_FACE_UP_STIFF",
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "configLabel": "Cambio 1 + Cambio 2 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH4_ASYM_FACE_UP_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.001,
+        "transientPeakGapMm": 3.003,
+        "transientPeakGapFrame": 4,
+        "finalMaxGapMm": 3.001,
+        "equilibriumMaxStretchPct": 0.0416,
+        "transientPeakStretchPct": 1.9301,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.004,
+            "maxStretchPct": 0.015
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.019
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.008,
+            "maxStretchPct": 0.036
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3.001,
+            "meanStretchPct": 0.009,
+            "maxStretchPct": 0.042
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.6478,
+        "equilibriumMeanStretchPct": 0.3939,
+        "equilibriumMaxStretchPct": 4.5,
+        "finalFrameMaxStretchPct": 4.5,
+        "transientPeakEdge": {
+          "edgeIndex": 539,
+          "vertices": [
+            12,
+            231
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 18.6105,
+          "stretchPct": 5.6478,
+          "frame": 4
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 1611,
+          "vertices": [
+            595,
+            609
+          ],
+          "panelLabel": "BACK",
+          "restLenMm": 21.8017,
+          "stretchPct": 4.5,
+          "frame": 210
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.6478,
+        "equilibriumMeanStretchPct": 0.3891,
+        "equilibriumMaxStretchPct": 4.5,
+        "framesOver5PctCount": 3
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 0,
+        "equilibriumMaxPenetrationDepthMm": 0,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 0,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0002,
+        "equilibriumMeanRmsVelocityMS": 0.0003,
+        "finalTotalEnergyJ": 0.0471,
+        "finalBendingEnergyJ": 0.0158,
+        "finalMeanAbsDihedralDeg": 3.2754
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 54.48,
+        "hemDropMeanM": 0.009,
+        "frontNeckDropMm": -0.231,
+        "leftArmholeDropMm": 6.997,
+        "rightArmholeDropMm": 7.134
+      },
+      "timingMs": {
+        "physicsStepMean": 15.6911,
+        "collisionMean": 1.3377,
+        "bendingMean": 6.4654,
+        "stretchMean": 6.232,
+        "strainGuardMean": 2.6333,
+        "totalStepMean": 17.0288,
+        "totalStepP95": 26.1381,
+        "collisionP95": 2.115
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": false,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": true
+      },
+      "gate1StrictPass": false
+    },
+    {
+      "runId": "GEOM_PLUS_GUARD_RAMP10__ARCH4_ASYM_FACE_DOWN_STIFF",
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "configLabel": "Cambio 1 + Cambio 2 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "gravityRampFrames": 10,
+      "archetypeId": "ARCH4_ASYM_FACE_DOWN_STIFF",
+      "evidenceQuality": "TIER_3_ESTIMATED",
+      "nanCount": 0,
+      "initialPenetrationCount": 0,
+      "seamMetrics": {
+        "equilibriumMeanGapMm": 3,
+        "equilibriumMaxGapMm": 3.006,
+        "transientPeakGapMm": 3.007,
+        "transientPeakGapFrame": 11,
+        "finalMaxGapMm": 3.006,
+        "equilibriumMaxStretchPct": 0.1967,
+        "transientPeakStretchPct": 1.8113,
+        "byGroupAtFinalFrame": {
+          "LEFT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.006,
+            "meanStretchPct": 0.036,
+            "maxStretchPct": 0.196
+          },
+          "RIGHT_SHOULDER": {
+            "pairCount": 6,
+            "meanGapMm": 3.001,
+            "maxGapMm": 3.004,
+            "meanStretchPct": 0.023,
+            "maxStretchPct": 0.135
+          },
+          "LEFT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.005,
+            "maxStretchPct": 0.009
+          },
+          "RIGHT_SIDE": {
+            "pairCount": 14,
+            "meanGapMm": 3,
+            "maxGapMm": 3,
+            "meanStretchPct": 0.007,
+            "maxStretchPct": 0.014
+          }
+        }
+      },
+      "panelStrain": {
+        "transientPeakStretchPct": 5.5443,
+        "equilibriumMeanStretchPct": 0.353,
+        "equilibriumMaxStretchPct": 5.478,
+        "finalFrameMaxStretchPct": 5.0696,
+        "transientPeakEdge": {
+          "edgeIndex": 132,
+          "vertices": [
+            70,
+            85
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.1698,
+          "stretchPct": 5.5443,
+          "frame": 37
+        },
+        "equilibriumMaxEdge": {
+          "edgeIndex": 132,
+          "vertices": [
+            70,
+            85
+          ],
+          "panelLabel": "FRONT",
+          "restLenMm": 30.1698,
+          "stretchPct": 5.478,
+          "frame": 213
+        }
+      },
+      "combinedStrain": {
+        "transientPeakStretchPct": 5.5443,
+        "equilibriumMeanStretchPct": 0.3488,
+        "equilibriumMaxStretchPct": 5.478,
+        "framesOver5PctCount": 176
+      },
+      "penetrationGt": {
+        "maxPenetrationDepthMm": 1.7852,
+        "equilibriumMaxPenetrationDepthMm": 1.0989,
+        "severeFramesCount": 0,
+        "equilibriumSevereFramesCount": 0,
+        "finalPenetratedVertexCountGt0": 2,
+        "finalSevereVertexCountGt3mm": 0
+      },
+      "stability": {
+        "finalRmsVelocityMS": 0.0022,
+        "equilibriumMeanRmsVelocityMS": 0.0013,
+        "finalTotalEnergyJ": 0.0324,
+        "finalBendingEnergyJ": 0.0028,
+        "finalMeanAbsDihedralDeg": 3.9981
+      },
+      "drape": {
+        "subBustMeanAirGapMm": 53.07,
+        "hemDropMeanM": 0.0068,
+        "frontNeckDropMm": 7.844,
+        "leftArmholeDropMm": 6.656,
+        "rightArmholeDropMm": 7.304
+      },
+      "timingMs": {
+        "physicsStepMean": 15.0633,
+        "collisionMean": 1.1874,
+        "bendingMean": 6.0742,
+        "stretchMean": 5.9175,
+        "strainGuardMean": 2.7448,
+        "totalStepMean": 16.2508,
+        "totalStepP95": 22.2505,
+        "collisionP95": 1.7166
+      },
+      "gate1Checks": {
+        "zeroNan": true,
+        "zeroInitialPenetration": true,
+        "meshQualityMinAngleGe12MinEdgeGe5": true,
+        "panelMeanStretchLe2Pct": true,
+        "panelPeakStretchLe5Pct": false,
+        "combinedMeanStretchLe2Pct": true,
+        "combinedPeakStretchLe5Pct": false,
+        "zeroSustainedSeverePenetrationGt3mm": true,
+        "totalStepBudgetMeanLe16ms": false,
+        "totalStepBudgetP95Le25ms": true,
+        "collisionBudgetLe6ms": true,
+        "seamEqLe305MmAndPeakLe320Mm": true,
+        "finalRmsVelLe00020MS": false
+      },
+      "gate1StrictPass": false
+    }
+  ],
+  "scorecardsWithoutRamp": [
+    {
+      "configId": "BASE_T51_RESEAL",
+      "label": "Base T5.1 (F1+F2+Re-sellado · Sin Cambio 1 ni 2 · Sin Rampa)",
+      "topologyKey": "conformal_base",
+      "usesGravityRamp": false,
+      "gravityRampFrames": 0,
+      "runsCount": 5,
+      "gate1StrictPassCount": 0,
+      "worstPanelMeanEqPct": 0.4831,
+      "worstPanelPeakStretchPct": 10.9403,
+      "worstPanelEqMaxStretchPct": 5.9257,
+      "worstCombinedPeakStretchPct": 10.9403,
+      "worstSeamEqMaxGapMm": 3.003,
+      "worstSeamTransientPeakGapMm": 3.008,
+      "worstFinalRmsVelMS": 0.0021,
+      "meanTotalStepMs": 15.4704,
+      "worstTotalStepMeanMs": 18.3579,
+      "worstTotalStepP95Ms": 38.3148,
+      "meanCollisionMs": 1.2395,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 0.0866,
+      "minPanelEdgeLenMm": 8.089,
+      "minAngleDeg": 4.69,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    },
+    {
+      "configId": "GEOM_ONLY",
+      "label": "Cambio 1 Aislado (Conformal Regularizado · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": false,
+      "gravityRampFrames": 0,
+      "runsCount": 5,
+      "gate1StrictPassCount": 0,
+      "worstPanelMeanEqPct": 0.3937,
+      "worstPanelPeakStretchPct": 6.3691,
+      "worstPanelEqMaxStretchPct": 6.0666,
+      "worstCombinedPeakStretchPct": 6.3691,
+      "worstSeamEqMaxGapMm": 3.008,
+      "worstSeamTransientPeakGapMm": 3.009,
+      "worstFinalRmsVelMS": 0.0013,
+      "meanTotalStepMs": 12.7051,
+      "worstTotalStepMeanMs": 14.2419,
+      "worstTotalStepP95Ms": 30.2967,
+      "meanCollisionMs": 0.9879,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.7746,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    },
+    {
+      "configId": "GEOM_PLUS_GUARD",
+      "label": "Cambio 1 + Cambio 2 (Dynamic Active Guard 4 iters · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": false,
+      "gravityRampFrames": 0,
+      "runsCount": 5,
+      "gate1StrictPassCount": 1,
+      "worstPanelMeanEqPct": 0.3937,
+      "worstPanelPeakStretchPct": 5.3417,
+      "worstPanelEqMaxStretchPct": 5.1816,
+      "worstCombinedPeakStretchPct": 5.3417,
+      "worstSeamEqMaxGapMm": 3.008,
+      "worstSeamTransientPeakGapMm": 3.009,
+      "worstFinalRmsVelMS": 0.0006,
+      "meanTotalStepMs": 17.7626,
+      "worstTotalStepMeanMs": 22.6101,
+      "worstTotalStepP95Ms": 36.6463,
+      "meanCollisionMs": 1.3337,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.7793,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    }
+  ],
+  "scorecardsWithRamp10": [
+    {
+      "configId": "GEOM_ONLY_RAMP10",
+      "label": "Cambio 1 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": true,
+      "gravityRampFrames": 10,
+      "runsCount": 5,
+      "gate1StrictPassCount": 0,
+      "worstPanelMeanEqPct": 0.3939,
+      "worstPanelPeakStretchPct": 6.662,
+      "worstPanelEqMaxStretchPct": 6.6336,
+      "worstCombinedPeakStretchPct": 6.662,
+      "worstSeamEqMaxGapMm": 3.006,
+      "worstSeamTransientPeakGapMm": 3.007,
+      "worstFinalRmsVelMS": 0.0055,
+      "meanTotalStepMs": 16.3033,
+      "worstTotalStepMeanMs": 17.6034,
+      "worstTotalStepP95Ms": 29.8158,
+      "meanCollisionMs": 1.4393,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.0512,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    },
+    {
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "label": "Cambio 1 + Cambio 2 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": true,
+      "gravityRampFrames": 10,
+      "runsCount": 5,
+      "gate1StrictPassCount": 1,
+      "worstPanelMeanEqPct": 0.3939,
+      "worstPanelPeakStretchPct": 5.6478,
+      "worstPanelEqMaxStretchPct": 5.478,
+      "worstCombinedPeakStretchPct": 5.6478,
+      "worstSeamEqMaxGapMm": 3.006,
+      "worstSeamTransientPeakGapMm": 3.007,
+      "worstFinalRmsVelMS": 0.0022,
+      "meanTotalStepMs": 15.9437,
+      "worstTotalStepMeanMs": 17.0288,
+      "worstTotalStepP95Ms": 26.1381,
+      "meanCollisionMs": 1.2412,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.0989,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    }
+  ],
+  "allScorecards": [
+    {
+      "configId": "BASE_T51_RESEAL",
+      "label": "Base T5.1 (F1+F2+Re-sellado · Sin Cambio 1 ni 2 · Sin Rampa)",
+      "topologyKey": "conformal_base",
+      "usesGravityRamp": false,
+      "gravityRampFrames": 0,
+      "runsCount": 5,
+      "gate1StrictPassCount": 0,
+      "worstPanelMeanEqPct": 0.4831,
+      "worstPanelPeakStretchPct": 10.9403,
+      "worstPanelEqMaxStretchPct": 5.9257,
+      "worstCombinedPeakStretchPct": 10.9403,
+      "worstSeamEqMaxGapMm": 3.003,
+      "worstSeamTransientPeakGapMm": 3.008,
+      "worstFinalRmsVelMS": 0.0021,
+      "meanTotalStepMs": 15.4704,
+      "worstTotalStepMeanMs": 18.3579,
+      "worstTotalStepP95Ms": 38.3148,
+      "meanCollisionMs": 1.2395,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 0.0866,
+      "minPanelEdgeLenMm": 8.089,
+      "minAngleDeg": 4.69,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    },
+    {
+      "configId": "GEOM_ONLY",
+      "label": "Cambio 1 Aislado (Conformal Regularizado · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": false,
+      "gravityRampFrames": 0,
+      "runsCount": 5,
+      "gate1StrictPassCount": 0,
+      "worstPanelMeanEqPct": 0.3937,
+      "worstPanelPeakStretchPct": 6.3691,
+      "worstPanelEqMaxStretchPct": 6.0666,
+      "worstCombinedPeakStretchPct": 6.3691,
+      "worstSeamEqMaxGapMm": 3.008,
+      "worstSeamTransientPeakGapMm": 3.009,
+      "worstFinalRmsVelMS": 0.0013,
+      "meanTotalStepMs": 12.7051,
+      "worstTotalStepMeanMs": 14.2419,
+      "worstTotalStepP95Ms": 30.2967,
+      "meanCollisionMs": 0.9879,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.7746,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    },
+    {
+      "configId": "GEOM_ONLY_RAMP10",
+      "label": "Cambio 1 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": true,
+      "gravityRampFrames": 10,
+      "runsCount": 5,
+      "gate1StrictPassCount": 0,
+      "worstPanelMeanEqPct": 0.3939,
+      "worstPanelPeakStretchPct": 6.662,
+      "worstPanelEqMaxStretchPct": 6.6336,
+      "worstCombinedPeakStretchPct": 6.662,
+      "worstSeamEqMaxGapMm": 3.006,
+      "worstSeamTransientPeakGapMm": 3.007,
+      "worstFinalRmsVelMS": 0.0055,
+      "meanTotalStepMs": 16.3033,
+      "worstTotalStepMeanMs": 17.6034,
+      "worstTotalStepP95Ms": 29.8158,
+      "meanCollisionMs": 1.4393,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.0512,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    },
+    {
+      "configId": "GEOM_PLUS_GUARD",
+      "label": "Cambio 1 + Cambio 2 (Dynamic Active Guard 4 iters · Sin Rampa)",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": false,
+      "gravityRampFrames": 0,
+      "runsCount": 5,
+      "gate1StrictPassCount": 1,
+      "worstPanelMeanEqPct": 0.3937,
+      "worstPanelPeakStretchPct": 5.3417,
+      "worstPanelEqMaxStretchPct": 5.1816,
+      "worstCombinedPeakStretchPct": 5.3417,
+      "worstSeamEqMaxGapMm": 3.008,
+      "worstSeamTransientPeakGapMm": 3.009,
+      "worstFinalRmsVelMS": 0.0006,
+      "meanTotalStepMs": 17.7626,
+      "worstTotalStepMeanMs": 22.6101,
+      "worstTotalStepP95Ms": 36.6463,
+      "meanCollisionMs": 1.3337,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.7793,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    },
+    {
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "label": "Cambio 1 + Cambio 2 + Rampa Gravitacional 10 Frames",
+      "topologyKey": "conformal_regularized",
+      "usesGravityRamp": true,
+      "gravityRampFrames": 10,
+      "runsCount": 5,
+      "gate1StrictPassCount": 1,
+      "worstPanelMeanEqPct": 0.3939,
+      "worstPanelPeakStretchPct": 5.6478,
+      "worstPanelEqMaxStretchPct": 5.478,
+      "worstCombinedPeakStretchPct": 5.6478,
+      "worstSeamEqMaxGapMm": 3.006,
+      "worstSeamTransientPeakGapMm": 3.007,
+      "worstFinalRmsVelMS": 0.0022,
+      "meanTotalStepMs": 15.9437,
+      "worstTotalStepMeanMs": 17.0288,
+      "worstTotalStepP95Ms": 26.1381,
+      "meanCollisionMs": 1.2412,
+      "worstGtEqSevereFrames": 0,
+      "worstGtEqMaxDepthMm": 1.0989,
+      "minPanelEdgeLenMm": 10.169,
+      "minAngleDeg": 12.86,
+      "textileDifferentiationPass": true,
+      "asymmetryContrastPass": true
+    }
+  ],
+  "asymmetryComparisons": [
+    {
+      "configId": "BASE_T51_RESEAL",
+      "usesGravityRamp": false,
+      "faceUpSubBustGapMm": 53.458,
+      "faceDownSubBustGapMm": 52.46,
+      "faceUpFrontNeckDropMm": 1.384,
+      "faceDownFrontNeckDropMm": 3.7,
+      "faceUpBendingEnergyJ": 0.0056,
+      "faceDownBendingEnergyJ": 0.0015,
+      "distinctResponse": true
+    },
+    {
+      "configId": "GEOM_ONLY",
+      "usesGravityRamp": false,
+      "faceUpSubBustGapMm": 54.479,
+      "faceDownSubBustGapMm": 54.001,
+      "faceUpFrontNeckDropMm": -0.233,
+      "faceDownFrontNeckDropMm": 3.855,
+      "faceUpBendingEnergyJ": 0.0158,
+      "faceDownBendingEnergyJ": 0.0041,
+      "distinctResponse": true
+    },
+    {
+      "configId": "GEOM_ONLY_RAMP10",
+      "usesGravityRamp": true,
+      "faceUpSubBustGapMm": 54.48,
+      "faceDownSubBustGapMm": 53.116,
+      "faceUpFrontNeckDropMm": -0.231,
+      "faceDownFrontNeckDropMm": 7.857,
+      "faceUpBendingEnergyJ": 0.0158,
+      "faceDownBendingEnergyJ": 0.0028,
+      "distinctResponse": true
+    },
+    {
+      "configId": "GEOM_PLUS_GUARD",
+      "usesGravityRamp": false,
+      "faceUpSubBustGapMm": 54.479,
+      "faceDownSubBustGapMm": 54.206,
+      "faceUpFrontNeckDropMm": -0.233,
+      "faceDownFrontNeckDropMm": 3.858,
+      "faceUpBendingEnergyJ": 0.0158,
+      "faceDownBendingEnergyJ": 0.0041,
+      "distinctResponse": true
+    },
+    {
+      "configId": "GEOM_PLUS_GUARD_RAMP10",
+      "usesGravityRamp": true,
+      "faceUpSubBustGapMm": 54.48,
+      "faceDownSubBustGapMm": 53.07,
+      "faceUpFrontNeckDropMm": -0.231,
+      "faceDownFrontNeckDropMm": 7.844,
+      "faceUpBendingEnergyJ": 0.0158,
+      "faceDownBendingEnergyJ": 0.0028,
+      "distinctResponse": true
+    }
+  ],
+  "recommendation": {
+    "bestWithoutRampId": "GEOM_PLUS_GUARD",
+    "bestWithRamp10Id": "GEOM_PLUS_GUARD_RAMP10",
+    "gate1Approved": false,
+    "summaryBullets": [
+      "Sin rampa -> mejor GEOM_PLUS_GUARD: Gate1 estricto=1/5, panelPk=5.3417%, panelEqMax=5.1816%, costura=3.008/3.009 mm.",
+      "Con rampa 10f -> mejor GEOM_PLUS_GUARD_RAMP10: Gate1 estricto=1/5, panelPk=5.6478%, panelEqMax=5.478%, costura=3.006/3.007 mm.",
+      "Malla regularizada: minEdge=10.169 mm, minAngle=12.86 deg, pre>=5%: 244->22, max(|L2d-L0|)=0 mm.",
+      "CPU sin rampa=22.6101 ms (P95=36.6463 ms); con rampa=17.0288 ms (P95=26.1381 ms)."
+    ]
+  }
+}

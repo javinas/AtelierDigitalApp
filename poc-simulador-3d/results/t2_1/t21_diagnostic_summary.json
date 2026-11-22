@@ -1,0 +1,1356 @@
+{
+  "generatedAtIso": "2026-11-15T14:44:10.522Z",
+  "referenceConditionsPreserved": "Paño 0.50x0.50 m, 160 g/m^2, K_warp/weft=1200 N/m, K_shear=250 N/m, B=20 uN*m, g=-9.80665 m/s^2, damping=1.8/s, 10 s (600 frames a 60 Hz), umbrales Gate 1 intactos.",
+  "criticalEdgeDiagnosis": {
+    "xpbd16TransientPeakFrame": 21,
+    "xpbd16TransientTopEdges": [
+      {
+        "rank": 1,
+        "edgeIndex": 240,
+        "kind": "warp",
+        "vertexI": 0,
+        "vertexJ": 16,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          0
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.035942,
+        "stretchPct": 7.8268
+      },
+      {
+        "rank": 2,
+        "edgeIndex": 465,
+        "kind": "warp",
+        "vertexI": 15,
+        "vertexJ": 31,
+        "coordI": [
+          0,
+          15
+        ],
+        "coordJ": [
+          1,
+          15
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.034935,
+        "stretchPct": 4.8058
+      },
+      {
+        "rank": 3,
+        "edgeIndex": 480,
+        "kind": "shear",
+        "vertexI": 0,
+        "vertexJ": 17,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.04714,
+        "actualLengthM": 0.049288,
+        "stretchPct": 4.556
+      },
+      {
+        "rank": 4,
+        "edgeIndex": 509,
+        "kind": "shear",
+        "vertexI": 15,
+        "vertexJ": 30,
+        "coordI": [
+          0,
+          15
+        ],
+        "coordJ": [
+          1,
+          14
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.04714,
+        "actualLengthM": 0.048924,
+        "stretchPct": 3.7826
+      },
+      {
+        "rank": 5,
+        "edgeIndex": 466,
+        "kind": "warp",
+        "vertexI": 31,
+        "vertexJ": 47,
+        "coordI": [
+          1,
+          15
+        ],
+        "coordJ": [
+          2,
+          15
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.03456,
+        "stretchPct": 3.68
+      },
+      {
+        "rank": 6,
+        "edgeIndex": 242,
+        "kind": "warp",
+        "vertexI": 32,
+        "vertexJ": 48,
+        "coordI": [
+          2,
+          0
+        ],
+        "coordJ": [
+          3,
+          0
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.03428,
+        "stretchPct": 2.8413
+      },
+      {
+        "rank": 7,
+        "edgeIndex": 0,
+        "kind": "weft",
+        "vertexI": 0,
+        "vertexJ": 1,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          0,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.034261,
+        "stretchPct": 2.7834
+      },
+      {
+        "rank": 8,
+        "edgeIndex": 256,
+        "kind": "warp",
+        "vertexI": 17,
+        "vertexJ": 33,
+        "coordI": [
+          1,
+          1
+        ],
+        "coordJ": [
+          2,
+          1
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.034076,
+        "stretchPct": 2.2284
+      },
+      {
+        "rank": 9,
+        "edgeIndex": 512,
+        "kind": "shear",
+        "vertexI": 17,
+        "vertexJ": 34,
+        "coordI": [
+          1,
+          1
+        ],
+        "coordJ": [
+          2,
+          2
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.04714,
+        "actualLengthM": 0.048142,
+        "stretchPct": 2.1248
+      },
+      {
+        "rank": 10,
+        "edgeIndex": 468,
+        "kind": "warp",
+        "vertexI": 63,
+        "vertexJ": 79,
+        "coordI": [
+          3,
+          15
+        ],
+        "coordJ": [
+          4,
+          15
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.034039,
+        "stretchPct": 2.1168
+      }
+    ],
+    "xpbd16EquilibriumTopEdges": [
+      {
+        "rank": 1,
+        "edgeIndex": 240,
+        "kind": "warp",
+        "vertexI": 0,
+        "vertexJ": 16,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          0
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.03463,
+        "stretchPct": 3.8898
+      },
+      {
+        "rank": 2,
+        "edgeIndex": 465,
+        "kind": "warp",
+        "vertexI": 15,
+        "vertexJ": 31,
+        "coordI": [
+          0,
+          15
+        ],
+        "coordJ": [
+          1,
+          15
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.034128,
+        "stretchPct": 2.383
+      },
+      {
+        "rank": 3,
+        "edgeIndex": 480,
+        "kind": "shear",
+        "vertexI": 0,
+        "vertexJ": 17,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.04714,
+        "actualLengthM": 0.048148,
+        "stretchPct": 2.1374
+      },
+      {
+        "rank": 4,
+        "edgeIndex": 466,
+        "kind": "warp",
+        "vertexI": 31,
+        "vertexJ": 47,
+        "coordI": [
+          1,
+          15
+        ],
+        "coordJ": [
+          2,
+          15
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.033966,
+        "stretchPct": 1.8985
+      },
+      {
+        "rank": 5,
+        "edgeIndex": 509,
+        "kind": "shear",
+        "vertexI": 15,
+        "vertexJ": 30,
+        "coordI": [
+          0,
+          15
+        ],
+        "coordJ": [
+          1,
+          14
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.04714,
+        "actualLengthM": 0.047989,
+        "stretchPct": 1.8005
+      },
+      {
+        "rank": 6,
+        "edgeIndex": 242,
+        "kind": "warp",
+        "vertexI": 32,
+        "vertexJ": 48,
+        "coordI": [
+          2,
+          0
+        ],
+        "coordJ": [
+          3,
+          0
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.033803,
+        "stretchPct": 1.4079
+      },
+      {
+        "rank": 7,
+        "edgeIndex": 0,
+        "kind": "weft",
+        "vertexI": 0,
+        "vertexJ": 1,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          0,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.033686,
+        "stretchPct": 1.0595
+      },
+      {
+        "rank": 8,
+        "edgeIndex": 256,
+        "kind": "warp",
+        "vertexI": 17,
+        "vertexJ": 33,
+        "coordI": [
+          1,
+          1
+        ],
+        "coordJ": [
+          2,
+          1
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.03368,
+        "stretchPct": 1.039
+      },
+      {
+        "rank": 9,
+        "edgeIndex": 468,
+        "kind": "warp",
+        "vertexI": 63,
+        "vertexJ": 79,
+        "coordI": [
+          3,
+          15
+        ],
+        "coordJ": [
+          4,
+          15
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.033333,
+        "actualLengthM": 0.033676,
+        "stretchPct": 1.0294
+      },
+      {
+        "rank": 10,
+        "edgeIndex": 512,
+        "kind": "shear",
+        "vertexI": 17,
+        "vertexJ": 34,
+        "coordI": [
+          1,
+          1
+        ],
+        "coordJ": [
+          2,
+          2
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.04714,
+        "actualLengthM": 0.047606,
+        "stretchPct": 0.9873
+      }
+    ],
+    "xpbd32TransientPeakFrame": 22,
+    "xpbd32TransientTopEdges": [
+      {
+        "rank": 1,
+        "edgeIndex": 992,
+        "kind": "warp",
+        "vertexI": 0,
+        "vertexJ": 32,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          0
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.022845,
+        "stretchPct": 41.6417
+      },
+      {
+        "rank": 2,
+        "edgeIndex": 1953,
+        "kind": "warp",
+        "vertexI": 31,
+        "vertexJ": 63,
+        "coordI": [
+          0,
+          31
+        ],
+        "coordJ": [
+          1,
+          31
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.021635,
+        "stretchPct": 34.1364
+      },
+      {
+        "rank": 3,
+        "edgeIndex": 0,
+        "kind": "weft",
+        "vertexI": 0,
+        "vertexJ": 1,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          0,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.019478,
+        "stretchPct": 20.7666
+      },
+      {
+        "rank": 4,
+        "edgeIndex": 1024,
+        "kind": "warp",
+        "vertexI": 33,
+        "vertexJ": 65,
+        "coordI": [
+          1,
+          1
+        ],
+        "coordJ": [
+          2,
+          1
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.019354,
+        "stretchPct": 19.9967
+      },
+      {
+        "rank": 5,
+        "edgeIndex": 1984,
+        "kind": "shear",
+        "vertexI": 0,
+        "vertexJ": 33,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.02281,
+        "actualLengthM": 0.027148,
+        "stretchPct": 19.0177
+      },
+      {
+        "rank": 6,
+        "edgeIndex": 2045,
+        "kind": "shear",
+        "vertexI": 31,
+        "vertexJ": 62,
+        "coordI": [
+          0,
+          31
+        ],
+        "coordJ": [
+          1,
+          30
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.02281,
+        "actualLengthM": 0.027076,
+        "stretchPct": 18.7019
+      },
+      {
+        "rank": 7,
+        "edgeIndex": 1954,
+        "kind": "warp",
+        "vertexI": 63,
+        "vertexJ": 95,
+        "coordI": [
+          1,
+          31
+        ],
+        "coordJ": [
+          2,
+          31
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.018879,
+        "stretchPct": 17.052
+      },
+      {
+        "rank": 8,
+        "edgeIndex": 1923,
+        "kind": "warp",
+        "vertexI": 62,
+        "vertexJ": 94,
+        "coordI": [
+          1,
+          30
+        ],
+        "coordJ": [
+          2,
+          30
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.018673,
+        "stretchPct": 15.7747
+      },
+      {
+        "rank": 9,
+        "edgeIndex": 994,
+        "kind": "warp",
+        "vertexI": 64,
+        "vertexJ": 96,
+        "coordI": [
+          2,
+          0
+        ],
+        "coordJ": [
+          3,
+          0
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.018664,
+        "stretchPct": 15.7155
+      },
+      {
+        "rank": 10,
+        "edgeIndex": 30,
+        "kind": "weft",
+        "vertexI": 30,
+        "vertexJ": 31,
+        "coordI": [
+          0,
+          30
+        ],
+        "coordJ": [
+          0,
+          31
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.018593,
+        "stretchPct": 15.2754
+      }
+    ],
+    "xpbd32EquilibriumTopEdges": [
+      {
+        "rank": 1,
+        "edgeIndex": 992,
+        "kind": "warp",
+        "vertexI": 0,
+        "vertexJ": 32,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          0
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.019624,
+        "stretchPct": 21.6667
+      },
+      {
+        "rank": 2,
+        "edgeIndex": 1953,
+        "kind": "warp",
+        "vertexI": 31,
+        "vertexJ": 63,
+        "coordI": [
+          0,
+          31
+        ],
+        "coordJ": [
+          1,
+          31
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.018871,
+        "stretchPct": 17.0027
+      },
+      {
+        "rank": 3,
+        "edgeIndex": 1024,
+        "kind": "warp",
+        "vertexI": 33,
+        "vertexJ": 65,
+        "coordI": [
+          1,
+          1
+        ],
+        "coordJ": [
+          2,
+          1
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.017691,
+        "stretchPct": 9.6848
+      },
+      {
+        "rank": 4,
+        "edgeIndex": 1984,
+        "kind": "shear",
+        "vertexI": 0,
+        "vertexJ": 33,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          1,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.02281,
+        "actualLengthM": 0.024946,
+        "stretchPct": 9.3648
+      },
+      {
+        "rank": 5,
+        "edgeIndex": 2045,
+        "kind": "shear",
+        "vertexI": 31,
+        "vertexJ": 62,
+        "coordI": [
+          0,
+          31
+        ],
+        "coordJ": [
+          1,
+          30
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.02281,
+        "actualLengthM": 0.024922,
+        "stretchPct": 9.2583
+      },
+      {
+        "rank": 6,
+        "edgeIndex": 1954,
+        "kind": "warp",
+        "vertexI": 63,
+        "vertexJ": 95,
+        "coordI": [
+          1,
+          31
+        ],
+        "coordJ": [
+          2,
+          31
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.01755,
+        "stretchPct": 8.8076
+      },
+      {
+        "rank": 7,
+        "edgeIndex": 0,
+        "kind": "weft",
+        "vertexI": 0,
+        "vertexJ": 1,
+        "coordI": [
+          0,
+          0
+        ],
+        "coordJ": [
+          0,
+          1
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.01745,
+        "stretchPct": 8.1882
+      },
+      {
+        "rank": 8,
+        "edgeIndex": 1923,
+        "kind": "warp",
+        "vertexI": 62,
+        "vertexJ": 94,
+        "coordI": [
+          1,
+          30
+        ],
+        "coordJ": [
+          2,
+          30
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.017377,
+        "stretchPct": 7.7388
+      },
+      {
+        "rank": 9,
+        "edgeIndex": 994,
+        "kind": "warp",
+        "vertexI": 64,
+        "vertexJ": 96,
+        "coordI": [
+          2,
+          0
+        ],
+        "coordJ": [
+          3,
+          0
+        ],
+        "touchesPinnedCorner": false,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.017361,
+        "stretchPct": 7.636
+      },
+      {
+        "rank": 10,
+        "edgeIndex": 30,
+        "kind": "weft",
+        "vertexI": 30,
+        "vertexJ": 31,
+        "coordI": [
+          0,
+          30
+        ],
+        "coordJ": [
+          0,
+          31
+        ],
+        "touchesPinnedCorner": true,
+        "restLengthM": 0.016129,
+        "actualLengthM": 0.017244,
+        "stretchPct": 6.9125
+      }
+    ]
+  },
+  "anchorAndConvergenceSensitivity32x32": {
+    "note": "Separa residual por convergencia Gauss-Seidel vs singularidad de carga puntual en esquina.",
+    "trials": [
+      {
+        "trialId": "CONV_SUB8_IT6_POINT1",
+        "substeps": 8,
+        "stretchIterations": 6,
+        "pinnedVerticesPerCorner": 1,
+        "transientPeakStretchPct": 75.3727,
+        "equilibriumMaxStretchPct": 38.737,
+        "interiorNonAnchorEqMaxStretchPct": 38.737,
+        "equilibriumMeanStretchPct": 0.41,
+        "physicsStepMsMean": 8.989
+      },
+      {
+        "trialId": "CONV_SUB32_IT6_POINT1",
+        "substeps": 32,
+        "stretchIterations": 6,
+        "pinnedVerticesPerCorner": 1,
+        "transientPeakStretchPct": 11.0844,
+        "equilibriumMaxStretchPct": 4.6771,
+        "interiorNonAnchorEqMaxStretchPct": 4.6771,
+        "equilibriumMeanStretchPct": 0.0694,
+        "physicsStepMsMean": 38.1595
+      },
+      {
+        "trialId": "CONV_SUB64_IT6_POINT1",
+        "substeps": 64,
+        "stretchIterations": 6,
+        "pinnedVerticesPerCorner": 1,
+        "transientPeakStretchPct": 5.1247,
+        "equilibriumMaxStretchPct": 2.302,
+        "interiorNonAnchorEqMaxStretchPct": 1.6087,
+        "equilibriumMeanStretchPct": 0.0541,
+        "physicsStepMsMean": 72.7631
+      },
+      {
+        "trialId": "TAB2_SUB16_BIDIR2_WIDTH32MM",
+        "substeps": 16,
+        "stretchIterations": 2,
+        "pinnedVerticesPerCorner": 2,
+        "transientPeakStretchPct": 25.3303,
+        "equilibriumMaxStretchPct": 12.2528,
+        "interiorNonAnchorEqMaxStretchPct": 12.2528,
+        "equilibriumMeanStretchPct": 0.3005,
+        "physicsStepMsMean": 11.9727
+      }
+    ]
+  },
+  "optimizationVariants": {
+    "runs": [
+      {
+        "variantId": "V0_T2_BASELINE",
+        "runId": "V0_T2_BASELINE_16x16",
+        "gridSize": 16,
+        "vertexCount": 256,
+        "triangleCount": 450,
+        "edgeCount": 930,
+        "hingeCount": 645,
+        "substeps": 8,
+        "stretchIterationsPerSubstep": 6,
+        "bendingIterationsPerSubstep": 6,
+        "bidirectionalStretchSweep": false,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V0_T2_BASELINE_16x16",
+          "totalFrames": 600,
+          "predictMsMean": 0.0456,
+          "stretchMsMean": 1.5608,
+          "bendingMsMean": 4.8057,
+          "commitMsMean": 0.029,
+          "physicsStepMsMean": 6.4972,
+          "physicsStepMsP95": 9.2048,
+          "sharesPct": {
+            "predict": 0.7,
+            "stretch": 24.2,
+            "bending": 74.6,
+            "commit": 0.5
+          }
+        },
+        "transientPeakStretchPct": 7.8268,
+        "transientMeanStretchPctMax": 0.2652,
+        "equilibriumMaxStretchPct": 3.8898,
+        "equilibriumMeanStretchPct": 0.1086,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 1.8985,
+        "centerBottomDropM": 0.5028,
+        "meanDropM": 0.2526,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": true,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V0_T2_BASELINE",
+        "runId": "V0_T2_BASELINE_32x32",
+        "gridSize": 32,
+        "vertexCount": 1024,
+        "triangleCount": 1922,
+        "edgeCount": 3906,
+        "hingeCount": 2821,
+        "substeps": 8,
+        "stretchIterationsPerSubstep": 6,
+        "bendingIterationsPerSubstep": 6,
+        "bidirectionalStretchSweep": false,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V0_T2_BASELINE_32x32",
+          "totalFrames": 600,
+          "predictMsMean": 0.1167,
+          "stretchMsMean": 6.1621,
+          "bendingMsMean": 18.3435,
+          "commitMsMean": 0.0912,
+          "physicsStepMsMean": 24.7497,
+          "physicsStepMsP95": 34.786,
+          "sharesPct": {
+            "predict": 0.5,
+            "stretch": 24.9,
+            "bending": 74.2,
+            "commit": 0.4
+          }
+        },
+        "transientPeakStretchPct": 41.6417,
+        "transientMeanStretchPctMax": 0.782,
+        "equilibriumMaxStretchPct": 21.6667,
+        "equilibriumMeanStretchPct": 0.3341,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 9.6848,
+        "centerBottomDropM": 0.5096,
+        "meanDropM": 0.2592,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": false,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V1_BIDIR_BEND1",
+        "runId": "V1_BIDIR_BEND1_16x16",
+        "gridSize": 16,
+        "vertexCount": 256,
+        "triangleCount": 450,
+        "edgeCount": 930,
+        "hingeCount": 645,
+        "substeps": 8,
+        "stretchIterationsPerSubstep": 6,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V1_BIDIR_BEND1_16x16",
+          "totalFrames": 600,
+          "predictMsMean": 0.0284,
+          "stretchMsMean": 1.3372,
+          "bendingMsMean": 0.6912,
+          "commitMsMean": 0.0257,
+          "physicsStepMsMean": 2.0965,
+          "physicsStepMsP95": 3.0141,
+          "sharesPct": {
+            "predict": 1.4,
+            "stretch": 64.2,
+            "bending": 33.2,
+            "commit": 1.2
+          }
+        },
+        "transientPeakStretchPct": 12.8375,
+        "transientMeanStretchPctMax": 0.3431,
+        "equilibriumMaxStretchPct": 6.4343,
+        "equilibriumMeanStretchPct": 0.1369,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 6.4343,
+        "centerBottomDropM": 0.5035,
+        "meanDropM": 0.2533,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V1_BIDIR_BEND1",
+        "runId": "V1_BIDIR_BEND1_32x32",
+        "gridSize": 32,
+        "vertexCount": 1024,
+        "triangleCount": 1922,
+        "edgeCount": 3906,
+        "hingeCount": 2821,
+        "substeps": 8,
+        "stretchIterationsPerSubstep": 6,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V1_BIDIR_BEND1_32x32",
+          "totalFrames": 600,
+          "predictMsMean": 0.1307,
+          "stretchMsMean": 7.2913,
+          "bendingMsMean": 3.8315,
+          "commitMsMean": 0.1051,
+          "physicsStepMsMean": 11.3826,
+          "physicsStepMsP95": 17.7136,
+          "sharesPct": {
+            "predict": 1.2,
+            "stretch": 64.2,
+            "bending": 33.7,
+            "commit": 0.9
+          }
+        },
+        "transientPeakStretchPct": 75.3727,
+        "transientMeanStretchPctMax": 0.9529,
+        "equilibriumMaxStretchPct": 38.737,
+        "equilibriumMeanStretchPct": 0.41,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 38.737,
+        "centerBottomDropM": 0.5114,
+        "meanDropM": 0.2609,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V2_SUBSTEP16_BIDIR2_BEND1",
+        "runId": "V2_SUBSTEP16_BIDIR2_BEND1_16x16",
+        "gridSize": 16,
+        "vertexCount": 256,
+        "triangleCount": 450,
+        "edgeCount": 930,
+        "hingeCount": 645,
+        "substeps": 16,
+        "stretchIterationsPerSubstep": 2,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V2_SUBSTEP16_BIDIR2_BEND1_16x16",
+          "totalFrames": 600,
+          "predictMsMean": 0.049,
+          "stretchMsMean": 0.8968,
+          "bendingMsMean": 1.3669,
+          "commitMsMean": 0.0406,
+          "physicsStepMsMean": 2.3644,
+          "physicsStepMsP95": 3.5198,
+          "sharesPct": {
+            "predict": 2.1,
+            "stretch": 38.1,
+            "bending": 58.1,
+            "commit": 1.7
+          }
+        },
+        "transientPeakStretchPct": 11.522,
+        "transientMeanStretchPctMax": 0.3135,
+        "equilibriumMaxStretchPct": 5.5293,
+        "equilibriumMeanStretchPct": 0.1222,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 5.5293,
+        "centerBottomDropM": 0.5031,
+        "meanDropM": 0.2529,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V2_SUBSTEP16_BIDIR2_BEND1",
+        "runId": "V2_SUBSTEP16_BIDIR2_BEND1_32x32",
+        "gridSize": 32,
+        "vertexCount": 1024,
+        "triangleCount": 1922,
+        "edgeCount": 3906,
+        "hingeCount": 2821,
+        "substeps": 16,
+        "stretchIterationsPerSubstep": 2,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V2_SUBSTEP16_BIDIR2_BEND1_32x32",
+          "totalFrames": 600,
+          "predictMsMean": 0.2139,
+          "stretchMsMean": 4.3938,
+          "bendingMsMean": 6.6418,
+          "commitMsMean": 0.1843,
+          "physicsStepMsMean": 11.4531,
+          "physicsStepMsP95": 20.2044,
+          "sharesPct": {
+            "predict": 1.9,
+            "stretch": 38.4,
+            "bending": 58.1,
+            "commit": 1.6
+          }
+        },
+        "transientPeakStretchPct": 64.0148,
+        "transientMeanStretchPctMax": 0.7826,
+        "equilibriumMaxStretchPct": 32.5643,
+        "equilibriumMeanStretchPct": 0.3301,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 32.5643,
+        "centerBottomDropM": 0.5095,
+        "meanDropM": 0.2591,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V3_SUBSTEP24_BIDIR2_BEND1",
+        "runId": "V3_SUBSTEP24_BIDIR2_BEND1_16x16",
+        "gridSize": 16,
+        "vertexCount": 256,
+        "triangleCount": 450,
+        "edgeCount": 930,
+        "hingeCount": 645,
+        "substeps": 24,
+        "stretchIterationsPerSubstep": 2,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V3_SUBSTEP24_BIDIR2_BEND1_16x16",
+          "totalFrames": 600,
+          "predictMsMean": 0.0965,
+          "stretchMsMean": 1.5352,
+          "bendingMsMean": 2.4529,
+          "commitMsMean": 0.0746,
+          "physicsStepMsMean": 4.1861,
+          "physicsStepMsP95": 6.335,
+          "sharesPct": {
+            "predict": 2.3,
+            "stretch": 36.9,
+            "bending": 59,
+            "commit": 1.8
+          }
+        },
+        "transientPeakStretchPct": 6.664,
+        "transientMeanStretchPctMax": 0.2133,
+        "equilibriumMaxStretchPct": 2.9282,
+        "equilibriumMeanStretchPct": 0.0818,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 2.9282,
+        "centerBottomDropM": 0.5021,
+        "meanDropM": 0.2519,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": true,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V3_SUBSTEP24_BIDIR2_BEND1",
+        "runId": "V3_SUBSTEP24_BIDIR2_BEND1_32x32",
+        "gridSize": 32,
+        "vertexCount": 1024,
+        "triangleCount": 1922,
+        "edgeCount": 3906,
+        "hingeCount": 2821,
+        "substeps": 24,
+        "stretchIterationsPerSubstep": 2,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "dihedral_full",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V3_SUBSTEP24_BIDIR2_BEND1_32x32",
+          "totalFrames": 600,
+          "predictMsMean": 0.3615,
+          "stretchMsMean": 6.4503,
+          "bendingMsMean": 10.7474,
+          "commitMsMean": 0.3059,
+          "physicsStepMsMean": 17.9013,
+          "physicsStepMsP95": 24.0196,
+          "sharesPct": {
+            "predict": 2,
+            "stretch": 36.1,
+            "bending": 60.2,
+            "commit": 1.7
+          }
+        },
+        "transientPeakStretchPct": 35.7964,
+        "transientMeanStretchPctMax": 0.4558,
+        "equilibriumMaxStretchPct": 17.9184,
+        "equilibriumMeanStretchPct": 0.175,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 17.9184,
+        "centerBottomDropM": 0.5055,
+        "meanDropM": 0.2552,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": false,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V4_SUBSTEP16_SURROGATE_BEND",
+        "runId": "V4_SUBSTEP16_SURROGATE_BEND_16x16",
+        "gridSize": 16,
+        "vertexCount": 256,
+        "triangleCount": 450,
+        "edgeCount": 930,
+        "hingeCount": 645,
+        "substeps": 16,
+        "stretchIterationsPerSubstep": 2,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "opposite_distance_surrogate",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V4_SUBSTEP16_SURROGATE_BEND_16x16",
+          "totalFrames": 600,
+          "predictMsMean": 0.0595,
+          "stretchMsMean": 0.9199,
+          "bendingMsMean": 0.3078,
+          "commitMsMean": 0.0459,
+          "physicsStepMsMean": 1.3467,
+          "physicsStepMsP95": 2.0315,
+          "sharesPct": {
+            "predict": 4.5,
+            "stretch": 69,
+            "bending": 23.1,
+            "commit": 3.4
+          }
+        },
+        "transientPeakStretchPct": 11.2277,
+        "transientMeanStretchPctMax": 0.3097,
+        "equilibriumMaxStretchPct": 5.4112,
+        "equilibriumMeanStretchPct": 0.1266,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 5.4112,
+        "centerBottomDropM": 0.5031,
+        "meanDropM": 0.253,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      },
+      {
+        "variantId": "V4_SUBSTEP16_SURROGATE_BEND",
+        "runId": "V4_SUBSTEP16_SURROGATE_BEND_32x32",
+        "gridSize": 32,
+        "vertexCount": 1024,
+        "triangleCount": 1922,
+        "edgeCount": 3906,
+        "hingeCount": 2821,
+        "substeps": 16,
+        "stretchIterationsPerSubstep": 2,
+        "bendingIterationsPerSubstep": 1,
+        "bidirectionalStretchSweep": true,
+        "bendingMode": "opposite_distance_surrogate",
+        "pinnedVerticesCount": 2,
+        "nanVertexCountTotal": 0,
+        "phaseProfile": {
+          "runId": "V4_SUBSTEP16_SURROGATE_BEND_32x32",
+          "totalFrames": 600,
+          "predictMsMean": 0.213,
+          "stretchMsMean": 3.7786,
+          "bendingMsMean": 1.3987,
+          "commitMsMean": 0.1666,
+          "physicsStepMsMean": 5.5738,
+          "physicsStepMsP95": 8.3353,
+          "sharesPct": {
+            "predict": 3.8,
+            "stretch": 68,
+            "bending": 25.2,
+            "commit": 3
+          }
+        },
+        "transientPeakStretchPct": 62.895,
+        "transientMeanStretchPctMax": 0.7841,
+        "equilibriumMaxStretchPct": 30.6419,
+        "equilibriumMeanStretchPct": 0.3442,
+        "interiorNonAnchorEquilibriumMaxStretchPct": 30.6419,
+        "centerBottomDropM": 0.5093,
+        "meanDropM": 0.2596,
+        "didNotLockOrFreeze": true,
+        "checks": {
+          "zeroNan": true,
+          "equilibriumMeanStretchLe2Pct": true,
+          "equilibriumPeakStretchLe5Pct": false,
+          "transientMeanStretchLe2Pct": true,
+          "transientPeakStretchLe5Pct": false,
+          "withinDesktopPhysicsBudgetMean16ms": true,
+          "lockingNonFreezingPass": false
+        }
+      }
+    ],
+    "invariance": [
+      {
+        "variantId": "V0_T2_BASELINE",
+        "centerBottomDropDiffPct": 1.334,
+        "meanDropDiffPct": 2.546,
+        "shapeRmsDiffPctOfClothLength": 1.983,
+        "invariancePassLe10Pct": true
+      },
+      {
+        "variantId": "V1_BIDIR_BEND1",
+        "centerBottomDropDiffPct": 1.545,
+        "meanDropDiffPct": 2.913,
+        "shapeRmsDiffPctOfClothLength": 2.156,
+        "invariancePassLe10Pct": true
+      },
+      {
+        "variantId": "V2_SUBSTEP16_BIDIR2_BEND1",
+        "centerBottomDropDiffPct": 1.256,
+        "meanDropDiffPct": 2.393,
+        "shapeRmsDiffPctOfClothLength": 1.829,
+        "invariancePassLe10Pct": true
+      },
+      {
+        "variantId": "V3_SUBSTEP24_BIDIR2_BEND1",
+        "centerBottomDropDiffPct": 0.673,
+        "meanDropDiffPct": 1.293,
+        "shapeRmsDiffPctOfClothLength": 1.223,
+        "invariancePassLe10Pct": true
+      },
+      {
+        "variantId": "V4_SUBSTEP16_SURROGATE_BEND",
+        "centerBottomDropDiffPct": 1.217,
+        "meanDropDiffPct": 2.542,
+        "shapeRmsDiffPctOfClothLength": 2.243,
+        "invariancePassLe10Pct": true
+      }
+    ]
+  }
+}

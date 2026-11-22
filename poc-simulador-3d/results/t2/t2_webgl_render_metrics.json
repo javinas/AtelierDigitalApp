@@ -1,0 +1,51 @@
+{
+  "measuredAtIso": "2026-11-15T14:31:54.088Z",
+  "rendererBackend": "Chromium Headless WebGL (ANGLE SwiftShader)",
+  "capturedFiles": [
+    "D:\\Datos\\Datos\\DATOS JVINAS\\Antigravity\\2.ByKatherineCarroll\\AtelierDigitalApp\\poc-simulador-3d\\results\\t2\\captures\\01_compare_t050s.png",
+    "D:\\Datos\\Datos\\DATOS JVINAS\\Antigravity\\2.ByKatherineCarroll\\AtelierDigitalApp\\poc-simulador-3d\\results\\t2\\captures\\02_compare_t200s.png",
+    "D:\\Datos\\Datos\\DATOS JVINAS\\Antigravity\\2.ByKatherineCarroll\\AtelierDigitalApp\\poc-simulador-3d\\results\\t2\\captures\\03_compare_t1000s_equilibrium.png",
+    "D:\\Datos\\Datos\\DATOS JVINAS\\Antigravity\\2.ByKatherineCarroll\\AtelierDigitalApp\\poc-simulador-3d\\results\\t2\\captures\\04_xpbd_16x16_t10s.png",
+    "D:\\Datos\\Datos\\DATOS JVINAS\\Antigravity\\2.ByKatherineCarroll\\AtelierDigitalApp\\poc-simulador-3d\\results\\t2\\captures\\05_xpbd_32x32_t10s.png",
+    "D:\\Datos\\Datos\\DATOS JVINAS\\Antigravity\\2.ByKatherineCarroll\\AtelierDigitalApp\\poc-simulador-3d\\results\\t2\\captures\\06_pbd_16x16_t10s.png",
+    "D:\\Datos\\Datos\\DATOS JVINAS\\Antigravity\\2.ByKatherineCarroll\\AtelierDigitalApp\\poc-simulador-3d\\results\\t2\\captures\\07_pbd_32x32_t10s.png"
+  ],
+  "renderBenchmarks": [
+    {
+      "mode": "bench",
+      "runId": "xpbd_16x16",
+      "vertexCount": 256,
+      "triangleCount": 450,
+      "renderMsMean": 0.597,
+      "renderMsP50": 0.5,
+      "renderMsP95": 1.2
+    },
+    {
+      "mode": "bench",
+      "runId": "xpbd_32x32",
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "renderMsMean": 1.24,
+      "renderMsP50": 0.9,
+      "renderMsP95": 2.9
+    },
+    {
+      "mode": "bench",
+      "runId": "pbd_16x16",
+      "vertexCount": 256,
+      "triangleCount": 450,
+      "renderMsMean": 1.142,
+      "renderMsP50": 1.1,
+      "renderMsP95": 2
+    },
+    {
+      "mode": "bench",
+      "runId": "pbd_32x32",
+      "vertexCount": 1024,
+      "triangleCount": 1922,
+      "renderMsMean": 1.813,
+      "renderMsP50": 1.6,
+      "renderMsP95": 3.5
+    }
+  ]
+}
