@@ -60,13 +60,13 @@ export default function DesignerHomeScreen() {
         } as any,
     ];
 
-    // Grid de Información Secundaria / Infraestructura (3 columnas en desktop, 2 en tablet, 1 en mobile)
+    // Grid de Información Secundaria / Infraestructura (4 columnas en desktop, 2 en tablet, 1 en mobile)
     const secondaryGridStyle = [
         styles.secondaryGrid,
         Platform.OS === 'web' && {
             display: 'grid',
             gridTemplateColumns: isDesktop
-                ? 'repeat(3, minmax(0, 1fr))'
+                ? 'repeat(4, minmax(0, 1fr))'
                 : isTablet
                 ? 'repeat(2, minmax(0, 1fr))'
                 : '1fr',
@@ -287,6 +287,42 @@ export default function DesignerHomeScreen() {
                                     </Text>
                                     <Text style={styles.experienceSecondaryButtonArrow}>→</Text>
                                 </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => router.push('/(designer)/fittings')}
+                                    style={[styles.experienceSecondaryButton, { marginTop: 6 }]}
+                                    activeOpacity={0.85}
+                                    accessibilityLabel="Abrir Pruebas y Ajustes"
+                                >
+                                    <Text style={styles.experienceSecondaryButtonText}>
+                                        ✦ Pruebas & Ajustes (M06)
+                                    </Text>
+                                    <Text style={styles.experienceSecondaryButtonArrow}>→</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => router.push('/(designer)/finances')}
+                                    style={[styles.experienceSecondaryButton, { marginTop: 6 }]}
+                                    activeOpacity={0.85}
+                                    accessibilityLabel="Abrir Finanzas y Costos"
+                                >
+                                    <Text style={styles.experienceSecondaryButtonText}>
+                                        ✦ Finanzas & Costos (M07)
+                                    </Text>
+                                    <Text style={styles.experienceSecondaryButtonArrow}>→</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => router.push('/(designer)/agenda')}
+                                    style={[styles.experienceSecondaryButton, { marginTop: 6 }]}
+                                    activeOpacity={0.85}
+                                    accessibilityLabel="Abrir Agenda del Atelier"
+                                >
+                                    <Text style={styles.experienceSecondaryButtonText}>
+                                        ✦ Agenda del Atelier (M08)
+                                    </Text>
+                                    <Text style={styles.experienceSecondaryButtonArrow}>→</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -469,6 +505,33 @@ export default function DesignerHomeScreen() {
                                     >
                                         <Text style={styles.workbenchSecondaryButtonText}>Materiales y Proveedores</Text>
                                     </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/(designer)/fittings')}
+                                        style={styles.workbenchSecondaryButton}
+                                        activeOpacity={0.85}
+                                        accessibilityLabel="Abrir Pruebas y Ajustes desde mesa de trabajo"
+                                    >
+                                        <Text style={styles.workbenchSecondaryButtonText}>Pruebas & Ajustes</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/(designer)/finances')}
+                                        style={styles.workbenchSecondaryButton}
+                                        activeOpacity={0.85}
+                                        accessibilityLabel="Abrir Finanzas del Atelier desde mesa de trabajo"
+                                    >
+                                        <Text style={styles.workbenchSecondaryButtonText}>Finanzas del Atelier</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        onPress={() => router.push('/(designer)/agenda')}
+                                        style={styles.workbenchSecondaryButton}
+                                        activeOpacity={0.85}
+                                        accessibilityLabel="Abrir Agenda del Atelier desde mesa de trabajo"
+                                    >
+                                        <Text style={styles.workbenchSecondaryButtonText}>Agenda del Atelier</Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -512,7 +575,7 @@ export default function DesignerHomeScreen() {
 
                     <View style={secondaryGridStyle}>
                         {/* FUNDACIÓN & SEGURIDAD */}
-                        <View style={[styles.subordinatedCard, isDesktop ? styles.colThird : isTablet ? styles.colHalf : styles.colFull]}>
+                        <View style={[styles.subordinatedCard, isDesktop ? styles.colFourth : isTablet ? styles.colHalf : styles.colFull]}>
                             <View style={styles.subordinatedImageWrapper}>
                                 <Image
                                     source={CARD_SECURITY}
@@ -540,7 +603,7 @@ export default function DesignerHomeScreen() {
 
                         {/* MÓDULO 04: DISEÑO, MOODBOARD & BIBLIOTECA */}
                         <TouchableOpacity
-                            style={[styles.subordinatedCard, isDesktop ? styles.colThird : isTablet ? styles.colHalf : styles.colFull]}
+                            style={[styles.subordinatedCard, isDesktop ? styles.colFourth : isTablet ? styles.colHalf : styles.colFull]}
                             onPress={() => router.push('/(designer)/library')}
                             activeOpacity={0.85}
                             accessibilityLabel="Abrir Biblioteca de Diseño y Moodboard"
@@ -570,8 +633,13 @@ export default function DesignerHomeScreen() {
                             </View>
                         </TouchableOpacity>
 
-                        {/* PRUEBAS & ENTREGAS */}
-                        <View style={[styles.subordinatedCard, styles.subordinatedCardDashed, isDesktop ? styles.colThird : isTablet ? styles.colHalf : styles.colFull]}>
+                        {/* MÓDULO 06: PRUEBAS & AJUSTES */}
+                        <TouchableOpacity
+                            style={[styles.subordinatedCard, isDesktop ? styles.colFourth : isTablet ? styles.colHalf : styles.colFull]}
+                            onPress={() => router.push('/(designer)/fittings')}
+                            activeOpacity={0.85}
+                            accessibilityLabel="Abrir Bandeja de Pruebas y Ajustes"
+                        >
                             <View style={styles.subordinatedImageWrapper}>
                                 <Image
                                     source={CARD_FITTING}
@@ -580,22 +648,86 @@ export default function DesignerHomeScreen() {
                                 />
                                 <View style={styles.experienceImageDimmer} />
                                 <View style={styles.experienceTag}>
-                                    <Text style={styles.experienceTagText}>PRÓXIMO</Text>
+                                    <Text style={styles.experienceTagText}>MÓDULO 06 · ACTIVO</Text>
                                 </View>
                             </View>
                             <View style={styles.subordinatedBody}>
                                 <View>
-                                    <Text style={styles.subordinatedCardTitle}>Pruebas & Entregas</Text>
+                                    <Text style={styles.subordinatedCardTitle}>Pruebas & Ajustes de Taller</Text>
                                     <Text style={styles.subordinatedCardText}>
-                                        Agenda de fitting sobre glasilla (toile), seguimiento de correcciones en cuerpo real y ceremonial de entrega.
+                                        Bandeja transversal de calce sobre glasilla, trazabilidad de ajustes anatómicos, enlace CAD y ceremonial de entrega.
                                     </Text>
                                 </View>
-                                <View style={styles.upcomingBadgeRow}>
-                                    <Text style={styles.upcomingDot}>◌</Text>
-                                    <Text style={styles.upcomingText}>En fase de planificación</Text>
+                                <View style={styles.securityCheckBadge}>
+                                    <Text style={styles.securityCheckIcon}>✦</Text>
+                                    <Text style={styles.securityCheckText}>Abrir Pruebas & Ajustes →</Text>
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
+
+                        {/* MÓDULO 07: COSTOS & FINANZAS DEL ATELIER */}
+                        <TouchableOpacity
+                            style={[styles.subordinatedCard, isDesktop ? styles.colFourth : isTablet ? styles.colHalf : styles.colFull]}
+                            onPress={() => router.push('/(designer)/finances')}
+                            activeOpacity={0.85}
+                            accessibilityLabel="Abrir Bandeja de Costos y Finanzas del Atelier"
+                        >
+                            <View style={styles.subordinatedImageWrapper}>
+                                <Image
+                                    source={CARD_CREATIONS}
+                                    style={styles.subordinatedImage}
+                                    resizeMode="cover"
+                                />
+                                <View style={styles.experienceImageDimmer} />
+                                <View style={styles.experienceTag}>
+                                    <Text style={styles.experienceTagText}>MÓDULO 07 · ACTIVO</Text>
+                                </View>
+                            </View>
+                            <View style={styles.subordinatedBody}>
+                                <View>
+                                    <Text style={styles.subordinatedCardTitle}>Costos & Finanzas del Atelier</Text>
+                                    <Text style={styles.subordinatedCardText}>
+                                        Control de anticipos (50%), recaudos, carteras por cobrar, egresos de taller y rentabilidad bimoneda.
+                                    </Text>
+                                </View>
+                                <View style={styles.securityCheckBadge}>
+                                    <Text style={styles.securityCheckIcon}>✦</Text>
+                                    <Text style={styles.securityCheckText}>Abrir Finanzas del Atelier →</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+
+                        {/* MÓDULO 08: AGENDA DEL ATELIER */}
+                        <TouchableOpacity
+                            style={[styles.subordinatedCard, isDesktop ? styles.colFourth : isTablet ? styles.colHalf : styles.colFull]}
+                            onPress={() => router.push('/(designer)/agenda')}
+                            activeOpacity={0.85}
+                            accessibilityLabel="Abrir Agenda Unificada del Atelier"
+                        >
+                            <View style={styles.subordinatedImageWrapper}>
+                                <Image
+                                    source={CARD_FITTING}
+                                    style={styles.subordinatedImage}
+                                    resizeMode="cover"
+                                />
+                                <View style={styles.experienceImageDimmer} />
+                                <View style={styles.experienceTag}>
+                                    <Text style={styles.experienceTagText}>MÓDULO 08 · ACTIVO</Text>
+                                </View>
+                            </View>
+                            <View style={styles.subordinatedBody}>
+                                <View>
+                                    <Text style={styles.subordinatedCardTitle}>Agenda del Atelier</Text>
+                                    <Text style={styles.subordinatedCardText}>
+                                        Calendario día/semana/mes con citas, pruebas M06, entregas M03, jornadas M02 y actividades internas sin traslapes.
+                                    </Text>
+                                </View>
+                                <View style={styles.securityCheckBadge}>
+                                    <Text style={styles.securityCheckIcon}>✦</Text>
+                                    <Text style={styles.securityCheckText}>Abrir Agenda del Atelier →</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
 

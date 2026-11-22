@@ -23,6 +23,13 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
         const currentGroup = segs[0] as string | undefined;
         const currentScreen = segs[1] as string | undefined;
         const inAuthGroup = currentGroup === '(auth)';
+        const isDesignerClientPortal =
+            currentGroup === 'client-portal' ||
+            pathname === '/client-portal' ||
+            pathname === '/(designer)/client-portal' ||
+            currentGroup === 'client-portal-invitations' ||
+            pathname === '/client-portal-invitations' ||
+            pathname === '/(designer)/client-portal-invitations';
         const inDesignerGroup =
             currentGroup === '(designer)' ||
             currentGroup === 'creations' ||
@@ -31,13 +38,27 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
             currentGroup === 'pattern-bank' ||
             currentGroup === 'library' ||
             currentGroup === 'materials' ||
+            currentGroup === 'fittings' ||
+            currentGroup === 'finances' ||
+            currentGroup === 'agenda' ||
             pathname === '/creations' ||
             pathname === '/clients' ||
             pathname === '/patterns' ||
             pathname === '/pattern-bank' ||
             pathname === '/library' ||
-            pathname === '/materials';
-        const inClientGroup = currentGroup === '(client)';
+            pathname === '/materials' ||
+            pathname === '/fittings' ||
+            pathname === '/finances' ||
+            pathname === '/agenda' ||
+            isDesignerClientPortal;
+        const isClientPortalExperience =
+            currentGroup === 'mi-portal' ||
+            pathname === '/mi-portal' ||
+            pathname === '/(client)/mi-portal' ||
+            currentGroup === 'portal-invitation' ||
+            pathname === '/portal-invitation' ||
+            pathname === '/(client)/portal-invitation';
+        const inClientGroup = currentGroup === '(client)' || isClientPortalExperience;
         const inAdminGroup = currentGroup === '(admin)';
 
         // 1. Detección exhaustiva y determinística del flujo de restablecimiento de contraseña:
@@ -74,6 +95,20 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
             return;
         }
 
+        // Flujo autónomo de aceptación de invitaciones del Portal de Clientas (M09-B.4):
+        // Permanece accesible sin redirecciones automáticas por rol/sesión para validar token,
+        // detectar conflictos multi-tenant/roles privilegiados o completar la vinculación inline.
+        const isPortalInvite =
+            currentGroup === 'portal' ||
+            pathname === '/portal/invite' ||
+            pathname?.startsWith('/portal/invite') ||
+            (typeof window !== 'undefined' &&
+                window.location.pathname.startsWith('/portal/invite'));
+
+        if (isPortalInvite) {
+            return;
+        }
+
         // 3. Si la URL contiene hash/parámetro de recuperación de Supabase Auth (#access_token=...&type=recovery),
         // pero aún no estamos en reset-password, redirigir de inmediato a la pantalla de restablecimiento de clave
         if (
@@ -101,8 +136,10 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
             currentGroup === 'contacto' ||
             currentGroup === 'preview-modulo3' ||
             currentGroup === 'preview-modulo4' ||
+            currentGroup === 'mannequin-preview' ||
             pathname === '/preview-modulo3' ||
             pathname === '/preview-modulo4' ||
+            pathname === '/mannequin-preview' ||
             pathname === '/terminos-condiciones' ||
             pathname === '/politica-privacidad' ||
             pathname === '/aviso-privacidad' ||
@@ -150,7 +187,7 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
         }
 
         if (role === 'admin') {
-            if (!inAdminGroup) router.replace('/(admin)');
+            if (!inAdminGroup && !isDesignerClientPortal) router.replace('/(admin)');
             return;
         }
 

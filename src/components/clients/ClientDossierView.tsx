@@ -29,6 +29,7 @@ import { DossierPatternsTab } from './dossier/DossierPatternsTab';
 import { DossierCreationsTab } from './dossier/DossierCreationsTab';
 import { DossierSessionsTab } from './dossier/DossierSessionsTab';
 import { DossierOverviewTab } from './dossier/DossierOverviewTab';
+import { DossierPortalTab } from './dossier/DossierPortalTab';
 import { DossierModals } from './dossier/DossierModals';
 import { typography } from '../../theme/typography';
 import { Client } from '../../types/client';
@@ -560,6 +561,16 @@ export function ClientDossierView({
                                         setSelectedSubjectFilter(p.id);
                                         setActiveTab('sessions');
                                     }}
+                                />
+                            </View>
+                        )}
+                        {/* PESTAÑA 6: PORTAL DE CLIENTA (M09-B) */}
+                        {activeTab === 'portal' && (
+                            <View style={styles.tabContentSection}>
+                                <DossierPortalTab
+                                    client={client}
+                                    creations={creations}
+                                    formatDate={formatDate}
                                 />
                             </View>
                         )}

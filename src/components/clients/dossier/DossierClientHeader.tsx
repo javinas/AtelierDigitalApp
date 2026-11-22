@@ -11,7 +11,7 @@ import { Client } from '../../../types/client';
 import { getEditorialAvatarSource } from '../../../utils/clientAvatarHelper';
 import { styles } from './clientDossierStyles';
 
-export type DossierTab = 'overview' | 'sessions' | 'creations' | 'patterns' | 'persons_groups';
+export type DossierTab = 'overview' | 'sessions' | 'creations' | 'patterns' | 'persons_groups' | 'portal';
 
 interface DossierClientHeaderProps {
     client: Client;
@@ -241,6 +241,16 @@ export const DossierClientHeader: React.FC<DossierClientHeaderProps> = ({
                 >
                     <Text style={[styles.tabButtonText, activeTab === 'persons_groups' && styles.tabButtonTextActive]}>
                         Personas y Grupos
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.tabButton, activeTab === 'portal' && styles.tabButtonActive]}
+                    onPress={() => onTabChange('portal')}
+                    activeOpacity={0.8}
+                >
+                    <Text style={[styles.tabButtonText, activeTab === 'portal' && styles.tabButtonTextActive]}>
+                        Portal de Clienta
                     </Text>
                 </TouchableOpacity>
             </View>
