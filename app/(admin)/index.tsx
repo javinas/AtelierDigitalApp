@@ -396,6 +396,16 @@ export default function AdminHomeScreen() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                    onPress={() => router.push('/(admin)/communications')}
+                    style={styles.navItem}
+                    activeOpacity={0.8}
+                >
+                    <Text style={styles.navItemText}>
+                        ✉️ Comunicaciones SMTP
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
                     onPress={() => router.push('/(admin)/clients')}
                     style={styles.navItem}
                     activeOpacity={0.8}
@@ -737,6 +747,33 @@ export default function AdminHomeScreen() {
                 >
                     <Text style={styles.openSettingsButtonText}>
                         Gestionar Configuración Global →
+                    </Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* MÓDULO DE COMUNICACIONES Y CORREOS SMTP */}
+            <Text style={styles.sectionTitleSecondary}>Comunicaciones y Correos SMTP</Text>
+
+            <View style={styles.moduleCard}>
+                <View style={styles.moduleCardHeader}>
+                    <Text style={styles.moduleTitle}>Cuentas SMTP Zimbra e Historial</Text>
+                    <View style={styles.activeBadge}>
+                        <Text style={styles.activeBadgeText}>
+                            DISPONIBLE
+                        </Text>
+                    </View>
+                </View>
+                <Text style={styles.moduleDescription}>
+                    Administra las cuentas SMTP corporativas por propósito (M09 Invitaciones, M03 Cotizaciones, M08 Agenda, Contacto y Facturación), rota credenciales en Vault y consulta el historial de estados.
+                </Text>
+
+                <TouchableOpacity
+                    onPress={() => router.push('/(admin)/communications')}
+                    style={styles.openSettingsButton}
+                    activeOpacity={0.85}
+                >
+                    <Text style={styles.openSettingsButtonText}>
+                        Gestionar Comunicaciones SMTP →
                     </Text>
                 </TouchableOpacity>
             </View>

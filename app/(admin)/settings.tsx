@@ -213,6 +213,16 @@ export default function SettingsScreen() {
                             error={fieldErrors.contact_email}
                         />
 
+                        <TouchableOpacity
+                            onPress={() => router.push('/(admin)/communications')}
+                            style={styles.backButton}
+                            activeOpacity={0.85}
+                        >
+                            <Text style={styles.backButtonText}>
+                                ✉️ Configurar cuentas SMTP por propósito e historial →
+                            </Text>
+                        </TouchableOpacity>
+
                         <FormInput
                             label="Teléfono de contacto"
                             placeholder="ej: +57 300 123 4567"

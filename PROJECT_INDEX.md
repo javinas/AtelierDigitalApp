@@ -18,6 +18,7 @@
 - `app/(client)/portal-invitation.tsx`: Experiencia local de revisión y aceptación de invitación M09 exclusiva para `role === 'client'` (`ClientPortalInvitationScreen`, guardia multi-clienta, consentimiento Ley 1581, estados `unprepared`/`draft`/`ready_for_preview`/`preview_accepted_local`/`expired_local`/`revoked_local` y acceso condicionado a `/mi-portal` en RAM).
 - `app/mannequin-preview.tsx`: Pantalla temporal e independiente de evaluación del Visualizador 3D (Mannequin3DStudioSandbox).
 - `app/(designer)/_layout.tsx`: Navegador principal del diseñador.
+- `app/(admin)/communications.tsx`: Pantalla administrativa única del Módulo Centralizado de Comunicaciones (5 propósitos SMTP Zimbra, bóveda write-only Vault, pruebas de conexión/envío al admin e historial filtrable con 7 estados honestos).
 
 ### 2. Landing Pública e Internacionalización
 - `src/i18n/landingTranslations.ts`: Diccionario bilingüe estricto (ES / EN) de la portada.

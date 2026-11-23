@@ -25,6 +25,466 @@ export const corsHeaders: Record<string, string> = {
 };
 
 const PRIVILEGED_ROLES = new Set(['admin', 'designer', 'superadmin']);
+const UUID_REGEX =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Barreras de deduplicación en memoria del aislado para evitar correos duplicados
+const inFlightEmailDispatchSet = new Set<string>();
+const dispatchedEmailCache = new Map<string, string | null>();
+
+export function resetEmailDispatchCacheForTests(): void {
+    inFlightEmailDispatchSet.clear();
+    dispatchedEmailCache.clear();
+}
+
+/**
+ * Valida que el enlace de invitación sea una URL HTTP(S) hacia /portal/invite
+ * que contiene exactamente el token original (jamás se persiste ni se registra en logs).
+ */
+export function validateSafeInviteUrl(
+    rawUrl: unknown,
+    expectedToken: string
+): string | null {
+    if (typeof rawUrl !== 'string') return null;
+    const trimmed = rawUrl.trim();
+    if (!trimmed || trimmed.length > 512 || /[\r\n]/.test(trimmed)) return null;
+
+    let parsed: URL;
+    try {
+        parsed = new URL(trimmed);
+    } catch {
+        return null;
+    }
+
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+        return null;
+    }
+
+    const normalizedPath = parsed.pathname.replace(/\/+$/, '');
+    if (!normalizedPath.endsWith('/portal/invite')) {
+        return null;
+    }
+
+    if (parsed.searchParams.get('token') !== expectedToken) {
+        return null;
+    }
+
+    return parsed.toString();
+}
+
+/**
+ * ACCIÓN 3: 'dispatch_email' — Despacho autenticado y deduplicado de correo de invitación.
+ * - Solo invocable por diseñadora/admin autenticada (JWT + rol privilegiado en public.profiles).
+ * - Valida hash SHA-256 contra client_portal_invitations (lectura pura; nunca muta la invitación).
+ * - Destinatario tomado exclusivamente de inv.email en BD (cero open relay).
+ * - Deduplicación en 2 capas: aislado en vuelo/caché + client_portal_activity_log persistente.
+ * - Un fallo SMTP jamás invalida la invitación ni permite reutilizar tokens.
+ */
+export async function handleDispatchEmailAction(params: {
+    req: Request;
+    body: Record<string, any>;
+    supabaseAdmin: any;
+    dispatchEmailFn?: typeof dispatchPortalInvitationEmail;
+}): Promise<Response> {
+    const { req, body, supabaseAdmin } = params;
+    const dispatchFn = params.dispatchEmailFn ?? dispatchPortalInvitationEmail;
+
+    // 1. Autenticación estricta del actor (JWT Bearer obligatorio)
+    const authHeader = req.headers.get('authorization') || '';
+    const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/i);
+    const jwt = bearerMatch ? bearerMatch[1].trim() : '';
+    if (!jwt) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'unauthorized',
+                message:
+                    'Se requiere sesión autenticada de diseñadora o administración para despachar invitaciones.',
+                invitation_preserved: true,
+            },
+            401
+        );
+    }
+
+    const { data: callerAuthData, error: callerAuthError } =
+        await supabaseAdmin.auth.getUser(jwt);
+    const actorUser = callerAuthData?.user || null;
+    if (callerAuthError || !actorUser?.id) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'invalid_token',
+                message: 'Token de sesión inválido o expirado.',
+                invitation_preserved: true,
+            },
+            401
+        );
+    }
+
+    const { data: actorProfile, error: actorProfileErr } = await supabaseAdmin
+        .from('profiles')
+        .select('role')
+        .eq('id', actorUser.id)
+        .maybeSingle();
+
+    const actorRole =
+        typeof actorProfile?.role === 'string'
+            ? actorProfile.role.trim().toLowerCase()
+            : '';
+
+    if (actorProfileErr || !PRIVILEGED_ROLES.has(actorRole)) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'forbidden_actor',
+                message:
+                    'Solo perfiles con rol administrativo o de diseño pueden despachar correos de invitación.',
+                invitation_preserved: true,
+            },
+            403
+        );
+    }
+
+    // 2. Validación de parámetros del payload
+    const invitationId =
+        typeof body.invitation_id === 'string' ? body.invitation_id.trim() : '';
+    if (!UUID_REGEX.test(invitationId)) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'invalid_invitation_id',
+                message: 'Identificador de invitación inválido.',
+                invitation_preserved: true,
+            },
+            400
+        );
+    }
+
+    const rawToken = typeof body.token === 'string' ? body.token.trim() : '';
+    if (!validateTokenFormat(rawToken)) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'invalid_token_format',
+                message: 'Formato de token de invitación inválido.',
+                invitation_preserved: true,
+            },
+            400
+        );
+    }
+
+    const safeInviteUrl = validateSafeInviteUrl(body.invite_url, rawToken);
+    if (!safeInviteUrl) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'invalid_invite_url',
+                message:
+                    'Enlace de invitación inválido o inconsistente con el token original.',
+                invitation_preserved: true,
+            },
+            400
+        );
+    }
+
+    // 3. Verificación criptográfica contra client_portal_invitations (SOLO LECTURA)
+    const tokenHash = await computeSha256Hex(rawToken);
+    const { data: inv, error: invError } = await supabaseAdmin
+        .from('client_portal_invitations')
+        .select('id, client_id, email, token_hash, status, expires_at')
+        .eq('id', invitationId)
+        .maybeSingle();
+
+    if (invError) {
+        console.error(
+            '[accept-portal-invitation:dispatch_email] Error consultando invitación:',
+            invError.message
+        );
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'lookup_failed',
+                message: 'No fue posible verificar la invitación antes del despacho.',
+                invitation_preserved: true,
+            },
+            500
+        );
+    }
+
+    if (!inv) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'invitation_not_found',
+                message: 'La invitación solicitada no existe.',
+                invitation_preserved: true,
+            },
+            404
+        );
+    }
+
+    if (inv.token_hash !== tokenHash) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'token_hash_mismatch',
+                message:
+                    'El token suministrado no corresponde al hash registrado para esta invitación.',
+                invitation_preserved: true,
+            },
+            403
+        );
+    }
+
+    if (inv.status !== 'pending') {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'invitation_not_pending',
+                status: inv.status,
+                message:
+                    'Solo es posible despachar correo para invitaciones en estado pendiente.',
+                invitation_preserved: true,
+            },
+            409
+        );
+    }
+
+    const expiresAtMs = Date.parse(inv.expires_at);
+    if (!Number.isFinite(expiresAtMs) || expiresAtMs <= Date.now()) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: 'invitation_expired',
+                message: 'La invitación ya expiró; emite una nueva para enviar correo.',
+                invitation_preserved: true,
+            },
+            410
+        );
+    }
+
+    // 4. Prevención de duplicados (aislado en vuelo/caché + bitácora persistente)
+    if (inFlightEmailDispatchSet.has(inv.id)) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: true,
+                code: 'dispatch_in_progress',
+                reason: 'dispatch_in_progress',
+                message_id: null,
+                message: 'Ya existe un despacho de correo en curso para esta invitación.',
+                invitation_preserved: true,
+            },
+            409
+        );
+    }
+
+    if (dispatchedEmailCache.has(inv.id)) {
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: true,
+                code: 'already_dispatched',
+                reason: 'already_dispatched',
+                message_id: dispatchedEmailCache.get(inv.id) ?? null,
+                message: 'El correo para esta invitación ya fue despachado previamente.',
+                invitation_preserved: true,
+            },
+            200
+        );
+    }
+
+    const { data: existingLog } = await supabaseAdmin
+        .from('client_portal_activity_log')
+        .select('id, metadata')
+        .eq('client_id', inv.client_id)
+        .eq('category', 'business')
+        .eq('event_type', 'invitation_email_dispatched')
+        .contains('metadata', { invitation_id: inv.id })
+        .limit(1)
+        .maybeSingle();
+
+    if (existingLog) {
+        const existingMessageId =
+            typeof existingLog.metadata?.message_id === 'string'
+                ? existingLog.metadata.message_id
+                : null;
+        dispatchedEmailCache.set(inv.id, existingMessageId);
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: true,
+                code: 'already_dispatched',
+                reason: 'already_dispatched',
+                message_id: existingMessageId,
+                message: 'El correo para esta invitación ya fue despachado previamente.',
+                invitation_preserved: true,
+            },
+            200
+        );
+    }
+
+    // 5. Resolución de nombre de destinataria (correo siempre desde inv.email en BD)
+    let recipientName =
+        typeof body.recipient_name === 'string' ? body.recipient_name.trim().slice(0, 120) : '';
+    if (!recipientName) {
+        const { data: clientRow } = await supabaseAdmin
+            .from('clients')
+            .select('full_name')
+            .eq('id', inv.client_id)
+            .maybeSingle();
+        recipientName =
+            typeof clientRow?.full_name === 'string' && clientRow.full_name.trim()
+                ? clientRow.full_name.trim().slice(0, 120)
+                : 'Estimada Clienta';
+    }
+
+    const customMessage =
+        typeof body.custom_message === 'string' && body.custom_message.trim()
+            ? body.custom_message.trim().slice(0, 800)
+            : undefined;
+    const permissionsBullets = Array.isArray(body.permissions_bullets)
+        ? body.permissions_bullets
+              .filter((b: unknown): b is string => typeof b === 'string' && b.trim().length > 0)
+              .slice(0, 8)
+              .map((b: string) => b.trim().slice(0, 160))
+        : undefined;
+
+    // 6. Despacho SMTP desacoplado vía despachador compartido (fallos SMTP jamás invalidan la invitación)
+    inFlightEmailDispatchSet.add(inv.id);
+    try {
+        const emailResult = await dispatchFn(
+            {
+                recipientEmail: inv.email,
+                recipientName,
+                inviteUrl: safeInviteUrl,
+                customMessage,
+                permissionsBullets,
+                expiresAt: inv.expires_at,
+            },
+            {
+                supabaseAdmin,
+                dedupeKey: `m09_invite_${inv.id}`,
+            }
+        );
+
+        if (emailResult.simulated) {
+            return jsonResponse(
+                {
+                    sent: false,
+                    simulated: true,
+                    deduplicated: false,
+                    code: emailResult.reason || 'dispatch_disabled_by_protocol',
+                    reason: emailResult.reason || 'dispatch_disabled_by_protocol',
+                    message_id: null,
+                    message:
+                        'Despacho SMTP deshabilitado por protocolo (PORTAL_EMAIL_DISPATCH_ENABLED=false). La invitación permanece activa y válida.',
+                    invitation_preserved: true,
+                },
+                200
+            );
+        }
+
+        if (emailResult.sent) {
+            dispatchedEmailCache.set(inv.id, emailResult.messageId ?? null);
+
+            // Registro de auditoría sin PII, sin token y sin URL
+            try {
+                const { data: accessRow } = await supabaseAdmin
+                    .from('client_portal_access')
+                    .select('id')
+                    .eq('client_id', inv.client_id)
+                    .maybeSingle();
+
+                await supabaseAdmin.from('client_portal_activity_log').insert({
+                    portal_access_id: accessRow?.id || null,
+                    client_id: inv.client_id,
+                    auth_user_id: actorUser.id,
+                    category: 'business',
+                    origin: 'system',
+                    event_type: 'invitation_email_dispatched',
+                    metadata: {
+                        invitation_id: inv.id,
+                        transport: 'smtp_zimbra',
+                        message_id: emailResult.messageId ?? null,
+                    },
+                });
+            } catch (auditErr: any) {
+                console.warn(
+                    '[accept-portal-invitation:dispatch_email] Correo enviado, pero falló el registro en bitácora:',
+                    auditErr?.message || 'error_bitacora'
+                );
+            }
+
+            return jsonResponse(
+                {
+                    sent: true,
+                    simulated: false,
+                    deduplicated: false,
+                    code: 'dispatched',
+                    reason: 'dispatched',
+                    message_id: emailResult.messageId ?? null,
+                    message:
+                        'Correo de invitación despachado exitosamente vía servidor SMTP corporativo.',
+                    invitation_preserved: true,
+                },
+                200
+            );
+        }
+
+        const errReason = emailResult.reason || 'smtp_dispatch_error';
+        const httpStatus =
+            errReason === 'smtp_timeout'
+                ? 504
+                : errReason === 'missing_smtp_credentials' ||
+                    errReason === 'invalid_smtp_config'
+                  ? 503
+                  : 502;
+
+        return jsonResponse(
+            {
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                code: errReason,
+                reason: errReason,
+                message_id: null,
+                message:
+                    emailResult.error ||
+                    'No fue posible completar el despacho SMTP; la invitación sigue activa y válida.',
+                invitation_preserved: true,
+            },
+            httpStatus
+        );
+    } finally {
+        inFlightEmailDispatchSet.delete(inv.id);
+    }
+}
 
 export function jsonResponse(
     data: unknown,
@@ -1017,9 +1477,20 @@ export async function handleRequest(req: Request): Promise<Response> {
             );
         }
 
+        // ==============================================================================
+        // ACCIÓN 3: 'dispatch_email' — Despacho autenticado y deduplicado de correo SMTP
+        // ==============================================================================
+        if (action === 'dispatch_email') {
+            return await handleDispatchEmailAction({
+                req,
+                body,
+                supabaseAdmin,
+            });
+        }
+
         return jsonResponse(
             {
-                error: `Acción '${action}' no admitida. Las acciones válidas son 'verify' y 'accept'.`,
+                error: `Acción '${action}' no admitida. Las acciones válidas son 'verify', 'accept' y 'dispatch_email'.`,
             },
             400
         );

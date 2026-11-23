@@ -1,16 +1,52 @@
 // ==============================================================================
-// ATELIER DIGITAL — SERVICIO EDITORIAL DE CORREO DE INVITACIÓN (M09-E2)
+// ATELIER DIGITAL — SERVICIO EDITORIAL DE CORREO DE INVITACIÓN (M09 · SMTP ZIMBRA)
 // Archivo: supabase/functions/accept-portal-invitation/emailService.ts
 // ==============================================================================
-// Plantillas de correo de alta costura (HTML editorial y texto plano) y pasarela
-// de despacho con seguro de bloqueo activo (PORTAL_EMAIL_DISPATCH_ENABLED).
+// Plantillas de correo de alta costura (HTML editorial y texto plano) conectadas
+// al despachador SMTP compartido (../_shared/emailDispatcher.ts) bajo el propósito
+// canónico 'portal_invitations' (invitaciones@bykatherinecarroll.com).
 //
 // REGLAS DE SEGURIDAD ESTRICTAS:
-// - El envío real permanece DESHABILITADO por defecto (fail-closed) hasta
-//   la certificación completa de seguridad e IP Gateway de la Entrega E2.
-// - Cero exposición de tokens en logs del servidor.
-// - Plantillas conformes con el estatuto de privacidad de la Ley 1581 de 2012.
+// - El envío real permanece DESHABILITADO por defecto (fail-closed) mientras
+//   PORTAL_EMAIL_DISPATCH_ENABLED !== 'true' (0 conexiones SMTP ni datos transmitidos).
+// - Transporte SMTP único vía _shared/emailDispatcher.ts (sin duplicación).
+// - Validación TLS estricta sobre mail.itss-proactive.com:465 (rejectUnauthorized: true).
+// - Cero contraseñas, tokens, URLs ni correos completos en logs.
+// - Plantillas conformes con la Ley Estatutaria 1581 de 2012 (Colombia).
 // ==============================================================================
+
+import {
+    CANONICAL_SMTP_HOST,
+    CANONICAL_SMTP_PORT,
+    DEFAULT_SMTP_TIMEOUT_MS,
+    dispatchEmailByPurpose,
+    EmailLogStatus,
+    extractEmailAddress,
+    ResolvedEmailAccount,
+    SmtpMailOptions,
+    SmtpSendInfo,
+    SmtpTransportConfig,
+    SmtpTransporter,
+    SmtpTransportFactory,
+} from '../_shared/emailDispatcher.ts';
+
+export {
+    CANONICAL_SMTP_HOST,
+    CANONICAL_SMTP_PORT,
+    DEFAULT_SMTP_TIMEOUT_MS,
+};
+export type {
+    SmtpMailOptions,
+    SmtpSendInfo,
+    SmtpTransportConfig,
+    SmtpTransporter,
+    SmtpTransportFactory,
+};
+
+export const PORTAL_INVITATIONS_PURPOSE = 'portal_invitations' as const;
+export const AUTHORIZED_SMTP_SENDER = 'invitaciones@bykatherinecarroll.com';
+export const DEFAULT_PORTAL_EMAIL_FROM =
+    'Atelier Katherine Carroll <invitaciones@bykatherinecarroll.com>';
 
 export interface InvitationEmailPayload {
     recipientEmail: string;
@@ -25,9 +61,34 @@ export interface EmailDispatchResult {
     sent: boolean;
     simulated: boolean;
     messageId?: string | null;
+    logId?: string | null;
+    deliveryStatus?: EmailLogStatus;
     reason?: string;
     error?: string;
 }
+
+export type EnvGetter = (key: string) => string | undefined;
+
+export interface EmailDispatchOptions {
+    getEnv?: EnvGetter;
+    createTransport?: SmtpTransportFactory;
+    timeoutMs?: number;
+    supabaseAdmin?: any;
+    dedupeKey?: string;
+}
+
+export type ResolvedSmtpConfigResult =
+    | {
+          ok: true;
+          config: SmtpTransportConfig;
+          fromAddress: string;
+          account: ResolvedEmailAccount;
+      }
+    | {
+          ok: false;
+          reason: 'missing_smtp_credentials' | 'invalid_smtp_config';
+          error: string;
+      };
 
 const DEFAULT_INVITATION_MESSAGE =
     'Katherine Carroll te invita cordialmente a acceder a tu espacio exclusivo en el Atelier. A través de este portal privado podrás consultar los detalles y la evolución de tus creaciones de alta costura, agendar citas y realizar el seguimiento personalizado de tu confección.';
@@ -207,21 +268,146 @@ Tratamiento de datos personales conforme a la Ley 1581 de 2012 de la República 
 `;
 }
 
+function defaultGetEnv(key: string): string | undefined {
+    if (typeof Deno !== 'undefined' && typeof Deno.env?.get === 'function') {
+        return Deno.env.get(key);
+    }
+    return undefined;
+}
+
 /**
- * Despachador de correos con seguro de bloqueo activo.
- * - Si PORTAL_EMAIL_DISPATCH_ENABLED !== 'true', bloquea el envío real y retorna estado simulado.
- * - Cero PII ni enlaces en logs.
+ * Resuelve la configuración SMTP de respaldo desde variables de entorno cuando no
+ * se dispone de cuenta resuelta desde public.atelier_email_accounts / Vault.
+ * Exige mail.itss-proactive.com:465, TLS estricto y remitente invitaciones@bykatherinecarroll.com.
+ */
+export function resolveSmtpConfig(
+    getEnv: EnvGetter = defaultGetEnv,
+    timeoutMs: number = DEFAULT_SMTP_TIMEOUT_MS
+): ResolvedSmtpConfigResult {
+    const rawHost = (getEnv('SMTP_HOST') ?? CANONICAL_SMTP_HOST).trim().toLowerCase();
+    if (rawHost !== CANONICAL_SMTP_HOST) {
+        return {
+            ok: false,
+            reason: 'invalid_smtp_config',
+            error:
+                'Host SMTP no autorizado para validación TLS estricta. Se requiere mail.itss-proactive.com.',
+        };
+    }
+
+    const rawPort = (getEnv('SMTP_PORT') ?? String(CANONICAL_SMTP_PORT)).trim();
+    if (!/^\d+$/.test(rawPort) || Number(rawPort) !== CANONICAL_SMTP_PORT) {
+        return {
+            ok: false,
+            reason: 'invalid_smtp_config',
+            error:
+                'Puerto SMTP no permitido. La configuración corporativa Zimbra requiere puerto 465 (SSL/TLS implícito).',
+        };
+    }
+
+    const rawSecure = (getEnv('SMTP_SECURE') ?? 'true').trim().toLowerCase();
+    if (rawSecure !== 'true') {
+        return {
+            ok: false,
+            reason: 'invalid_smtp_config',
+            error:
+                'Modo SMTP inseguro rechazado. El puerto 465 requiere SSL/TLS implícito (SMTP_SECURE=true).',
+        };
+    }
+
+    const smtpUser = (getEnv('SMTP_USER') ?? '').trim();
+    const smtpPass = getEnv('SMTP_PASS') ?? '';
+    if (!smtpUser || !smtpPass.trim()) {
+        return {
+            ok: false,
+            reason: 'missing_smtp_credentials',
+            error: 'Credenciales SMTP incompletas en variables de entorno.',
+        };
+    }
+
+    const normalizedUser = extractEmailAddress(smtpUser);
+    if (!normalizedUser || normalizedUser !== AUTHORIZED_SMTP_SENDER) {
+        return {
+            ok: false,
+            reason: 'invalid_smtp_config',
+            error:
+                'Usuario SMTP no autorizado para M09. Se requiere invitaciones@bykatherinecarroll.com.',
+        };
+    }
+
+    const fromAddress = (getEnv('PORTAL_EMAIL_FROM') ?? DEFAULT_PORTAL_EMAIL_FROM).trim();
+    const normalizedFrom = extractEmailAddress(fromAddress);
+    if (!normalizedFrom || normalizedFrom !== AUTHORIZED_SMTP_SENDER) {
+        return {
+            ok: false,
+            reason: 'invalid_smtp_config',
+            error:
+                'Remitente PORTAL_EMAIL_FROM no autorizado para invitaciones M09.',
+        };
+    }
+
+    const displayNameMatch = fromAddress.match(/^([^<]+)</);
+    const displayName = displayNameMatch
+        ? displayNameMatch[1].trim()
+        : 'Atelier Katherine Carroll';
+
+    const safeTimeout =
+        Number.isFinite(timeoutMs) && timeoutMs > 0
+            ? Math.floor(timeoutMs)
+            : DEFAULT_SMTP_TIMEOUT_MS;
+
+    return {
+        ok: true,
+        fromAddress,
+        config: {
+            host: CANONICAL_SMTP_HOST,
+            port: CANONICAL_SMTP_PORT,
+            secure: true,
+            auth: {
+                user: normalizedUser,
+                pass: smtpPass,
+            },
+            tls: {
+                servername: CANONICAL_SMTP_HOST,
+                rejectUnauthorized: true,
+                minVersion: 'TLSv1.2',
+            },
+            connectionTimeout: safeTimeout,
+            greetingTimeout: safeTimeout,
+            socketTimeout: safeTimeout,
+        },
+        account: {
+            id: null,
+            purpose: PORTAL_INVITATIONS_PURPOSE,
+            display_name: displayName,
+            from_email: normalizedFrom,
+            reply_to_email: 'info@bykatherinecarroll.com',
+            smtp_host: CANONICAL_SMTP_HOST,
+            smtp_port: CANONICAL_SMTP_PORT,
+            smtp_secure: true,
+            smtp_user: normalizedUser,
+            is_active: true,
+            smtp_password: smtpPass,
+        },
+    };
+}
+
+/**
+ * Despachador de correos de invitación M09 delegando el transporte al despachador
+ * SMTP compartido (_shared/emailDispatcher.ts) bajo el propósito 'portal_invitations'.
+ * - Con PORTAL_EMAIL_DISPATCH_ENABLED !== 'true' retorna estado simulado sin abrir sockets.
+ * - Si se provee supabaseAdmin, resuelve cuenta activa + credencial desde Vault y registra
+ *   traza honesta en public.atelier_email_logs (smtp_accepted / failed; jamás delivered).
  */
 export async function dispatchPortalInvitationEmail(
-    payload: InvitationEmailPayload
+    payload: InvitationEmailPayload,
+    options: EmailDispatchOptions = {}
 ): Promise<EmailDispatchResult> {
-    const isEnabled =
-        typeof Deno !== 'undefined' &&
-        Deno.env.get('PORTAL_EMAIL_DISPATCH_ENABLED') === 'true';
+    const getEnv = options.getEnv ?? defaultGetEnv;
+    const isEnabled = getEnv('PORTAL_EMAIL_DISPATCH_ENABLED') === 'true';
 
     if (!isEnabled) {
         console.log(
-            '[emailService] Despacho omitido de forma segura: PORTAL_EMAIL_DISPATCH_ENABLED = false (Entrega E2 en modo preparación).'
+            '[emailService] Despacho omitido de forma segura: PORTAL_EMAIL_DISPATCH_ENABLED = false (modo fail-closed).'
         );
         return {
             sent: false,
@@ -231,73 +417,78 @@ export async function dispatchPortalInvitationEmail(
         };
     }
 
-    const resendApiKey = Deno.env.get('RESEND_API_KEY');
-    if (!resendApiKey) {
+    const recipientEmail = extractEmailAddress(payload.recipientEmail || '');
+    if (!recipientEmail) {
         console.warn(
-            '[emailService] Configuración incompleta: RESEND_API_KEY no definida. Despacho no completado.'
+            '[emailService] Destinatario inválido o malformado. Despacho abortado sin conexión SMTP.'
         );
         return {
             sent: false,
             simulated: false,
-            reason: 'missing_resend_api_key',
-            error: 'Servicio de correo no configurado en variables de entorno.',
+            reason: 'invalid_recipient',
+            messageId: null,
+            error: 'Dirección de correo de destinatario inválida.',
         };
     }
 
-    try {
-        const fromAddress =
-            Deno.env.get('PORTAL_EMAIL_FROM') ||
-            'Katherine Carroll <invitaciones@atelierdigital.co>';
-        const subject =
-            'Tu Invitación Exclusiva al Portal Privado — Atelier Katherine Carroll';
+    const subject =
+        'Tu Invitación Exclusiva al Portal Privado — Atelier Katherine Carroll';
+    const html = buildInvitationHtmlTemplate(payload);
+    const text = buildInvitationTextTemplate(payload);
 
-        const res = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${resendApiKey}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                from: fromAddress,
-                to: [payload.recipientEmail],
-                subject,
-                html: buildInvitationHtmlTemplate(payload),
-                text: buildInvitationTextTemplate(payload),
-            }),
-        });
+    // Si existe supabaseAdmin con RPC Vault disponible, resolver desde atelier_email_accounts;
+    // de lo contrario usar resolución de variables de entorno validada (compatibilidad unitaria).
+    let resolvedAccountOverride: ResolvedEmailAccount | undefined;
+    const canResolveViaDb =
+        Boolean(options.supabaseAdmin) &&
+        typeof options.supabaseAdmin.rpc === 'function';
 
-        if (!res.ok) {
-            const errBody = await res.text();
-            console.error(
-                `[emailService] Error de proveedor de correo (HTTP ${res.status}): ${res.statusText}`
+    if (!canResolveViaDb) {
+        const envResolved = resolveSmtpConfig(getEnv, options.timeoutMs);
+        if (!envResolved.ok) {
+            console.warn(
+                `[emailService] Configuración SMTP no válida (${envResolved.reason}). Despacho no completado.`
             );
             return {
                 sent: false,
                 simulated: false,
-                reason: 'provider_rejected',
-                error: `HTTP ${res.status}: ${errBody.slice(0, 200)}`,
+                reason: envResolved.reason,
+                messageId: null,
+                error: envResolved.error,
             };
         }
-
-        const data = (await res.json()) as { id?: string };
-        console.log('[emailService] Correo despachado exitosamente con ID:', data?.id);
-        return {
-            sent: true,
-            simulated: false,
-            messageId: data?.id || null,
-        };
-    } catch (err: any) {
-        console.error(
-            '[emailService] Excepción durante el despacho de correo:',
-            err?.message || String(err)
-        );
-        return {
-            sent: false,
-            simulated: false,
-            reason: 'network_exception',
-            error: err?.message || 'Error de red en el despacho de correo',
-        };
+        resolvedAccountOverride = envResolved.account;
     }
+
+    const sharedResult = await dispatchEmailByPurpose(
+        {
+            purpose: PORTAL_INVITATIONS_PURPOSE,
+            moduleOrigin: 'M09',
+            recipientEmail,
+            subject,
+            html,
+            text,
+            dedupeKey: options.dedupeKey,
+            sensitiveValues: [payload.inviteUrl],
+            supabaseAdmin: options.supabaseAdmin,
+            resolvedAccountOverride,
+        },
+        {
+            createTransport: options.createTransport,
+            timeoutMs: options.timeoutMs,
+            getEnv,
+        }
+    );
+
+    return {
+        sent: sharedResult.sent,
+        simulated: sharedResult.simulated,
+        messageId: sharedResult.messageId,
+        logId: sharedResult.logId,
+        deliveryStatus: sharedResult.status,
+        reason: sharedResult.reason,
+        error: sharedResult.error,
+    };
 }
 
 function escapeHtml(str: string): string {

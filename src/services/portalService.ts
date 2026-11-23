@@ -24,6 +24,7 @@ import {
     ClientPortalPermission,
     ClientPortalSummary,
     CreatePortalInvitationDTO,
+    DispatchPortalInvitationEmailDTO,
     IssuePortalInvitationDTO,
     IssuePortalInvitationResult,
     PORTAL_ACTIONS,
@@ -42,6 +43,7 @@ import {
     PortalFittingSessionView,
     PortalIdentityGuardResult,
     PortalInvitationAcceptResult,
+    PortalInvitationEmailDispatchResult,
     PortalInvitationFlowOutcome,
     PortalInvitationStatus,
     PortalInvitationVerifyResult,
@@ -77,6 +79,8 @@ const inMemoryInvitationsMap = new Map<string, ClientPortalInvitation[]>();
 const inMemoryPermissionsMap = new Map<string, ClientPortalPermission[]>();
 const inMemoryActivityLogsMap = new Map<string, ClientPortalActivityLog[]>();
 const permissionWriteQueue = new Map<string, Promise<unknown>>();
+const inFlightEmailDispatches = new Map<string, Promise<PortalInvitationEmailDispatchResult>>();
+const dispatchedEmailInvitationIds = new Set<string>();
 
 export function resetPortalServiceOperatingModeForTests(options?: {
     clearInMemory?: boolean;
@@ -91,6 +95,8 @@ export function resetPortalServiceOperatingModeForTests(options?: {
         inMemoryPermissionsMap.clear();
         inMemoryActivityLogsMap.clear();
         permissionWriteQueue.clear();
+        inFlightEmailDispatches.clear();
+        dispatchedEmailInvitationIds.clear();
     }
 }
 
@@ -2896,6 +2902,219 @@ export async function acceptPortalInvitation(
     })();
 
     inFlightInviteAcceptances.set(safeOpId, executionPromise);
+    return executionPromise;
+}
+
+/**
+ * Despacha el correo de invitación vía Edge Function existente `accept-portal-invitation`
+ * (acción autenticada `dispatch_email`) inmediatamente después de confirmada la emisión en BD.
+ * - Desacoplado: un fallo SMTP o candado apagado jamás invalida ni altera la invitación creada.
+ * - Deduplicado por `invitationId` en vuelo y tras confirmación de envío real.
+ * - Nunca almacena ni imprime en logs el token original ni el enlace completo.
+ */
+export async function dispatchPortalInvitationEmailViaEdge(
+    dto: DispatchPortalInvitationEmailDTO,
+    options?: PortalInviteServiceOptions
+): Promise<PortalInvitationEmailDispatchResult> {
+    const invitationId = (dto.invitationId || '').trim();
+    const tokenCheck = validateInvitationTokenFormat(dto.token);
+    const inviteUrl = (dto.inviteUrl || '').trim();
+
+    if (!invitationId || !tokenCheck.isValid || !inviteUrl) {
+        return {
+            ok: false,
+            status: 'failed',
+            sent: false,
+            simulated: false,
+            deduplicated: false,
+            invitationPreserved: true,
+            messageId: null,
+            code: 'invalid_dispatch_payload',
+            message:
+                'Datos insuficientes para despachar el correo automático; la invitación sigue activa para entrega manual.',
+            httpStatus: null,
+        };
+    }
+
+    if (dispatchedEmailInvitationIds.has(invitationId)) {
+        return {
+            ok: true,
+            status: 'deduplicated',
+            sent: false,
+            simulated: false,
+            deduplicated: true,
+            invitationPreserved: true,
+            messageId: null,
+            code: 'already_dispatched_client',
+            message:
+                'El correo de esta invitación ya fue despachado previamente (duplicado prevenido).',
+            httpStatus: 200,
+        };
+    }
+
+    const existingFlight = inFlightEmailDispatches.get(invitationId);
+    if (existingFlight) {
+        return existingFlight;
+    }
+
+    const invoke =
+        options?.invokeFn ||
+        ((fnName: string, invokeOpts: { body: Record<string, unknown>; headers?: Record<string, string> }) =>
+            supabase.functions.invoke(fnName, invokeOpts));
+
+    const executionPromise = (async (): Promise<PortalInvitationEmailDispatchResult> => {
+        try {
+            let accessToken = options?.accessToken?.trim() || '';
+            if (!accessToken) {
+                try {
+                    const { data: sessionData } = await supabase.auth.getSession();
+                    accessToken = sessionData?.session?.access_token?.trim() || '';
+                } catch {
+                    accessToken = '';
+                }
+            }
+
+            const headers: Record<string, string> = {};
+            if (accessToken) {
+                headers.Authorization = `Bearer ${accessToken}`;
+            }
+
+            const { data, error } = await invoke(PORTAL_INVITE_EDGE_FUNCTION, {
+                body: {
+                    action: 'dispatch_email',
+                    invitation_id: invitationId,
+                    token: tokenCheck.normalizedToken,
+                    invite_url: inviteUrl,
+                    ...(dto.recipientName ? { recipient_name: dto.recipientName.trim() } : {}),
+                    ...(dto.customMessage ? { custom_message: dto.customMessage.trim() } : {}),
+                    ...(dto.permissionsBullets && dto.permissionsBullets.length > 0
+                        ? { permissions_bullets: [...dto.permissionsBullets] }
+                        : {}),
+                },
+                ...(Object.keys(headers).length > 0 ? { headers } : {}),
+            });
+
+            const parsed = await extractEdgeInvocationResult(data, error);
+            if (parsed.isBackendUnavailable) {
+                _lastEdgeError = parsed.detail;
+                _edgeFunctionUnavailable = true;
+                return {
+                    ok: false,
+                    status: 'backend_unavailable',
+                    sent: false,
+                    simulated: false,
+                    deduplicated: false,
+                    invitationPreserved: true,
+                    messageId: null,
+                    code: 'backend_unavailable',
+                    message:
+                        'Servicio Edge de despacho no disponible; la invitación sigue activa y puedes compartir el enlace manualmente.',
+                    httpStatus: parsed.httpStatus,
+                };
+            }
+
+            _lastEdgeError = null;
+            _edgeFunctionUnavailable = false;
+
+            const body = (parsed.body && typeof parsed.body === 'object' ? parsed.body : {}) as Record<
+                string,
+                unknown
+            >;
+            const code = typeof body.code === 'string' ? body.code : 'smtp_dispatch_error';
+            const messageId = typeof body.message_id === 'string' ? body.message_id : null;
+            const serverMsg = typeof body.message === 'string' ? body.message : '';
+
+            if (parsed.httpStatus === 200 && body.sent === true) {
+                dispatchedEmailInvitationIds.add(invitationId);
+                return {
+                    ok: true,
+                    status: 'sent',
+                    sent: true,
+                    simulated: false,
+                    deduplicated: false,
+                    invitationPreserved: true,
+                    messageId,
+                    code: 'dispatched',
+                    message:
+                        serverMsg ||
+                        'Correo de invitación enviado exitosamente vía servidor SMTP corporativo.',
+                    httpStatus: 200,
+                };
+            }
+
+            if (parsed.httpStatus === 200 && body.simulated === true) {
+                return {
+                    ok: true,
+                    status: 'simulated_disabled',
+                    sent: false,
+                    simulated: true,
+                    deduplicated: false,
+                    invitationPreserved: true,
+                    messageId: null,
+                    code,
+                    message:
+                        serverMsg ||
+                        'Despacho automático en modo preparación (PORTAL_EMAIL_DISPATCH_ENABLED=false). Comparte el enlace único manualmente.',
+                    httpStatus: 200,
+                };
+            }
+
+            if (body.deduplicated === true) {
+                if (code === 'already_dispatched') {
+                    dispatchedEmailInvitationIds.add(invitationId);
+                }
+                return {
+                    ok: parsed.httpStatus === 200,
+                    status: 'deduplicated',
+                    sent: false,
+                    simulated: false,
+                    deduplicated: true,
+                    invitationPreserved: true,
+                    messageId,
+                    code,
+                    message:
+                        serverMsg ||
+                        'El correo para esta invitación ya fue despachado previamente (sin duplicados).',
+                    httpStatus: parsed.httpStatus,
+                };
+            }
+
+            return {
+                ok: false,
+                status: 'failed',
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                invitationPreserved: true,
+                messageId: null,
+                code,
+                message:
+                    serverMsg ||
+                    'No fue posible despachar el correo automático; la invitación sigue activa y válida para entrega manual.',
+                httpStatus: parsed.httpStatus,
+            };
+        } catch (err: any) {
+            const detail = err?.message || String(err);
+            _lastEdgeError = `[Edge Dispatch Email Unavailable]: ${detail}`;
+            return {
+                ok: false,
+                status: 'backend_unavailable',
+                sent: false,
+                simulated: false,
+                deduplicated: false,
+                invitationPreserved: true,
+                messageId: null,
+                code: 'dispatch_transport_error',
+                message:
+                    'No fue posible contactar el servicio de correo automático; la invitación sigue activa para entrega manual.',
+                httpStatus: null,
+            };
+        } finally {
+            inFlightEmailDispatches.delete(invitationId);
+        }
+    })();
+
+    inFlightEmailDispatches.set(invitationId, executionPromise);
     return executionPromise;
 }
 

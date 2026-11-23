@@ -2,9 +2,222 @@
 
 ## A. Identificación
 - **Proyecto:** Atelier Digital App (Expo / React Native)
-- **Módulo:** M09 — **MATRIZ DE TRAZABILIDAD M09 RECONCILIADA INTEGRALMENTE CON E1, E2 E IP GATEWAY · E1 APLICADA (COMMIT) · E2 DESPLEGADA (v1 ACTIVE · 4 SMOKE TESTS PASS) · CONTROL 1 RUNTIME PARCIAL VALIDADO · CONTROL 2 AISLAMIENTO POSTGRESQL VALIDADO · IP GATEWAY EJECUTADO EN VIVO (NO CERTIFICADO · FAIL-CLOSED: client_ip = NULL) · BATERÍA 90/90 PASS · TYPESCRIPT EXIT 0 · TABLAS M00–M08 Y C15 INTACTAS · PENDIENTES E3–E5 PRESERVADOS** (Matriz `scratch/M09_E1_TRACEABILITY_MATRIX.md` actualizada: eliminada cabecera obsoleta `E1 NO EJECUTADA`, reconciliados los 13 hallazgos C-01..C-07 y A-01..A-06 con evidencias de producción, delimitado C-06 entre smoke tests en vivo y mock local, registradas correcciones D-01..D-06 como aplicadas con COMMIT, validados controles 1 y 2 en sus ámbitos reales y declarado el IP Gateway como NO CERTIFICADO fail-closed · Conservados antecedentes de preparación offline y catálogo completo de pendientes para E3, E4 y E5 sin darlos por resueltos · C15 `approved` intacta · TypeScript `tsc --noEmit` Exit 0 · Suites 100% PASS · **PORTAL NO ACTIVADO**)
-- **Fecha actualización:** 2026-11-22T08:15:00-05:00
-- **Último avance agregado:** Ejecución controlada y regularización del Commit de Fase F4 (M08: Agenda Unificada del Atelier) del Plan de Estabilización Git:
+- **Módulo:** Comunicaciones / M09 / M03 / M08 — **ETAPA D1.4 CERTIFICADA EN PRODUCCIÓN (`atelier-digital` / `trgoqqvsprknswobvniu`) · CUENTA `portal_invitations` (`invitaciones@bykatherinecarroll.com`) CONFIGURADA WRITE-ONLY EN VAULT Y VERIFICADA POR TLS+SMTP AUTH SIN ENVÍO (`has_credential=true`, `vault_linked=true`, `vault.secrets=1`, `last_verification_status=verified`, `last_verified_at=2026-11-23T21:02:24.742Z`, `is_active=false`) · EGRESO TCP PUERTO 465 DESDE SUPABASE EDGE RUNTIME HACIA `mail.itss-proactive.com` COMPROBADO EN VIVO · 0 REGISTROS EN `atelier_email_logs`, 0 CORREOS ENVIADOS · OTRAS 4 CUENTAS INTACTAS (`is_active=false`, `has_credential=false`, `untested`) · CANDADOS M09/M03/M08 INTACTOS EN `false`, M09=0 REGISTROS, C15 `approved` · DETENIDO AL CONCLUIR D1.4**
+- **Fecha actualización:** 2026-11-23T16:26:00-05:00
+- **Último avance agregado:** Post-check remoto de solo lectura (`--read-only`) certificando **Etapa D1.4** sobre `atelier-digital` (`trgoqqvsprknswobvniu`):
+  1. **Cuenta `portal_invitations` (`invitaciones@bykatherinecarroll.com`):**
+     - Metadatos: `from_email=invitaciones@bykatherinecarroll.com`, `reply_to_email=info@bykatherinecarroll.com`, `smtp_host=mail.itss-proactive.com`, `smtp_port=465`, `smtp_secure=true`, `smtp_user=invitaciones@bykatherinecarroll.com`.
+     - Vault write-only: `has_credential=true`, `vault_linked=true`, `vault.secrets=1` (metadato `atelier_smtp_portal_invitations_b64bef25ba7646b48a459bded880bd25`, `created_at: 2026-11-23T21:02:03.402759Z`; ningún valor de secreto consultado ni expuesto).
+     - Verificación SMTP sin envío (`test_connection` / `transporter.verify()`): `last_verification_status='verified'`, `last_verified_at='2026-11-23T21:02:24.742+00:00'`, **`is_active=false`**.
+  2. **Aislamiento de las otras 4 cuentas:** `commercial_quotes`, `agenda_reminders`, `contact_support` y `billing_notifications` intactas (`is_active=false`, `has_credential=false`, `vault_linked=false`, `last_verification_status='untested'`, `last_verified_at=null`, sin cambios desde D1.1).
+  3. **Cero envíos y preservación integral:** `public.atelier_email_logs=0`, M09 (`invitations`, `access`, `permissions`, `activity_log` = `0`), `C15` (`141693a0-01e8-498a-bbb3-1c4f98036543`) = `approved`, `secrets list` intacto (3 flags M09 en `fcbcf165...24f8aa` `false`, candados M03/M08 bloqueados fail-closed), `functions list` intacto (`admin-email-config` v1, `accept-portal-invitation` v3, `admin-users` v3). **Detenido al concluir D1.4.**
+- **Anterior avance:** Ejecución autorizada y verificación post-despliegue en producción de la **Etapa D1.3** (promoción exclusiva de `accept-portal-invitation` de v2 a v3):
+  1. **Despliegue ejecutado (`Exit 0`):** `cmd /c npx supabase functions deploy accept-portal-invitation --remote=trgoqqvsprknswobvniu --no-verify-jwt --yes`.
+     - Assets empaquetados en `eszip`: `supabase/functions/accept-portal-invitation/deno.json`, `index.ts`, `emailService.ts` y `supabase/functions/_shared/emailDispatcher.ts` (`npm:nodemailer@10.6.1`).
+  2. **Verificación de funciones desplegadas (`functions list`):**
+     - `accept-portal-invitation`: ID `22a72b4f-1eb0-4bc1-8360-48b3b0951835`, **`ACTIVE`**, **`version: 3`**, **`verify_jwt: false`**, **`import_map: true`**, `ezbr_sha256: 420c7bfe9734163bf192a68199c92a26dad18153ca8bb2e7e9f40052ff3f643b`.
+     - `admin-email-config`: intacta (`ACTIVE`, **v1**, `verify_jwt: true`, `ezbr_sha256: 751eb38e...48d3a061`).
+     - `admin-users`: intacta (`ACTIVE`, **v3**, `verify_jwt: true`, `ezbr_sha256: e89f3e3d...51ec2c`).
+  3. **Pruebas HTTP en vivo (0 mutaciones, 0 correos):**
+     - `OPTIONS` → **HTTP `200`** (`ok`; valida arranque limpio de v3 con `_shared/emailDispatcher.ts`).
+     - `dispatch_email` sin JWT → **HTTP `401`** (`code: "unauthorized"`, `invitation_preserved: true`).
+     - `accept` con candado apagado → **HTTP `503`** (`code: "acceptance_disabled_preflight"`).
+     - `verify` con token inexistente → **HTTP `404`** (`code: "not_found"`, cero PII).
+     - Acción inválida → **HTTP `400`** listando `'verify', 'accept' y 'dispatch_email'`.
+  4. **Post-check de BD, Vault, Candados y C15:** `atelier_email_accounts` = 5 totales / 0 activas / 0 con `vault_secret_id`, `atelier_email_logs` = 0, `vault.secrets` = 0, M09 (`invitations`, `access`, `permissions`, `activity_log` = 0), `C15` = `approved`; los 3 flags M09 (`PORTAL_ACCEPTANCE_ACTIVE`, `PORTAL_EMAIL_DISPATCH_ENABLED`, `PORTAL_IP_GATEWAY_CERTIFIED`) siguen en `fcbcf165...24f8aa` (`false`), candados M03/M08 siguen bloqueados fail-closed y 0 secretos SMTP. **Detenido al concluir D1.3.**
+- **Anterior avance:** Ejecución autorizada y verificación post-despliegue en producción de la **Etapa D1.2** (despliegue exclusivo de `admin-email-config`):
+  1. **Despliegue ejecutado (`Exit 0`):** `cmd /c npx supabase functions deploy admin-email-config --remote=trgoqqvsprknswobvniu --yes`.
+     - Assets cargados en `eszip`: `supabase/functions/admin-email-config/deno.json`, `supabase/functions/admin-email-config/index.ts`, `supabase/functions/_shared/emailDispatcher.ts` (`npm:nodemailer@10.6.1`).
+  2. **Verificación de funciones desplegadas (`functions list`):**
+     - `admin-email-config`: ID `fac62c4a-e87a-4799-8470-c9538fb87e07`, **`ACTIVE`**, **`version: 1`**, **`verify_jwt: true`**, **`import_map: true`**, `ezbr_sha256: 751eb38e758ff6f6dfeede119644e755b51bb6a48b030b7e21e8427f48d3a061`.
+     - `accept-portal-invitation`: intacta (`ACTIVE`, **v2**, `verify_jwt: false`, `ezbr_sha256: ab8d8d76...0f6a47aa`).
+     - `admin-users`: intacta (`ACTIVE`, **v3**, `verify_jwt: true`, `ezbr_sha256: e89f3e3d...51ec2c`).
+  3. **Pruebas HTTP en vivo (0 mutaciones, 0 correos):**
+     - `OPTIONS /functions/v1/admin-email-config` → **HTTP `200`** (`ok`, CORS `POST, OPTIONS`; valida carga limpia de Deno + `_shared/emailDispatcher.ts` + `npm:nodemailer@10.6.1`).
+     - `POST` sin `Authorization` → **HTTP `401`** (`UNAUTHORIZED_NO_AUTH_HEADER`).
+     - `POST` con JWT inválido → **HTTP `401`** (`UNAUTHORIZED_INVALID_JWT_FORMAT`).
+  4. **Post-check de BD, Vault, Candados y C15:** `atelier_email_accounts` = 5 totales / 0 activas / 0 con `vault_secret_id`, `atelier_email_logs` = 0, `vault.secrets` = 0, `C15` = `approved`, `client_portal_invitations` = 0; los 3 flags M09 continúan en `fcbcf165...24f8aa` (`false`) y los 3 candados M03/M08 permanecen bloqueados fail-closed. **Detenido al terminar D1.2.**
+- **Anterior avance:** Ejecución autorizada y verificación inmediata en producción de la **Etapa D1.1** (solo migración `20261123120000_atelier_communications_email.sql`):
+  1. **Pre-check reconfirmado:** `supabase migration list --remote` confirmó 27/27 sincronizadas y exclusivamente `20261123120000` pendiente; `0` colisiones de tablas/funciones, `vault.secrets = 0`, `C15 = approved`.
+  2. **Aplicación ejecutada (`Exit 0`):** `cmd /c npx supabase db push --remote --yes` aplicó exclusivamente `20261123120000_atelier_communications_email.sql` (`Finished supabase db push.`).
+  3. **Verificación post-aplicación en producción (`--read-only`):**
+     - `migration list --remote`: **28/28 sincronizadas**, 0 pendientes (incluye `20261123120000`).
+     - `public.atelier_email_accounts`: **5 propósitos** (`portal_invitations` → `invitaciones@`, `commercial_quotes` → `gerente@`, `agenda_reminders` → `info@`, `contact_support` → `info@`, `billing_notifications` → `NULL`), **todos** `is_active = false`, `vault_secret_id IS NULL`, `last_verification_status = 'untested'`, `mail.itss-proactive.com:465` (`smtp_secure = true`).
+     - `public.atelier_email_logs`: **0 registros**, 4 índices `idx_ael_*`, RLS `true`.
+     - **RLS y Políticas:** RLS `true` en ambas tablas; políticas `aea_admin_select` y `ael_admin_select` (`SELECT`, `authenticated`, `is_admin()`). `anon`: `SELECT=false`; `authenticated`: solo `SELECT=true`, `INSERT/UPDATE/DELETE=false`.
+     - **Triggers (`pg_trigger`, todos `tgenabled='O'`):** `set_atelier_email_accounts_updated_at`, `trg_guard_atelier_email_logs_update`, `trg_protect_atelier_email_logs_delete`.
+     - **3 RPCs Vault (`SECURITY DEFINER`, `search_path=""`):** `_atelier_email_upsert_secret`, `_atelier_email_resolve_account`, `_atelier_email_get_account_with_secret` con `EXECUTE=false` para `anon`/`authenticated` y `EXECUTE=true` para `service_role`/`postgres`.
+     - **Vault y Gobernanza:** `vault.secrets = 0`; `vault` `USAGE=false` para `anon`/`authenticated`, `true` para `service_role`. `C15 = approved`; M09 (`invitations`, `access`, `permissions`, `activity_log` = `0`); `secrets list` intacto (3 flags M09 en `fcbcf165...24f8aa`, 0 cambios); `functions list` intacto (`admin-users` v3, `accept-portal-invitation` v2). **Detenido antes de D1.2.**
+- **Anterior avance:** Ejecución local y validación completa de la **Etapa B.1** (cierre de la observación de Capa 1 detectada en Etapa C):
+  1. **Archivos modificados acotados (exclusivamente local):**
+     - [`supabase/functions/_shared/emailDispatcher.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/_shared/emailDispatcher.ts): Añadidos `EmailDispatchTrigger` (`'manual' | 'cron'`), `EnvGetter`, `MODULE_DISPATCH_FLAGS`, `ModuleDispatchLockEvaluation`, `defaultGetEnv()` y `evaluateModuleDispatchLock()`. Invocado al inicio de `dispatchEmailByPurpose()` antes de deduplicación, consulta a Vault/BD o apertura de cualquier socket SMTP. Exige `=== 'true'` estricto para M09 (`PORTAL_EMAIL_DISPATCH_ENABLED`), M03 (`M03_QUOTE_EMAIL_DISPATCH_ENABLED`), M08 (`M08_REMINDER_EMAIL_DISPATCH_ENABLED`) y candado adicional `M08_REMINDER_CRON_ENABLED === 'true'` cuando `trigger === 'cron'`; valida tanto `moduleOrigin` como `purpose` (anti-evasión) y preserva `moduleOrigin === 'admin_test'`.
+     - [`supabase/functions/accept-portal-invitation/emailService.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/accept-portal-invitation/emailService.ts): Ajuste puntual de 1 línea (línea 476) reenviando `getEnv` en el objeto de opciones hacia `dispatchEmailByPurpose()` para garantizar evaluación fail-closed coherente con la suite `verify_m09_e2_edge_function.cjs` sin introducir atajos de test en el despachador.
+     - [`scratch/verify_communications_module.cjs`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/scratch/verify_communications_module.cjs): Ampliada de 59 a **89 pruebas** incorporando TEST 4 de candados independientes fail-closed (`undefined`, `'false'`, `''`, `'TRUE'`, `'1'`, `' true '`), bloqueo adicional `trigger: 'cron'`, aislamiento cruzado completo entre M09/M03/M08, defensa anti-evasión por `purpose`, verificación de **0 sockets SMTP y 0 RPCs a Vault** ante bloqueo, y auditoría de cero fugas en logs.
+  2. **Validaciones reales ejecutadas y certificadas:**
+     - `node scratch/verify_communications_module.cjs`: **`89/89 PASS`** (0 fallos).
+     - `node scratch/verify_m09_e2_edge_function.cjs`: **`174/174 PASS`** (0 fallos).
+     - `tsc --noEmit` (proyecto completo): **`Exit 0`** (0 errores).
+     - Typecheck estricto Edge Functions (4 archivos: `_shared/emailDispatcher.ts`, `admin-email-config/index.ts`, `accept-portal-invitation/emailService.ts`, `accept-portal-invitation/index.ts`): **`0 ERRORS (PASS)`**.
+  3. **Gobernanza y Parada:** Cero cambios remotos en BD/migraciones/secretos/DNS/Auth SMTP/Edge Functions desplegadas, cero correos enviados, todos los candados (`PORTAL_EMAIL_DISPATCH_ENABLED`, `M03_QUOTE_EMAIL_DISPATCH_ENABLED`, `M08_REMINDER_EMAIL_DISPATCH_ENABLED`, `M08_REMINDER_CRON_ENABLED`) en `false`, M09 y `C15` (`approved`) intactos. Detenido sin iniciar Etapa D.
+- **Anterior avance:** Implementación local completa de la **Etapa B** (y certificación local **Etapa C**) del Módulo Centralizado de Comunicaciones (SMTP Zimbra + Supabase Vault):
+  1. **Archivos creados en repositorio local:**
+     - [`supabase/migrations/20261123120000_atelier_communications_email.sql`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/migrations/20261123120000_atelier_communications_email.sql): Preflight `supabase_vault`, tablas `public.atelier_email_accounts` (16 cols, semilla de 5 propósitos inactivos, `billing_notifications` sin remitente/usuario) y `public.atelier_email_logs` (15 cols, 7 estados de entrega honestos), triggers anti-borrado/transiciones, RLS `public.is_admin()` y 3 RPCs privados de Vault (`_atelier_email_upsert_secret`, `_atelier_email_resolve_account`, `_atelier_email_get_account_with_secret`).
+     - [`supabase/functions/_shared/emailDispatcher.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/_shared/emailDispatcher.ts): Transporte único SMTP Zimbra (`npm:nodemailer@10.6.1`, `mail.itss-proactive.com:465`, TLSv1.2+, `rejectUnauthorized: true`), deduplicación, trazabilidad `queued -> sending -> smtp_accepted|failed` (jamás marca `delivered` por aceptación SMTP), `verifySmtpConnection` sin envío y contratos preparados M03/M08.
+     - [`supabase/functions/admin-email-config/index.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/admin-email-config/index.ts) y [`deno.json`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/admin-email-config/deno.json): API administrativa exclusiva `role='admin'` (`list_accounts`, `upsert_account` write-only, `toggle_account`, `test_connection`, `send_test_email` confirmado solo al admin, `list_logs`).
+     - [`src/types/communications.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/types/communications.ts) y [`src/services/communicationsService.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/services/communicationsService.ts): Contratos, validaciones, cliente Edge y adaptadores preparados M03/M08.
+     - [`app/(admin)/communications.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/app/(admin)/communications.tsx): Pantalla administrativa única con estética *Atelier de Autor* (pestañas Cuentas/Propósitos + Historial/Estados con filtros y aviso honesto Zimbra sin DSN).
+     - [`scratch/verify_communications_module.cjs`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/scratch/verify_communications_module.cjs): Suite automatizada local (59/59 PASS).
+  2. **Archivos modificados acotados:**
+     - [`supabase/functions/accept-portal-invitation/emailService.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/accept-portal-invitation/emailService.ts) e [`index.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/accept-portal-invitation/index.ts): Delegación al despachador compartido bajo propósito `portal_invitations` (`invitaciones@bykatherinecarroll.com`), preservando `verify`, `accept`, plantillas y candados.
+     - [`app/(admin)/index.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/app/(admin)/index.tsx) y [`app/(admin)/settings.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/app/(admin)/settings.tsx): Enlaces de navegación hacia `/(admin)/communications`.
+     - [`scratch/verify_m09_e2_edge_function.cjs`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/scratch/verify_m09_e2_edge_function.cjs): Actualizada para `_shared/emailDispatcher.ts` e `invitaciones@bykatherinecarroll.com` (174/174 PASS).
+  3. **Validaciones reales certificadas:**
+     - `tsc --noEmit`: **`Exit 0`** (0 errores).
+     - ESLint en nuevos archivos (`communications.ts`, `communicationsService.ts`, `communications.tsx`): **`Exit 0`** (0 errores, 0 warnings). *(Advertencias preexistentes en `index.tsx`/`settings.tsx` intactas fuera de alcance).*
+     - Typecheck estricto Edge Functions (4 archivos): **`0 ERRORS (PASS)`**.
+     - `verify_communications_module.cjs`: **`59/59 PASS`**.
+     - `verify_m09_e2_edge_function.cjs`: **`174/174 PASS`**.
+     - Regresión M09 (`invitations_flow`, `b4`, `b5`, `b6`, `b7`): **`57/57 PASS`**.
+  4. **Gobernanza y Parada:** Cero SQL remoto, cero despliegues, cero secretos modificados, cero envíos reales, flags M09 en `false`, `C15` (`approved`) intacta. Detenidos sin iniciar Etapa C ni Etapa D.
+- **Anterior avance:** Ejecución autorizada y verificación post-despliegue de la Edge Function `accept-portal-invitation` versión 2 en `atelier-digital` (`trgoqqvsprknswobvniu`):
+  1. **Pre-Check Certificado:** Proyecto `atelier-digital` (`trgoqqvsprknswobvniu`) confirmado. Los 3 candados (`PORTAL_ACCEPTANCE_ACTIVE`, `PORTAL_EMAIL_DISPATCH_ENABLED`, `PORTAL_IP_GATEWAY_CERTIFIED`) verificados en `false` por digest SHA-256 exacto (`fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa`). Versión previa confirmada: v1 (`22a72b4f-1eb0-4bc1-8360-48b3b0951835`).
+  2. **Despliegue Ejecutado (`Exit 0`):**
+     - Comando: `npx supabase functions deploy accept-portal-invitation --project-ref trgoqqvsprknswobvniu --no-verify-jwt --yes` (flag `--yes` requerido por Supabase CLI v3 en modo agente no interactivo).
+     - Assets cargados: `deno.json`, `index.ts`, `emailService.ts`. Empaquetado remoto `eszip` con `npm:nodemailer@10.6.1` completado sin errores.
+  3. **Verificación Post-Despliegue (`functions list`):**
+     - `accept-portal-invitation`: ID `22a72b4f-1eb0-4bc1-8360-48b3b0951835`, **`version: 2`**, **`status: ACTIVE`**, `verify_jwt: false`, `import_map: true`, `ezbr_sha256: ab8d8d768798d793d99b0959a58502203fe580aeb8800a1807436ec40f6a47aa`.
+     - `admin-users`: intacta (`version: 3`, `ACTIVE`, `verify_jwt: true`).
+  4. **Pruebas HTTP de Seguridad en Vivo (0 mutaciones, 0 correos):**
+     - `dispatch_email` sin JWT → **HTTP `401`** (`code: "unauthorized"`, `invitation_preserved: true`) — PASS.
+     - `accept` con candado en `false` → **HTTP `503`** (`code: "acceptance_disabled_preflight"`) — PASS.
+     - `verify` con token inexistente → **HTTP `404`** (`code: "not_found"`, cero PII) — PASS.
+     - Acción inválida de control → **HTTP `400`** listando `'verify', 'accept' y 'dispatch_email'` (confirma v2 activa) — PASS.
+  5. **Post-Check de Candados y Restricciones:** Los 3 candados siguen en `false` (mismo digest SHA-256 y `updated_at: 2026-11-21T12:57:50.066Z`). Cero secretos SMTP configurados, cero envíos reales, cero invitaciones/usuarios creados, cero cambios SQL/RLS/Auth SMTP, cero `git push`, C15 (`approved`) intacta. Detenidos inmediatamente.
+- **Anterior avance:** Auditoría de cierre de la adaptación SMTP Zimbra de M09 y cierre local de la brecha demostrada entre la emisión de invitaciones y el despacho real de correo:
+  1. **Brecha demostrada resuelta:** `dispatchPortalInvitationEmail` estaba importada en `index.ts` (línea 18) pero nunca invocada; `DossierPortalTab.tsx` y `portalService.ts` dejaban el envío pendiente sin llamar a la Edge Function.
+  2. **Modificaciones locales acotadas:**
+     - [`supabase/functions/accept-portal-invitation/index.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/accept-portal-invitation/index.ts): Añadidos `validateSafeInviteUrl`, `handleDispatchEmailAction`, caché en aislado y rama `if (action === 'dispatch_email')`. Exige JWT Bearer + rol en `PRIVILEGED_ROLES`, verifica `token_hash === SHA-256(token)`, exige `status === 'pending'` y vigencia, toma el correo exclusivamente de `inv.email` en BD, nunca muta `client_portal_invitations` (fallos SMTP jamás invalidan la invitación), implementa deduplicación en vuelo/caché y persistente vía `client_portal_activity_log` (`event_type = 'invitation_email_dispatched'` sin token/URL/PII), y delega a `dispatchPortalInvitationEmail()`.
+     - [`src/types/portal.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/types/portal.ts): Añadidos contratos `DispatchPortalInvitationEmailDTO`, `PortalEmailDispatchStatus` y `PortalInvitationEmailDispatchResult`.
+     - [`src/services/portalService.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/services/portalService.ts): Añadida `dispatchPortalInvitationEmailViaEdge()` con deduplicación cliente en vuelo/enviadas y mapeo completo de resultados (`sent`, `simulated_disabled`, `deduplicated`, `failed`, `backend_unavailable`), preservando 100% puras `issuePortalInvitation` y `reissuePortalInvitation`.
+     - [`src/components/clients/dossier/DossierPortalTab.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/clients/dossier/DossierPortalTab.tsx): Invoca `dispatchPortalInvitationEmailViaEdge()` de forma desacoplada tras el commit de emisión/reemisión mostrando estado real en el modal `oneTimeDelivery` y manteniendo siempre usable el enlace único manual.
+     - [`scratch/verify_m09_e2_edge_function.cjs`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/scratch/verify_m09_e2_edge_function.cjs): Añadido TEST 13 (30 nuevas aserciones sobre `index.ts` real transpilado) llevando la batería a **172/172 PASS**.
+  3. **Validaciones certificadas:**
+     - `tsc --noEmit`: **`Exit 0`**
+     - ESLint (`src/types/portal.ts`, `src/services/portalService.ts`, `src/components/clients/dossier/DossierPortalTab.tsx`): **`Exit 0`** (0 errores, 0 warnings)
+     - Typecheck estricto Edge Function (`emailService.ts` + `index.ts`): **`0 ERRORS (PASS)`**
+     - `verify_m09_e2_edge_function.cjs`: **`172/172 PASS`**
+     - Regresión M09 (`invitations_flow`, `b4`, `b5`, `b6`, `b7`): **`57/57 PASS`**
+  4. **Dictamen:** **`LISTO PARA DESPLIEGUE`** (en modo fail-closed con candados en `false`, sujeto a verificación en vivo de empaquetado `eszip` y egreso TCP puerto 465 al autorizar despliegue y prueba piloto).
+  5. **Gobernanza:** Cero cambios remotos, cero secretos configurados, cero despliegues, cero envíos reales, cero `git push`, C15 (`approved`) intacta.
+- **Anterior avance:** Adaptación local del servicio transaccional de correo del Módulo 09 para utilizar el servidor SMTP Zimbra corporativo (`mail.itss-proactive.com:465`, SSL/TLS implícito, usuario y remitente `info@bykatherinecarroll.com`):
+  1. **Archivos modificados exclusivamente en repositorio local:**
+     - [`supabase/functions/accept-portal-invitation/emailService.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/accept-portal-invitation/emailService.ts): Sustituida la llamada directa a Resend por `npm:nodemailer@10.6.1` (0 dependencias transitivas, parcheada contra CVEs de versiones anteriores). Implementados `resolveSmtpConfig`, validación TLS estricta (`servername: 'mail.itss-proactive.com'`, `rejectUnauthorized: true`, `minVersion: 'TLSv1.2'`), exigencia de puerto `465` con `secure: true`, validación de remitente/usuario autorizado `info@bykatherinecarroll.com`, protección anti-CRLF injection en destinatario/cabeceras, clasificación determinista de errores (`smtp_auth_failed`, `smtp_timeout`, `smtp_connection_error`, `smtp_rejected`, `missing_smtp_credentials`, `invalid_smtp_config`), guardia de timeout con `clearTimeout` y cierre garantizado de transporte (`transporter.close()`), sanitización estricta de logs sin contraseñas/tokens/URLs/correos completos, y preservación exacta de plantillas HTML/texto plano y candado fail-closed `PORTAL_EMAIL_DISPATCH_ENABLED=false`.
+     - [`supabase/functions/accept-portal-invitation/deno.json`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/accept-portal-invitation/deno.json): Declaración explícita del import map `"nodemailer": "npm:nodemailer@10.6.1"`.
+     - [`scratch/verify_m09_e2_edge_function.cjs`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/scratch/verify_m09_e2_edge_function.cjs): Ampliada de 90 a **142 pruebas** (TEST 10 ampliado + nuevo TEST 12 ejecutando `emailService.ts` real transpilado con transporte SMTP simulado: envío exitoso, credenciales ausentes, host/puerto/remitente inválidos, fallo EAUTH/535, ETIMEDOUT y socket colgado, ECONNREFUSED/TLS mismatch, destinatario rechazado, despacho desactivado y auditoría cero fugas en logs).
+     - [`supabase/functions/accept-portal-invitation/index.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/functions/accept-portal-invitation/index.ts): **SIN CAMBIOS** (0 referencias a Resend; firma de `dispatchPortalInvitationEmail` 100% compatible).
+  2. **Validación técnica completa:**
+     - `tsc --noEmit` (proyecto completo): **`Exit 0`** (0 errores).
+     - Typecheck estricto TypeScript de Edge Function (`emailService.ts` + `index.ts`, `strict: true`): **`0 ERRORS (PASS)`**. *(Nota: `deno` CLI no está instalado localmente en Windows; la compilación nativa Deno/eszip se confirmará al autorizar despliegue o con Deno CLI).*
+     - `node scratch/verify_m09_e2_edge_function.cjs`: **`142/142 PASS`**.
+     - Regresión M09 (`verify_m09_portal_invitations_flow`, `b4`, `b5`, `b6`, `b7`): **`5/5`, `15/15`, `11/11`, `12/12`, `14/14 PASS`**.
+  3. **Gobernanza y Preservación:** Cero cambios remotos en Supabase, cero secretos configurados, cero despliegues, cero envíos reales, cero `git push`, candados en `false` y C15 (`approved`) 100% intacta.
+- **Anterior avance:** Auditoría técnica profunda y de solo lectura sobre la viabilidad de reutilizar el servidor SMTP corporativo Zimbra (`info@bykatherinecarroll.com`, `mail.itss-proactive.com:465`) frente a mantener la pasarela Resend en M09:
+  1. **Hallazgo de Infraestructura y Red (Zimbra):** Conectividad TCP verificada exitosamente en puerto 465 hacia `mail.itss-proactive.com` (IP `3.216.37.16`). Certificado TLS emitido por Let's Encrypt vigente hasta enero de 2027.
+  2. **Hallazgo Crítico de Seguridad y Entregabilidad (Zimbra):**
+     - El certificado TLS de `mail.itss-proactive.com` es multi-tenant compartido con más de 90 empresas ajenas; el dominio `bykatherinecarroll.com` no figura en el SAN, obligando a usar el hostname del hosting.
+     - Reputación de IP compartida: Cualquier penalización a otro tenant en `3.216.37.16` afectará la bandeja de entrada de las clientas.
+     - Registro DNS DMARC (`_dmarc.bykatherinecarroll.com`): **Inexistente** en DNS, lo que provoca rechazo o cuarentena en Gmail y Yahoo desde 2024 para envíos SMTP directos.
+     - Registro DNS SPF: **Ya incluye `include:amazonses.com`**, que es precisamente la infraestructura de despacho que utiliza Resend.
+  3. **Inspección de Código y Runtime (`emailService.ts`):** La implementación actual está codificada al 100% para Resend vía `fetch` HTTPS nativo. Reutilizar Zimbra requiere reescribir el servicio, incorporar dependencias de sockets SMTP en Deno (`npm:nodemailer`), reescribir suites unitarias y redesplegar la Edge Function a v2.
+  4. **Gestión de Secretos:** Almacenar la contraseña de `info@bykatherinecarroll.com` en Supabase Secrets expone las credenciales maestras del buzón corporativo; Resend en cambio opera con una API Key revocable y de mínimo privilegio (sending-only).
+  5. **Validación Técnica:** `cmd /c npx tsc --noEmit` verificado con **`Exit 0`** (cero errores en TypeScript).
+  6. **Recomendación Técnica Única:** **`MANTENER RESEND`** (o `REQUIERE ADAPTACIÓN PREVIA` si la directiva impone Zimbra a pesar de los riesgos identificados).
+  7. **Preservación Estricta:** Cero modificaciones a la base de datos, secretos, DNS o Edge Functions. C15 (`approved`) y 49 creaciones intactas.
+- **Anterior avance:** Preparación del procedimiento técnico mínimo, secuencial y controlado para configurar Resend y certificar M09 con una única clienta piloto:
+  1. **Requisitos Resend y DNS:** Análisis de llaves `RESEND_API_KEY`, remitente `PORTAL_EMAIL_FROM` y registros DNS requeridos (DKIM, SPF, DMARC, Return-Path MX). Delimitación de la restricción del sandbox `onboarding@resend.dev` (que solo permite envíos al titular de la cuenta).
+  2. **Evaluación de Flags:** Mapeo de runtime de los 3 candados: `PORTAL_ACCEPTANCE_ACTIVE` (Edge Function línea 493, bloquea mutaciones con HTTP 503 preflight pero permite lectura anónima en `verify`), `PORTAL_EMAIL_DISPATCH_ENABLED` (`emailService.ts` línea 218, omite peticiones de red de forma simulada), y `PORTAL_IP_GATEWAY_CERTIFIED` (fuerza fallback fail-closed `client_ip = NULL` ante cabeceras no verificadas).
+  3. **Desacoplamiento Operativo:** Secuencia de activación en 6 etapas que aísla la aceptación de tokens por enlace directo de la pasarela de correo transaccional, evitando dependencias cruzadas de falla.
+  4. **Seguridad en Windows:** Comandos exactos para PowerShell y CMD mediante inyección efímera o manual en Supabase Dashboard, evitando la persistencia de secretos en `ConsoleHost_history.txt` o registros Event ID 4688.
+  5. **Prueba Piloto E2E:** Protocolo formal con Clienta Piloto (Clienta A) frente a una segunda identidad de control (Identidad B), validación de hash SHA-256, `masked_email`, consentimiento Ley 1581, protección anti-replay (HTTP 409/410), auditoría en `client_portal_activity_log` y aislamiento estricto en las 6 vistas `security_barrier`.
+  6. **Criterios PASS/FAIL y Rollback:** Matriz con indicadores medibles y procedimiento de reversión inmediata (kill-switch instantáneo en un comando de Supabase Secrets).
+  7. **Compuertas de Gobernanza:** Delimitación de 5 autorizaciones separadas (Secretos -> Acceptance Flag -> Invitación Piloto -> Email Flag -> Apertura General).
+  8. **Preservación y Parada:** Cero escrituras ejecutadas en base de datos o Supabase Secrets. C15 (`approved`) y datos de clientes intactos.
+- **Anterior avance:** Ejecución de la Auditoría Integral, Rápida y de Solo Lectura para determinar la preparación técnica del Módulo 09 (Portal de Clientas) previa a su activación:
+  1. **Historial de Migraciones y Paridad DDL (PASS):** Confirmado en Supabase remoto `trgoqqvsprknswobvniu` con 27 migraciones aplicadas y 0 pendientes. La migración `20261118000000_client_portal_m09.sql` se encuentra formalmente registrada y activa.
+  2. **Vistas del Portal y Protección de Datos Sensibles (PASS):**
+     - Verificadas las 6 vistas canónicas: `v_portal_client_profile`, `v_portal_creations`, `v_portal_appointments`, `v_portal_fitting_sessions`, `v_portal_commercial_quotes`, `v_portal_measurement_sessions`.
+     - Confirmado `security_barrier = true` en las 6 vistas.
+     - Proyecciones de columnas auditadas: 0 campos de costos unitarios, 0 márgenes de beneficio, 0 datos de proveedores y 0 notas internas de taller expuestas.
+     - Nomenclatura validada: `v_portal_client_profile` coincide con `src/types/portal.ts` (`PORTAL_CANONICAL_VIEWS.clientProfile`).
+  3. **Aislamiento Multi-Tenant y Políticas RLS (PASS):**
+     - Políticas de lectura de clientas en `client_portal_*` aisladas estrictamente mediante funciones seguras `get_portal_client_id()` y `has_portal_permission()`.
+     - Escritura denegada para clientas (políticas RLS restringen mutaciones; telemetría canalizada exclusivamente por RPC `public.log_portal_event()`).
+  4. **Edge Function de Aceptación de Invitaciones (PASS):**
+     - Desplegada y en estado `ACTIVE` en Supabase (ID `22a72b4f-1eb0-4bc1-8360-48b3b0951835`, versión 1, `verify_jwt: false`).
+     - Validación de token mediante hash SHA-256 (`token_hash`), verificación de expiración (`expires_at`), estado y bloqueo atómico de un solo uso en RPC `finalize_portal_invitation`.
+  5. **Estado de Tablas y Usuarios en Supabase (PASS - Pizarra Limpia):**
+     - `auth.users`: 3 usuarios registrados (personal administrativo / diseñadoras; cero cuentas de clientas).
+     - Tablas M09 en producción: 0 invitaciones (`client_portal_invitations`), 0 accesos (`client_portal_access`), 0 permisos (`client_portal_permissions`), 0 eventos de bitácora (`client_portal_activity_log`).
+  6. **Candados Operativos y Feature Flags (CONTROLADO / FAIL-CLOSED):**
+     - `PORTAL_ACCEPTANCE_ACTIVE = false`
+     - `PORTAL_EMAIL_DISPATCH_ENABLED = false`
+     - `PORTAL_IP_GATEWAY_CERTIFIED = false`
+     - Portal completamente sellado contra accesos no autorizados en producción.
+  7. **Hallazgo Crítico Pre-Activación (OBSERVACIÓN / BLOCKED para Despacho de Correo):**
+     - `supabase secrets list` reveló que `RESEND_API_KEY` y `PORTAL_EMAIL_FROM` **NO están configurados** en los secretos del proyecto Supabase remoto.
+     - Si se activa `PORTAL_EMAIL_DISPATCH_ENABLED = true` sin configurar estos secretos, el despacho de correos transaccionales fallará.
+  8. **Integridad de Datos y Compilación:**
+     - Datos preexistentes preservados íntegramente: 7 clientes, 49 creaciones, 37 sesiones, 18 patrones, 30 personas, 1 grupo, C15 `approved` intacta.
+     - `cmd /c npx tsc --noEmit` verificado con **`Exit 0`** (cero errores en todo el proyecto).
+  9. **Clasificación Global:** **`LISTO CON OBSERVACIONES`** (Arquitectura, DDL, Edge Function y frontend 100% listos; requiere configurar secretos de email, voltear banderas y certificar E2E con 1 clienta piloto).
+- **Anterior avance:** Ejecución controlada y verificación secuencial de la Fase 2 (Conciliación de Metadatos de 22 Migraciones en 5 Lotes) en Supabase `trgoqqvsprknswobvniu`:
+  1. **Confirmación Inicial:** Proyecto `trgoqqvsprknswobvniu` (`atelier-digital`). Estado inicial confirmado: 5 aplicadas y 22 pendientes.
+  2. **Lote 1 (M02 Patronaje y Creaciones · 7 versiones):**
+     - Ejecutados exitosamente (`Exit 0`): `20261017100000`, `20261017110000`, `20261017120000`, `20261017130000`, `20261017140000`, `20261017150000`, `20261018080000`.
+     - Verificación intermedia `migration list --remote`: **12 aplicadas / 15 pendientes** (100% exacto).
+  3. **Lote 2 (Módulos Base, Fotos, Grupos, Campañas y Consensos · 7 versiones):**
+     - Ejecutados exitosamente (`Exit 0`): `20261025090000`, `20261026160000`, `20261026170000`, `20261026210000`, `20261026220000`, `20261028090000`, `20261031170000`.
+     - Verificación intermedia `migration list --remote`: **19 aplicadas / 8 pendientes** (100% exacto).
+  4. **Lote 3 (Comercial M03, Moodboards M04, Materiales M05 · 3 versiones):**
+     - Ejecutados exitosamente (`Exit 0`): `20261108000000`, `20261109000000`, `20261110000000`.
+     - Verificación intermedia `migration list --remote`: **22 aplicadas / 5 pendientes** (100% exacto).
+  5. **Lote 4 (Fittings M06, Finanzas M07, Agenda M08 · 4 versiones):**
+     - Ejecutados exitosamente (`Exit 0`): `20261112000000`, `20261112010000`, `20261114000000`, `20261116000000`.
+     - Verificación intermedia `migration list --remote`: **26 aplicadas / 1 pendiente** (100% exacto).
+  6. **Lote 5 (Portal de Clientas Zero Trust M09 · 1 versión):**
+     - Ejecutado exitosamente (`Exit 0`): `20261118000000`.
+     - Verificación final `migration list --remote`: **27 aplicadas / 0 pendientes** (100% sincronizado).
+  7. **Certificación de Integridad y Preservación de Datos:**
+     - `schema_migrations`: 27 versiones únicas en orden cronológico estricto.
+     - Preservación: 7 clientes, 49 creaciones, 37 sesiones, 18 patrones, 30 personas, 1 grupo, C15 `approved` intacta.
+     - Restricción: Cero operaciones de datos, cero DDL adicional, cero despliegues de Edge Functions.
+  8. **Validación Técnica:** `cmd /c npx tsc --noEmit` verificado con **`Exit 0`** (cero errores en TypeScript).
+  9. **Estado de Parada:** Detenidos inmediatamente conforme a instrucción. Portal M09 permanece inactivo (banderas apagadas), a la espera de autorización para fases subsiguientes.
+- **Anterior avance:** Ejecución controlada y verificación final de la Fase 1 de Corrección DDL de la migración `20261017150000_pattern_free_executions.sql` en producción Supabase `trgoqqvsprknswobvniu`:
+  1. **Pre-Check de Seguridad (Read-Only):**
+     - Verificado estado inicial: `pattern_executions.client_id` y `session_id` con `attnotnull = true` e `is_nullable = NO`.
+     - Verificado `total_pe = 18` (cero nulos).
+     - Verificada prenda canónica C15 (`141693a0-01e8-498a-bbb3-1c4f98036543`) en `status = 'approved'`.
+     - Verificados conteos base: 7 clientes, 49 creaciones, 37 sesiones, 30 personas, 1 grupo.
+     - Verificada ausencia de transacciones o bloqueos en `pg_locks` / `pg_stat_activity` (0 bloqueos).
+  2. **Transacción DDL Atómica Ejecutada (`Exit Code 0`):**
+     - Parámetros de seguridad de sesión: `lock_timeout = '5s'`, `statement_timeout = '30s'`.
+     - `ALTER TABLE public.pattern_executions ALTER COLUMN client_id DROP NOT NULL;`
+     - `ALTER TABLE public.pattern_executions ALTER COLUMN session_id DROP NOT NULL;`
+     - `COMMENT ON COLUMN public.pattern_executions.client_id IS '...';`
+     - `COMMENT ON COLUMN public.pattern_executions.session_id IS '...';`
+     - Transacción confirmada exitosamente mediante `COMMIT`.
+  3. **Post-Check Inmediato de Integridad (Read-Only 100% PASS):**
+     - Ambas columnas actualizadas a `attnotnull = false` e `is_nullable = 'YES'`.
+     - Ambos comentarios de catálogo registrados fielmente.
+     - `pattern_executions` permanece intacto con exactamente 18 filas.
+     - C15 permanece intacta en estado `approved`.
+     - Conteos globales invariantes: 7 clientes, 49 creaciones, 37 sesiones, 30 personas, 1 grupo.
+     - Tabla de control `supabase_migrations.schema_migrations` intacta con 5 versiones (cero comandos `repair` ejecutados).
+  4. **Validación Técnica:** `cmd /c npx tsc --noEmit` verificado con **`Exit 0`** (cero errores en todo el proyecto).
+  5. **Procedimiento Operativo:** Documentado paso a paso en el artefacto persistente `PROCEDIMIENTO_OPERATIVO_CONCILIACION_SUPABASE_M00_M09.md`.
+  6. **Estado de Parada:** Detenidos conforme a instrucción expresa. Pendiente autorización de Fase 2 (Lotes 1 al 5 de `migration repair`).
+- **Anterior avance:** Ejecución controlada y regularización del Commit de Fase F4 (M08: Agenda Unificada del Atelier) del Plan de Estabilización Git:
   1. **Commit F4 ejecutado localmente:** Commit `1b6a2643fa6ad3a7bb61735ee17b261c9a0e93fe` (`1b6a264`), autor `Javinas <jairo.vinas@gmail.com>`, mensaje `feat(m08): unified atelier agenda, scheduling and ics calendar export`.
   2. **Archivos incluidos exactamente:** 12 rutas autorizadas: [`supabase/migrations/20261116000000_atelier_agenda_m08.sql`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/supabase/migrations/20261116000000_atelier_agenda_m08.sql), [`src/types/agenda.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/types/agenda.ts), [`src/services/agendaService.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/services/agendaService.ts), [`src/services/agendaExportService.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/services/agendaExportService.ts), [`src/components/agenda/AgendaStudioScreen.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/agenda/AgendaStudioScreen.tsx), [`src/components/agenda/AgendaExportShareModal.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/agenda/AgendaExportShareModal.tsx), [`src/components/agenda/AppointmentCard.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/agenda/AppointmentCard.tsx), [`src/components/agenda/AppointmentFormModal.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/agenda/AppointmentFormModal.tsx), [`src/components/agenda/PrintableAgendaModal.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/agenda/PrintableAgendaModal.tsx), [`src/components/agenda/agendaLabels.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/agenda/agendaLabels.ts), [`src/components/agenda/agendaStyles.ts`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/src/components/agenda/agendaStyles.ts) y [`app/(designer)/agenda.tsx`](file:///d:/Datos/Datos/DATOS%20JVINAS/Antigravity/2.ByKatherineCarroll/AtelierDigitalApp/app/(designer)/agenda.tsx). Total: 12 archivos nuevos cambiados, 7,229 inserciones.
   3. **Validación técnica:** `cmd /c npx tsc --noEmit` verificado con **`Exit 0`** (cero errores de compilación TypeScript en todo el proyecto).

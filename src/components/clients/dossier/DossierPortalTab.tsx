@@ -38,11 +38,13 @@ import {
     IssuePortalInvitationResult,
     PortalAccessStatus,
     PortalAction,
+    PortalEmailDispatchStatus,
     PortalInvitationStatus,
     PortalResource,
 } from '../../../types/portal';
 import {
     buildPortalPermissionsProjection,
+    dispatchPortalInvitationEmailViaEdge,
     fetchClientPortalAccess,
     fetchClientPortalInvitations,
     fetchPortalActivityLog,
@@ -65,11 +67,14 @@ interface DossierPortalTabProps {
 }
 
 interface OneTimeInviteDelivery {
+    invitationId: string;
     inviteUrl: string;
     email: string;
     expiresAt: string;
     message: string;
     isReissue: boolean;
+    emailStatus?: PortalEmailDispatchStatus | 'dispatching';
+    emailNotice?: string;
 }
 
 const INVITATION_STATUS_META: Record<
@@ -86,6 +91,7 @@ const INVITATION_STATUS_META: Record<
 
 const ACTIVITY_EVENT_LABELS: Record<string, string> = {
     invitation_accepted: 'Invitación aceptada y cuenta vinculada',
+    invitation_email_dispatched: 'Correo de invitación despachado vía SMTP',
     portal_switches_updated_demo: 'Permisos modulares actualizados (DEMO)',
 };
 
@@ -529,13 +535,39 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
 
             if (result.oneTimeInviteUrl) {
                 setOneTimeDelivery({
+                    invitationId: issuedInvite.id,
                     inviteUrl: result.oneTimeInviteUrl,
                     email: issuedInvite.email,
                     expiresAt: issuedInvite.expires_at,
                     message: result.message,
                     isReissue,
+                    emailStatus: result.oneTimeToken ? 'dispatching' : 'failed',
+                    emailNotice: result.oneTimeToken
+                        ? 'Solicitando despacho de correo vía Edge Function SMTP...'
+                        : 'Enlace disponible para entrega privada directa.',
                 });
                 setLifecycleNotice(null);
+
+                // Paso desacoplado post-commit: un fallo SMTP jamás invalida la invitación emitida
+                if (result.oneTimeToken) {
+                    const tokenForDispatch = result.oneTimeToken;
+                    const inviteUrlForDispatch = result.oneTimeInviteUrl;
+                    void dispatchPortalInvitationEmailViaEdge({
+                        invitationId: issuedInvite.id,
+                        token: tokenForDispatch,
+                        inviteUrl: inviteUrlForDispatch,
+                        recipientName: client.full_name,
+                    }).then((dispatchRes) => {
+                        setOneTimeDelivery((prev) => {
+                            if (!prev || prev.invitationId !== issuedInvite.id) return prev;
+                            return {
+                                ...prev,
+                                emailStatus: dispatchRes.status,
+                                emailNotice: dispatchRes.message,
+                            };
+                        });
+                    });
+                }
             }
             return;
         }
@@ -1416,8 +1448,8 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                 </View>
 
                                 <Text style={localStyles.pendingEmailNote}>
-                                    Nota: El despacho automático por correo electrónico depende de una Edge Function
-                                    futura; comparte este enlace directamente por tu canal privado con la clienta.
+                                    {oneTimeDelivery.emailNotice ||
+                                        'Comparte este enlace directamente por tu canal privado con la clienta si el correo automático está deshabilitado.'}
                                 </Text>
 
                                 <View style={localStyles.modalActionsRow}>

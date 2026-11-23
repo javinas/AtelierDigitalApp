@@ -360,6 +360,35 @@ export interface ReissuePortalInvitationResult extends IssuePortalInvitationResu
     revokedPreviousInvitationId: string | null;
 }
 
+export type PortalEmailDispatchStatus =
+    | 'sent'
+    | 'simulated_disabled'
+    | 'deduplicated'
+    | 'failed'
+    | 'backend_unavailable';
+
+export interface DispatchPortalInvitationEmailDTO {
+    invitationId: string;
+    token: string;
+    inviteUrl: string;
+    recipientName?: string;
+    customMessage?: string;
+    permissionsBullets?: readonly string[];
+}
+
+export interface PortalInvitationEmailDispatchResult {
+    ok: boolean;
+    status: PortalEmailDispatchStatus;
+    sent: boolean;
+    simulated: boolean;
+    deduplicated: boolean;
+    invitationPreserved: boolean;
+    messageId: string | null;
+    code: string;
+    message: string;
+    httpStatus?: number | null;
+}
+
 export interface PortalOperatingModeSnapshot {
     isDemoMode: boolean;
     postgrestDemoMode: boolean;
