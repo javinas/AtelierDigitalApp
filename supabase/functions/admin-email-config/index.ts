@@ -300,10 +300,12 @@ export async function handleAdminEmailAction(params: {
             );
         }
 
-        // Consultar registro existente para saber si ya tiene credencial en Vault
+        // Consultar registro existente para saber si ya tiene credencial en Vault y estado de verificación
         const { data: existingRow } = await supabaseAdmin
             .from('atelier_email_accounts')
-            .select('id, vault_secret_id, is_active')
+            .select(
+                'id, vault_secret_id, is_active, from_email, smtp_user, last_verification_status, last_verified_at'
+            )
             .eq('purpose', purpose)
             .maybeSingle();
 
@@ -312,12 +314,15 @@ export async function handleAdminEmailAction(params: {
         const hasNewPassword = incomingPassword.trim().length > 0;
         const willHaveCredential = Boolean(existingRow?.vault_secret_id) || hasNewPassword;
 
-        const requestedActive =
-            typeof body.is_active === 'boolean'
-                ? body.is_active
-                : Boolean(existingRow?.is_active);
+        const credentialsOrIdentityChanged =
+            hasNewPassword ||
+            (existingRow?.smtp_user ?? null) !== smtpUser ||
+            (existingRow?.from_email ?? null) !== fromEmail;
 
-        if (requestedActive && (!fromEmail || !smtpUser || !willHaveCredential)) {
+        const requestedActive =
+            typeof body.is_active === 'boolean' ? body.is_active : undefined;
+
+        if (requestedActive === true && (!fromEmail || !smtpUser || !willHaveCredential)) {
             return jsonResponse(
                 {
                     ok: false,
@@ -329,9 +334,39 @@ export async function handleAdminEmailAction(params: {
             );
         }
 
-        // Guardar metadatos primero (temporalmente inactiva si la credencial nueva aún no está en Vault)
-        const preVaultActive =
-            requestedActive && Boolean(existingRow?.vault_secret_id);
+        // Control R1: Separación estricta entre guardar/rotar credenciales y activar la cuenta.
+        // upsert_account jamás activa una cuenta inactiva, sin verificar o con credenciales recién modificadas.
+        const wasVerifiedAndActive =
+            Boolean(existingRow?.is_active) &&
+            existingRow?.last_verification_status === 'verified';
+
+        if (
+            requestedActive === true &&
+            (!wasVerifiedAndActive || credentialsOrIdentityChanged)
+        ) {
+            return jsonResponse(
+                {
+                    ok: false,
+                    code: 'activation_requires_separate_verified_step',
+                    error:
+                        'Guardar configuración no activa la cuenta automáticamente. Guarda los cambios, ejecuta "Probar Conexión" hasta obtener estado VERIFICADO y luego activa la cuenta por separado.',
+                },
+                400
+            );
+        }
+
+        // Control R2: Al rotar contraseña o cambiar remitente/usuario SMTP, reiniciar verificación y desactivar
+        const nextVerificationStatus = credentialsOrIdentityChanged
+            ? 'untested'
+            : existingRow?.last_verification_status || 'untested';
+        const nextVerifiedAt = credentialsOrIdentityChanged
+            ? null
+            : existingRow?.last_verified_at ?? null;
+        const nextIsActive = credentialsOrIdentityChanged
+            ? false
+            : requestedActive === false
+              ? false
+              : Boolean(existingRow?.is_active);
 
         const upsertPayload = {
             purpose,
@@ -342,7 +377,9 @@ export async function handleAdminEmailAction(params: {
             smtp_port: CANONICAL_SMTP_PORT,
             smtp_secure: true,
             smtp_user: smtpUser,
-            is_active: preVaultActive,
+            is_active: nextIsActive,
+            last_verification_status: nextVerificationStatus,
+            last_verified_at: nextVerifiedAt,
             updated_by: actorUser.id,
         };
 
@@ -413,26 +450,13 @@ export async function handleAdminEmailAction(params: {
             }
 
             savedRow.vault_secret_id = vaultId || savedRow.vault_secret_id || 'stored';
-
-            if (requestedActive && !savedRow.is_active) {
-                const { data: activatedRow, error: actErr } = await supabaseAdmin
-                    .from('atelier_email_accounts')
-                    .update({ is_active: true, updated_by: actorUser.id })
-                    .eq('id', savedRow.id)
-                    .select(
-                        'id, purpose, display_name, from_email, reply_to_email, smtp_host, smtp_port, smtp_secure, smtp_user, vault_secret_id, is_active, last_verified_at, last_verification_status, created_at, updated_at, updated_by'
-                    )
-                    .single();
-                if (!actErr && activatedRow) {
-                    savedRow = activatedRow;
-                }
-            }
         }
 
         return jsonResponse(
             {
                 ok: true,
                 credential_updated: hasNewPassword,
+                verification_reset: credentialsOrIdentityChanged,
                 account: projectSafeAccount(savedRow!),
             },
             200
@@ -458,7 +482,9 @@ export async function handleAdminEmailAction(params: {
 
         const { data: existing, error: fetchErr } = await supabaseAdmin
             .from('atelier_email_accounts')
-            .select('id, from_email, smtp_user, vault_secret_id')
+            .select(
+                'id, from_email, smtp_user, vault_secret_id, last_verification_status'
+            )
             .eq('id', accountId)
             .maybeSingle();
 
@@ -479,6 +505,19 @@ export async function handleAdminEmailAction(params: {
                     code: 'incomplete_account_for_activation',
                     error:
                         'No se puede activar esta cuenta: falta remitente, usuario SMTP o credencial en Vault.',
+                },
+                400
+            );
+        }
+
+        // Control R1: Prohibido activar una cuenta sin verificación SMTP exitosa previa
+        if (body.is_active && existing.last_verification_status !== 'verified') {
+            return jsonResponse(
+                {
+                    ok: false,
+                    code: 'verification_required_for_activation',
+                    error:
+                        'Debes ejecutar "Probar Conexión" y obtener estado VERIFICADO antes de activar esta cuenta.',
                 },
                 400
             );

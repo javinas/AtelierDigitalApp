@@ -107,7 +107,7 @@ export function getPortalServiceOperatingMode(): PortalOperatingModeSnapshot {
         edgeFunctionUnavailable: _edgeFunctionUnavailable,
         supabaseError: _lastPostgrestError,
         edgeFunctionError: _lastEdgeError,
-        emailDeliveryPendingBackend: true,
+        emailDeliveryPendingBackend: _postgrestDemoMode || _edgeFunctionUnavailable,
     };
 }
 

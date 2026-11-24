@@ -186,7 +186,21 @@ export default function CommunicationsScreen() {
 
     const handleSaveAccount = async () => {
         if (!editingAccount || !editForm) return;
-        const validation = validateEmailAccountInput(editForm, editingAccount.has_credential);
+        // R1/R2: Guardar configuración nunca activa automáticamente la cuenta;
+        // si cambia contraseña o usuario/remitente, el servidor reinicia verificación y desactiva.
+        const hasNewPass = Boolean(editForm.smtp_password && editForm.smtp_password.trim().length > 0);
+        const identityChanged =
+            (editForm.from_email?.trim().toLowerCase() || null) !== (editingAccount.from_email || null) ||
+            (editForm.smtp_user?.trim().toLowerCase() || null) !== (editingAccount.smtp_user || null);
+        const safeForm: UpsertAtelierEmailAccountDTO = {
+            ...editForm,
+            is_active:
+                hasNewPass || identityChanged
+                    ? false
+                    : editingAccount.is_active && editingAccount.last_verification_status === 'verified',
+        };
+
+        const validation = validateEmailAccountInput(safeForm, editingAccount.has_credential);
         if (!validation.isValid) {
             setEditErrors(validation.errors);
             return;
@@ -194,7 +208,7 @@ export default function CommunicationsScreen() {
 
         setEditErrors({});
         setIsSaving(true);
-        const res = await saveEmailAccount(editForm, editingAccount.has_credential);
+        const res = await saveEmailAccount(safeForm, editingAccount.has_credential);
         setIsSaving(false);
 
         if (!res.success || !res.account) {
@@ -206,7 +220,7 @@ export default function CommunicationsScreen() {
         setAccounts((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
         setSuccessMessage(
             res.credentialUpdated
-                ? `Cuenta "${EMAIL_PURPOSE_META[updated.purpose].title}" actualizada y credencial rotada en Vault.`
+                ? `Cuenta "${EMAIL_PURPOSE_META[updated.purpose].title}" actualizada y credencial guardada en Vault. Ejecuta "Probar Conexión" antes de activar.`
                 : `Cuenta "${EMAIL_PURPOSE_META[updated.purpose].title}" actualizada (credencial previa conservada).`
         );
         closeEditModal();
@@ -244,10 +258,10 @@ export default function CommunicationsScreen() {
             prev.map((item) =>
                 item.id === acc.id
                     ? {
-                          ...item,
-                          last_verified_at: res.last_verified_at || item.last_verified_at,
-                          last_verification_status: res.status,
-                      }
+                        ...item,
+                        last_verified_at: res.last_verified_at || item.last_verified_at,
+                        last_verification_status: res.status,
+                    }
                     : item
             )
         );
@@ -377,10 +391,12 @@ export default function CommunicationsScreen() {
                         accounts.map((acc) => {
                             const meta = EMAIL_PURPOSE_META[acc.purpose];
                             const isBusy = actingAccountId === acc.id;
-                            const canActivate =
+                            const canTest =
                                 Boolean(acc.from_email) &&
                                 Boolean(acc.smtp_user) &&
                                 acc.has_credential;
+                            const canActivate =
+                                canTest && acc.last_verification_status === 'verified';
 
                             return (
                                 <View key={acc.id} style={styles.accountCard}>
@@ -478,10 +494,10 @@ export default function CommunicationsScreen() {
                                         <TouchableOpacity
                                             style={[
                                                 styles.actionBtnSecondary,
-                                                !canActivate && styles.actionBtnDisabled,
+                                                !canTest && styles.actionBtnDisabled,
                                             ]}
                                             onPress={() => handleTestConnection(acc)}
-                                            disabled={isBusy || !canActivate}
+                                            disabled={isBusy || !canTest}
                                             activeOpacity={0.85}
                                         >
                                             <Text style={styles.actionBtnSecondaryText}>
@@ -492,10 +508,10 @@ export default function CommunicationsScreen() {
                                         <TouchableOpacity
                                             style={[
                                                 styles.actionBtnSecondary,
-                                                !canActivate && styles.actionBtnDisabled,
+                                                !canTest && styles.actionBtnDisabled,
                                             ]}
                                             onPress={() => setConfirmTestAccount(acc)}
-                                            disabled={isBusy || !canActivate}
+                                            disabled={isBusy || !canTest}
                                             activeOpacity={0.85}
                                         >
                                             <Text style={styles.actionBtnSecondaryText}>
@@ -863,20 +879,15 @@ export default function CommunicationsScreen() {
                                     </Text>
                                 </View>
 
-                                <TouchableOpacity
-                                    style={styles.toggleRow}
-                                    onPress={() =>
-                                        setEditForm({ ...editForm, is_active: !editForm.is_active })
-                                    }
-                                    disabled={isSaving}
-                                    activeOpacity={0.8}
-                                >
+                                <View style={styles.toggleRow}>
                                     <Text style={styles.toggleLabel}>
-                                        Estado de la cuenta:{' '}
-                                        {editForm.is_active ? 'ACTIVA' : 'INACTIVA'}
+                                        Separación Guardar / Activar:{' '}
+                                        {editingAccount.is_active ? 'ACTIVA' : 'INACTIVA'}
                                     </Text>
-                                    <Text style={styles.toggleHint}>Tocar para cambiar</Text>
-                                </TouchableOpacity>
+                                    <Text style={styles.toggleHint}>
+                                        Guardar o rotar credenciales reinicia verificación (UNTESTED) y requiere Probar Conexión antes de activar.
+                                    </Text>
+                                </View>
 
                                 <View style={styles.modalActions}>
                                     <FormButton

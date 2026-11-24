@@ -186,6 +186,21 @@ function NavigationGate({ children }: { children: React.ReactNode }) {
             return;
         }
 
+        // H-08: En builds de producción (!__DEV__), las rutas prototipo locales en RAM
+        // redirigen siempre a las pantallas productivas canónicas para evitar confusión operativa.
+        const isProductionBuild =
+            typeof __DEV__ !== 'undefined' ? !__DEV__ : process.env.NODE_ENV === 'production';
+
+        if (isProductionBuild && isDesignerClientPortal) {
+            router.replace(role === 'admin' ? '/(admin)' : role === 'designer' ? '/(designer)/clients' : '/(client)');
+            return;
+        }
+
+        if (isProductionBuild && isClientPortalExperience) {
+            router.replace(role === 'client' ? '/(client)' : role === 'admin' ? '/(admin)' : '/(designer)');
+            return;
+        }
+
         if (role === 'admin') {
             if (!inAdminGroup && !isDesignerClientPortal) router.replace('/(admin)');
             return;
