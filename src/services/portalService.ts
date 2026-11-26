@@ -39,6 +39,7 @@ import {
     PortalClientProfileView,
     PortalCommercialQuoteView,
     PortalCreationPermissionsProjection,
+    PortalCreationProgressView,
     PortalCreationView,
     PortalFittingSessionView,
     PortalIdentityGuardResult,
@@ -3315,6 +3316,49 @@ function sanitizeFittingSessionView(raw: any): PortalFittingSessionView {
     };
 }
 
+/**
+ * Sanitizador estricto (whitelist exacta de 7 columnas seguras) para v_portal_creation_progress.
+ * Descarta filas malformadas o canceladas; jamás proyecta assigned_tailor, priority, notes ni quote_id.
+ */
+function sanitizeCreationProgressView(raw: any): PortalCreationProgressView | null {
+    if (!raw || typeof raw !== 'object') return null;
+    const id = raw.id != null ? String(raw.id).trim() : '';
+    const creationId = raw.creation_id != null ? String(raw.creation_id).trim() : '';
+    const currentStage = raw.current_stage != null ? String(raw.current_stage).trim() : '';
+    if (!id || !creationId || !currentStage) return null;
+    if (currentStage.toLowerCase() === 'cancelled') return null;
+
+    return {
+        id,
+        creation_id: creationId,
+        project_number: raw.project_number != null ? String(raw.project_number) : '',
+        current_stage: currentStage,
+        estimated_delivery_date:
+            raw.estimated_delivery_date != null ? String(raw.estimated_delivery_date) : null,
+        actual_delivery_date:
+            raw.actual_delivery_date != null ? String(raw.actual_delivery_date) : null,
+        updated_at: raw.updated_at != null ? String(raw.updated_at) : '',
+    };
+}
+
+/**
+ * Defensa en profundidad en cliente: interseca los registros de progreso M03
+ * contra el conjunto de creation_id con permiso creations:view confirmado.
+ */
+export function filterAuthorizedCreationProgress(
+    rows: PortalCreationProgressView[],
+    allowedCreationIds: Iterable<string>
+): PortalCreationProgressView[] {
+    const allowedSet = new Set<string>();
+    for (const id of allowedCreationIds) {
+        if (typeof id === 'string' && id.trim().length > 0) {
+            allowedSet.add(id.trim());
+        }
+    }
+    if (allowedSet.size === 0) return [];
+    return rows.filter((row) => allowedSet.has(row.creation_id));
+}
+
 export async function fetchPortalClientProfile(
     options?: PortalPostgrestOptions
 ): Promise<PortalViewReadResult<PortalClientProfileView | null>> {
@@ -3499,6 +3543,101 @@ export async function fetchPortalFittingSessionsView(
             [],
             classifyViewReadError(err)
         );
+    }
+}
+
+const PORTAL_UUID_REGEX =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export interface FetchPortalCreationProgressOptions extends PortalPostgrestOptions {
+    creationId?: string;
+    allowedCreationIds?: Iterable<string>;
+}
+
+/**
+ * Lector aditivo M09 P1.2 sobre la vista SECURITY BARRIER public.v_portal_creation_progress.
+ * - Expone exclusivamente las 7 columnas seguras del contrato PortalCreationProgressView.
+ * - Degradación segura ante PGRST205 / vista aún no desplegada: retorna status='backend_unavailable'
+ *   y data=[] SIN activar _postgrestDemoMode global (no interrumpe las 6 vistas canónicas activas),
+ *   sin abrir accesos ni fabricar datos ficticios.
+ * - Mantiene defensa en profundidad si el llamador entrega allowedCreationIds (creations:view).
+ */
+export async function fetchPortalCreationProgressView(
+    options?: FetchPortalCreationProgressOptions
+): Promise<PortalViewReadResult<PortalCreationProgressView[]>> {
+    const db = options?.dbClient || supabase;
+    const currentEnvironment = _postgrestDemoMode ? 'demo_unavailable' : 'production';
+
+    if (options?.creationId !== undefined) {
+        const cleanId = String(options.creationId || '').trim();
+        if (!PORTAL_UUID_REGEX.test(cleanId)) {
+            return {
+                ok: false,
+                status: 'error',
+                data: [],
+                environment: currentEnvironment,
+                errorCode: '22P02',
+                errorMessage: 'Identificador de creación inválido.',
+            };
+        }
+    }
+
+    try {
+        let query = db
+            .from(PORTAL_CANONICAL_VIEWS.creationProgress)
+            .select(
+                'id, creation_id, project_number, current_stage, estimated_delivery_date, actual_delivery_date, updated_at'
+            );
+
+        if (options?.creationId) {
+            query = query.eq('creation_id', options.creationId.trim());
+        }
+
+        const { data, error } = await query
+            .order('updated_at', { ascending: false })
+            .order('id', { ascending: false });
+
+        if (!error) {
+            const sanitized = Array.isArray(data)
+                ? data
+                      .map(sanitizeCreationProgressView)
+                      .filter((row): row is PortalCreationProgressView => row !== null)
+                : [];
+            const filtered = options?.allowedCreationIds
+                ? filterAuthorizedCreationProgress(sanitized, options.allowedCreationIds)
+                : sanitized;
+
+            return {
+                ok: true,
+                status: 'ok',
+                data: filtered,
+                environment: 'production',
+            };
+        }
+
+        const classified = classifyViewReadError(error);
+        // Importante: no mutar _postgrestDemoMode ante PGRST205 en una vista aditiva opcional,
+        // para preservar intactas las 6 vistas canónicas M09-A v2.10 en producción.
+        return {
+            ok: false,
+            status: classified.status,
+            data: [],
+            environment:
+                classified.status === 'unauthorized' ? 'production' : currentEnvironment,
+            errorCode: classified.code,
+            errorMessage: classified.message,
+        };
+    } catch (err: any) {
+        const classified = classifyViewReadError(err);
+        return {
+            ok: false,
+            status: classified.status,
+            data: [],
+            environment:
+                classified.status === 'unauthorized' ? 'production' : currentEnvironment,
+            errorCode: classified.code,
+            errorMessage: classified.message,
+        };
     }
 }
 

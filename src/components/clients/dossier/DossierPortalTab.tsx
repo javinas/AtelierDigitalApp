@@ -17,6 +17,7 @@ import {
     Alert,
     Modal,
     Platform,
+    ScrollView,
     Share,
     StyleSheet,
     Switch,
@@ -27,6 +28,7 @@ import {
 } from 'react-native';
 import { colors } from '../../../theme/colors';
 import { typography } from '../../../theme/typography';
+import { usePortalResponsive } from '../../../hooks/usePortalResponsive';
 import { supabase } from '../../../supabase';
 import { Client } from '../../../types/client';
 import { Creation } from '../../../types/creation';
@@ -111,6 +113,8 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
         }
     },
 }) => {
+    const responsive = usePortalResponsive();
+    const isMobile = responsive.isMobile;
     const [loading, setLoading] = useState<boolean>(true);
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [savingSwitchKey, setSavingSwitchKey] = useState<string | null>(null);
@@ -755,9 +759,14 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
             )}
 
             {/* 2. Tarjeta de Estado de Vinculación y Ciclo de Vida */}
-            <View style={localStyles.card}>
+            <View style={[localStyles.card, isMobile && localStyles.cardMobile]}>
                 <View style={localStyles.cardHeaderRow}>
-                    <View style={localStyles.cardHeaderTitleCol}>
+                    <View
+                        style={[
+                            localStyles.cardHeaderTitleCol,
+                            isMobile && localStyles.cardHeaderTitleColMobile,
+                        ]}
+                    >
                         <Text style={localStyles.cardEyebrow}>IDENTIDAD Y ACCESO DIGITAL</Text>
                         <Text style={localStyles.cardTitle}>Estado de Vinculación de la Clienta</Text>
                     </View>
@@ -784,16 +793,16 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
 
                 <View style={localStyles.divider} />
 
-                <View style={localStyles.identityRow}>
-                    <View style={localStyles.identityCol}>
+                <View style={[localStyles.identityRow, isMobile && localStyles.identityRowMobile]}>
+                    <View style={[localStyles.identityCol, isMobile && localStyles.identityColMobile]}>
                         <Text style={localStyles.metaLabel}>Clienta Titular:</Text>
                         <Text style={localStyles.metaValue}>{client.full_name}</Text>
                     </View>
-                    <View style={localStyles.identityCol}>
+                    <View style={[localStyles.identityCol, isMobile && localStyles.identityColMobile]}>
                         <Text style={localStyles.metaLabel}>Correo Electrónico:</Text>
                         <Text style={localStyles.metaValue}>{client.email || 'No registrado'}</Text>
                     </View>
-                    <View style={localStyles.identityCol}>
+                    <View style={[localStyles.identityCol, isMobile && localStyles.identityColMobile]}>
                         <Text style={localStyles.metaLabel}>Cuenta Vinculada (Auth):</Text>
                         <Text
                             style={[
@@ -806,7 +815,7 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                 : 'Pendiente de aceptación'}
                         </Text>
                     </View>
-                    <View style={localStyles.identityCol}>
+                    <View style={[localStyles.identityCol, isMobile && localStyles.identityColMobile]}>
                         <Text style={localStyles.metaLabel}>Aceptación Confirmada:</Text>
                         <Text style={localStyles.metaValue}>
                             {latestAcceptedInvite?.used_at
@@ -822,10 +831,16 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                 {access && (
                     <View style={localStyles.statusActionsContainer}>
                         <Text style={localStyles.statusActionLabel}>Cambiar Estado de Acceso:</Text>
-                        <View style={localStyles.statusButtonsRow}>
+                        <View
+                            style={[
+                                localStyles.statusButtonsRow,
+                                isMobile && localStyles.statusButtonsRowMobile,
+                            ]}
+                        >
                             <TouchableOpacity
                                 style={[
                                     localStyles.statusBtn,
+                                    isMobile && localStyles.statusBtnMobile,
                                     access.status === 'active' && localStyles.statusBtnActive,
                                     !canActivatePortal && localStyles.statusBtnDisabled,
                                 ]}
@@ -847,6 +862,7 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                             <TouchableOpacity
                                 style={[
                                     localStyles.statusBtn,
+                                    isMobile && localStyles.statusBtnMobile,
                                     access.status === 'suspended' && localStyles.statusBtnActive,
                                 ]}
                                 onPress={() => handleUpdateStatus('suspended')}
@@ -866,6 +882,7 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                             <TouchableOpacity
                                 style={[
                                     localStyles.statusBtn,
+                                    isMobile && localStyles.statusBtnMobile,
                                     access.status === 'revoked' && localStyles.statusBtnActive,
                                 ]}
                                 onPress={() => handleUpdateStatus('revoked')}
@@ -892,9 +909,14 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
             </View>
 
             {/* 3. Interruptores de Visibilidad Modular (Nivel 1 — Única Fuente de Verdad: client_portal_permissions) */}
-            <View style={localStyles.card}>
+            <View style={[localStyles.card, isMobile && localStyles.cardMobile]}>
                 <View style={localStyles.cardHeaderRow}>
-                    <View>
+                    <View
+                        style={[
+                            localStyles.cardHeaderTitleCol,
+                            isMobile && localStyles.cardHeaderTitleColMobile,
+                        ]}
+                    >
                         <Text style={localStyles.cardEyebrow}>NIVEL 1 · AUTORIZACIÓN GENERAL</Text>
                         <Text style={localStyles.cardTitle}>Interruptores de Visibilidad Modular</Text>
                     </View>
@@ -1075,9 +1097,14 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
             </View>
 
             {/* 4. Doble Candado por Creación (Nivel 2 de Autorización) */}
-            <View style={localStyles.card}>
+            <View style={[localStyles.card, isMobile && localStyles.cardMobile]}>
                 <View style={localStyles.cardHeaderRow}>
-                    <View>
+                    <View
+                        style={[
+                            localStyles.cardHeaderTitleCol,
+                            isMobile && localStyles.cardHeaderTitleColMobile,
+                        ]}
+                    >
                         <Text style={localStyles.cardEyebrow}>NIVEL 2 · DOBLE CANDADO POR PRENDA</Text>
                         <Text style={localStyles.cardTitle}>Permisos Granulares por Creación</Text>
                     </View>
@@ -1116,14 +1143,24 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
 
                         return (
                             <View key={creation.id} style={localStyles.creationCard}>
-                                <View style={localStyles.creationHeaderRow}>
-                                    <View style={{ flex: 1 }}>
+                                <View
+                                    style={[
+                                        localStyles.creationHeaderRow,
+                                        isMobile && localStyles.creationHeaderRowMobile,
+                                    ]}
+                                >
+                                    <View style={localStyles.creationTitleCol}>
                                         <Text style={localStyles.creationTitle}>{creation.name}</Text>
                                         <Text style={localStyles.creationSub}>
                                             Tipo: {creation.garment_type || 'Alta Costura'} · Estado: {creation.status}
                                         </Text>
                                     </View>
-                                    <View style={localStyles.creationMasterSwitch}>
+                                    <View
+                                        style={[
+                                            localStyles.creationMasterSwitch,
+                                            isMobile && localStyles.creationMasterSwitchMobile,
+                                        ]}
+                                    >
                                         <Text style={localStyles.masterSwitchLabel}>Visible:</Text>
                                         <Switch
                                             value={isVisible}
@@ -1148,10 +1185,16 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                 <View
                                     style={[
                                         localStyles.subSwitchesRow,
+                                        isMobile && localStyles.subSwitchesRowMobile,
                                         !isVisible && { opacity: 0.45 },
                                     ]}
                                 >
-                                    <View style={localStyles.subSwitchItem}>
+                                    <View
+                                        style={[
+                                            localStyles.subSwitchItem,
+                                            isMobile && localStyles.subSwitchItemMobile,
+                                        ]}
+                                    >
                                         <Text style={localStyles.subSwitchLabel}>Bocetos:</Text>
                                         <Switch
                                             value={allowSketches}
@@ -1172,7 +1215,12 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                         />
                                     </View>
 
-                                    <View style={localStyles.subSwitchItem}>
+                                    <View
+                                        style={[
+                                            localStyles.subSwitchItem,
+                                            isMobile && localStyles.subSwitchItemMobile,
+                                        ]}
+                                    >
                                         <Text style={localStyles.subSwitchLabel}>Telas / Materiales:</Text>
                                         <Switch
                                             value={allowFabrics}
@@ -1193,7 +1241,12 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                         />
                                     </View>
 
-                                    <View style={localStyles.subSwitchItem}>
+                                    <View
+                                        style={[
+                                            localStyles.subSwitchItem,
+                                            isMobile && localStyles.subSwitchItemMobile,
+                                        ]}
+                                    >
                                         <Text style={localStyles.subSwitchLabel}>Pruebas / Fitting:</Text>
                                         <Switch
                                             value={allowFittings}
@@ -1221,14 +1274,22 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
             </View>
 
             {/* 5. Emisión y Ciclo de Vida de Invitaciones Criptográficas */}
-            <View style={localStyles.card}>
+            <View style={[localStyles.card, isMobile && localStyles.cardMobile]}>
                 <View style={localStyles.cardHeaderRow}>
-                    <View style={localStyles.cardHeaderTitleCol}>
+                    <View
+                        style={[
+                            localStyles.cardHeaderTitleCol,
+                            isMobile && localStyles.cardHeaderTitleColMobile,
+                        ]}
+                    >
                         <Text style={localStyles.cardEyebrow}>INVITACIONES CRIPTOGRÁFICAS (ZERO-KNOWLEDGE)</Text>
                         <Text style={localStyles.cardTitle}>Historial de Invitaciones al Portal</Text>
                     </View>
                     <TouchableOpacity
-                        style={localStyles.inviteButton}
+                        style={[
+                            localStyles.inviteButton,
+                            isMobile && localStyles.inviteButtonMobile,
+                        ]}
                         onPress={openInviteModal}
                         activeOpacity={0.8}
                     >
@@ -1270,7 +1331,7 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                         return (
                             <View key={inv.id} style={localStyles.invitationItemBlock}>
                                 <View style={localStyles.invitationRow}>
-                                    <View style={{ flex: 1 }}>
+                                    <View style={localStyles.invitationInfoCol}>
                                         <Text style={localStyles.invitationEmail}>{inv.email}</Text>
                                         <Text style={localStyles.invitationMeta}>
                                             Emitida: {formatDate(inv.created_at)} · Caduca: {formatDate(inv.expires_at)}
@@ -1369,9 +1430,14 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
             </View>
 
             {/* 6. Bitácora Inmutable de Actividad (client_portal_activity_log) */}
-            <View style={localStyles.card}>
+            <View style={[localStyles.card, isMobile && localStyles.cardMobile]}>
                 <View style={localStyles.cardHeaderRow}>
-                    <View>
+                    <View
+                        style={[
+                            localStyles.cardHeaderTitleCol,
+                            isMobile && localStyles.cardHeaderTitleColMobile,
+                        ]}
+                    >
                         <Text style={localStyles.cardEyebrow}>BITÁCORA INMUTABLE DE ACTIVIDAD (M09-A v2.10)</Text>
                         <Text style={localStyles.cardTitle}>Eventos de Vinculación y Uso</Text>
                     </View>
@@ -1415,8 +1481,23 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                 animationType="fade"
                 onRequestClose={handleCloseInviteModal}
             >
-                <View style={localStyles.modalOverlay}>
-                    <View style={localStyles.modalContent}>
+                <View
+                    style={[
+                        localStyles.modalOverlay,
+                        isMobile && localStyles.modalOverlayMobile,
+                    ]}
+                >
+                    <View
+                        style={[
+                            localStyles.modalContent,
+                            isMobile && localStyles.modalContentMobile,
+                        ]}
+                    >
+                        <ScrollView
+                            style={localStyles.modalScroll}
+                            keyboardShouldPersistTaps="handled"
+                            showsVerticalScrollIndicator={false}
+                        >
                         {oneTimeDelivery ? (
                             <>
                                 <Text style={localStyles.modalEyebrow}>
@@ -1452,9 +1533,17 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                         'Comparte este enlace directamente por tu canal privado con la clienta si el correo automático está deshabilitado.'}
                                 </Text>
 
-                                <View style={localStyles.modalActionsRow}>
+                                <View
+                                    style={[
+                                        localStyles.modalActionsRow,
+                                        isMobile && localStyles.modalActionsRowMobile,
+                                    ]}
+                                >
                                     <TouchableOpacity
-                                        style={localStyles.copyUrlBtn}
+                                        style={[
+                                            localStyles.copyUrlBtn,
+                                            isMobile && localStyles.modalBtnMobile,
+                                        ]}
                                         onPress={handleCopyInviteUrl}
                                         activeOpacity={0.8}
                                     >
@@ -1464,7 +1553,10 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        style={localStyles.confirmModalBtn}
+                                        style={[
+                                            localStyles.confirmModalBtn,
+                                            isMobile && localStyles.modalBtnMobile,
+                                        ]}
                                         onPress={handleCloseInviteModal}
                                         activeOpacity={0.8}
                                     >
@@ -1530,9 +1622,17 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                     </View>
                                 )}
 
-                                <View style={localStyles.modalActionsRow}>
+                                <View
+                                    style={[
+                                        localStyles.modalActionsRow,
+                                        isMobile && localStyles.modalActionsRowMobile,
+                                    ]}
+                                >
                                     <TouchableOpacity
-                                        style={localStyles.cancelModalBtn}
+                                        style={[
+                                            localStyles.cancelModalBtn,
+                                            isMobile && localStyles.modalBtnMobile,
+                                        ]}
                                         onPress={handleCloseInviteModal}
                                         activeOpacity={0.8}
                                     >
@@ -1540,7 +1640,10 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        style={localStyles.confirmModalBtn}
+                                        style={[
+                                            localStyles.confirmModalBtn,
+                                            isMobile && localStyles.modalBtnMobile,
+                                        ]}
                                         onPress={handleSendInvitation}
                                         disabled={inviting}
                                         activeOpacity={0.8}
@@ -1556,6 +1659,7 @@ export const DossierPortalTab: React.FC<DossierPortalTabProps> = ({
                                 </View>
                             </>
                         )}
+                        </ScrollView>
                     </View>
                 </View>
             </Modal>
@@ -1633,6 +1737,9 @@ const localStyles = StyleSheet.create({
         padding: 18,
         marginBottom: 16,
     },
+    cardMobile: {
+        padding: 14,
+    },
     cardHeaderRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -1644,6 +1751,10 @@ const localStyles = StyleSheet.create({
         flexGrow: 1,
         flexShrink: 1,
         minWidth: 200,
+    },
+    cardHeaderTitleColMobile: {
+        minWidth: 0,
+        width: '100%',
     },
     headerRightGroup: {
         flexDirection: 'row',
@@ -1728,8 +1839,17 @@ const localStyles = StyleSheet.create({
         gap: 16,
         marginBottom: 14,
     },
+    identityRowMobile: {
+        flexDirection: 'column',
+        gap: 10,
+    },
     identityCol: {
         minWidth: 140,
+        flexShrink: 1,
+    },
+    identityColMobile: {
+        minWidth: 0,
+        width: '100%',
     },
     metaLabel: {
         fontSize: 11,
@@ -1757,6 +1877,10 @@ const localStyles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 8,
     },
+    statusButtonsRowMobile: {
+        flexDirection: 'column',
+        gap: 8,
+    },
     statusBtn: {
         flex: 1,
         minWidth: 100,
@@ -1767,6 +1891,12 @@ const localStyles = StyleSheet.create({
         borderColor: colors.border,
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
+    },
+    statusBtnMobile: {
+        flex: 0,
+        minWidth: 0,
+        width: '100%',
+        paddingVertical: 10,
     },
     statusBtnDisabled: {
         backgroundColor: '#F6F4F0',
@@ -1854,9 +1984,20 @@ const localStyles = StyleSheet.create({
     },
     creationHeaderRow: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
         alignItems: 'center',
+        gap: 10,
         marginBottom: 10,
+    },
+    creationHeaderRowMobile: {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 8,
+    },
+    creationTitleCol: {
+        flex: 1,
+        minWidth: 0,
     },
     creationTitle: {
         fontSize: 13,
@@ -1873,6 +2014,11 @@ const localStyles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
     },
+    creationMasterSwitchMobile: {
+        width: '100%',
+        justifyContent: 'space-between',
+        paddingTop: 4,
+    },
     masterSwitchLabel: {
         fontSize: 12,
         fontWeight: '600',
@@ -1886,10 +2032,18 @@ const localStyles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#ECE5DB',
     },
+    subSwitchesRowMobile: {
+        flexDirection: 'column',
+        gap: 10,
+    },
     subSwitchItem: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
+    },
+    subSwitchItemMobile: {
+        width: '100%',
+        justifyContent: 'space-between',
     },
     subSwitchLabel: {
         fontSize: 11,
@@ -1900,6 +2054,11 @@ const localStyles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 12,
         borderRadius: 4,
+    },
+    inviteButtonMobile: {
+        width: '100%',
+        alignItems: 'center',
+        paddingVertical: 10,
     },
     inviteButtonText: {
         fontSize: 11,
@@ -1917,6 +2076,10 @@ const localStyles = StyleSheet.create({
         alignItems: 'flex-start',
         flexWrap: 'wrap',
         gap: 8,
+    },
+    invitationInfoCol: {
+        flex: 1,
+        minWidth: 0,
     },
     invitationEmail: {
         fontSize: 12,
@@ -2072,12 +2235,22 @@ const localStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
     },
+    modalOverlayMobile: {
+        padding: 12,
+    },
     modalContent: {
         backgroundColor: '#FFFFFF',
         borderRadius: 8,
         padding: 24,
         width: '100%',
         maxWidth: 480,
+        maxHeight: '90%',
+    },
+    modalContentMobile: {
+        padding: 16,
+    },
+    modalScroll: {
+        width: '100%',
     },
     modalEyebrow: {
         fontSize: 10,
@@ -2121,6 +2294,15 @@ const localStyles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-end',
         gap: 12,
+    },
+    modalActionsRowMobile: {
+        flexDirection: 'column-reverse',
+        alignItems: 'stretch',
+        gap: 8,
+    },
+    modalBtnMobile: {
+        width: '100%',
+        alignItems: 'center',
     },
     expiryChipsRow: {
         flexDirection: 'row',
@@ -2193,6 +2375,8 @@ const localStyles = StyleSheet.create({
         fontSize: 11,
         color: colors.atelierBlack,
         fontFamily: Platform.OS === 'web' ? 'monospace' : undefined,
+        flexShrink: 1,
+        ...(Platform.OS === 'web' ? ({ wordBreak: 'break-all' } as any) : {}),
     },
     pendingEmailNote: {
         fontSize: 11,

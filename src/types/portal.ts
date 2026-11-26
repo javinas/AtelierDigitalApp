@@ -403,7 +403,8 @@ export interface PortalOperatingModeSnapshot {
 // ==============================================================================
 
 /**
- * Nombres exactos de las 6 vistas canónicas SECURITY BARRIER de M09-A v2.10.
+ * Nombres exactos de las vistas canónicas SECURITY BARRIER del Portal del Cliente
+ * (6 vistas base M09-A v2.10 + vista aditiva P1.2 de progreso de confección M03).
  */
 export const PORTAL_CANONICAL_VIEWS = {
     clientProfile: 'v_portal_client_profile',
@@ -412,6 +413,7 @@ export const PORTAL_CANONICAL_VIEWS = {
     commercialQuotes: 'v_portal_commercial_quotes',
     appointments: 'v_portal_appointments',
     fittingSessions: 'v_portal_fitting_sessions',
+    creationProgress: 'v_portal_creation_progress',
 } as const;
 
 export type PortalCanonicalViewKey = keyof typeof PORTAL_CANONICAL_VIEWS;
@@ -575,4 +577,59 @@ export interface PortalTelemetryLogResult {
     eventType: string;
     errorCode?: string | null;
     message: string;
+}
+
+// ==============================================================================
+// CONTRATOS M09 P1.1 / P1.2: BASE RESPONSIVE Y PROYECCIÓN DE AVANCE M03
+// ==============================================================================
+// Nota P1.2: La migración aditiva v_portal_creation_progress y su lector en
+// portalService.ts están preparados localmente, pendientes de validación controlada.
+// ==============================================================================
+
+export type PortalResponsiveBreakpoint = 'mobile' | 'tablet' | 'desktop';
+
+export interface PortalResponsiveMetrics {
+    width: number;
+    height: number;
+    breakpoint: PortalResponsiveBreakpoint;
+    isMobile: boolean;
+    isTablet: boolean;
+    isDesktop: boolean;
+    contentMaxWidth: number;
+    horizontalPadding: number;
+    cardPadding: number;
+    gridColumns: 1 | 2 | 3;
+}
+
+export type PortalM03CanonicalStage =
+    | 'planning'
+    | 'cutting'
+    | 'assembly'
+    | 'first_fitting'
+    | 'adjustments'
+    | 'second_fitting'
+    | 'finishing'
+    | 'delivered';
+
+export interface PortalM03StageMetadata {
+    step: number;
+    key: PortalM03CanonicalStage;
+    label: string;
+    shortLabel: string;
+    editorialDescription: string;
+}
+
+/**
+ * Contrato proyectado (whitelist de 7 columnas seguras) para el seguimiento
+ * de confección M03 desde la futura vista aditiva v_portal_creation_progress (P1.2).
+ * Excluye explícitamente assigned_tailor, priority, notes y quote_id.
+ */
+export interface PortalCreationProgressView {
+    id: string;
+    creation_id: string;
+    project_number: string;
+    current_stage: string;
+    estimated_delivery_date: string | null;
+    actual_delivery_date: string | null;
+    updated_at: string;
 }
