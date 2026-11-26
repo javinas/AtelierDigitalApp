@@ -2,9 +2,22 @@
 
 ## A. Identificación
 - **Proyecto:** Atelier Digital App (Expo / React Native)
-- **Módulo:** M09 — Portal del Cliente · **Bloque P1 COMPLETO EN DESARROLLO LOCAL (P1.1 + P1.2 + P1.3 + P1.4 `PASS`)** (Auditoría y optimización responsive completada en `DossierPortalTab.tsx` y `CreationProgressStepper.tsx`, validación visual y geométrica offline a `375 px`, `768 px` y `1280 px` con `0` desbordamientos horizontales; `0` operaciones SQL/Supabase remotas, `0` cambios en Producción ni en el acceso vigente de Valentina Viñas Carroll a `Vestido de Gala`, sin commit/push/deploy)
-- **Fecha actualización:** 2026-11-25T23:44:00-05:00 (`2026-11-26T04:44Z`)
-- **Último avance agregado (M09 P1.4 — Auditoría y Optimización Responsive del Portal Cliente — `PASS` local):**
+- **Módulo:** M09 — Portal del Cliente · **Bloque P1 en Rama `preview/m09-p1-portal-client` (ACT-02 a ACT-06 completados · Integración a `main` NO ejecutada · Production sin cambios)**
+- **Fecha actualización:** 2026-11-26T08:33:00-05:00 (`2026-11-26T13:33Z`)
+- **Estado consolidado del Checkpoint M09 P1 (`ACT-02` → `ACT-06`):**
+  1. **ACT-02 (Checkpoint local):** Rama dedicada `preview/m09-p1-portal-client` creada desde `main` (`3b55127`); commit selectivo base **`4602804`** (`feat(m09): implement client portal P1 creation progress`, `19` archivos de frontend y documentación; `.vscode/settings.json` y migración SQL `20261126040000` excluidos e intactos).
+  2. **ACT-03 (Publicación Preview):** Push exclusivo de `preview/m09-p1-portal-client` → Vercel Preview **`HXfAcGyzCfpAzibCWvCRg1VV3deM`** (`success`, URL `https://atelier-digital-app-git-preview-m09-p1-portal-client-louka6.vercel.app`); `main` (`3b55127`) y Production (`JBziou19gkDjaRLKyookcAjhbqQy` · `https://www.bykatherinecarroll.com`) sin cambios.
+  3. **ACT-04-R1 (Validación Preview sin Chrome Remote Debugging):** Dictamen **`PASS CON OBSERVACIONES`** — HTTP Edge confirmó `302` a `vercel.com/sso-api` con `X-Robots-Tag: noindex`, `HSTS` y `X-Frame-Options: DENY` en `/`, `/login`, `/creation/invalid-id` y `/portal/invite`; Playwright aislado confirmó pantalla SSO sin activar depuración remota ni tocar perfil Chrome personal. Validación visual/SPA/headers H-04 de aplicación en Preview vivo bloqueada por Vercel Deployment Protection SSO (**OBS-01**).
+  4. **ACT-05 (Auditoría integral READ-ONLY):** Dictamen **`APROBADO CON OBSERVACIONES PARA PREPARAR INTEGRACIÓN`** — `0` hallazgos CRÍTICOS, `0` ALTOS, `0` MEDIOS; registrados F-01 (`ClientPortalContext.tsx`), F-02 (sincronización documental), F-03 (CRLF Windows, no bloqueante), OBS-01 (Preview SSO) y OBS-02 (validación PG 17 pendiente).
+  5. **ACT-06 (Cierre controlado de F-01 y F-02 — local, sin push):**
+     - **F-01:** `signOutPortal()` en `src/context/ClientPortalContext.tsx` limpia explícitamente `setDashboard(null)` y `setUiError(null)` tras emitir la telemetría `auth_logout` y antes de `signOut()`.
+     - **F-02:** Actualizados `ANTIGRAVITY_CONTINUITY.md` y `PROJECT_INDEX.md` con los artefactos P1 existentes y el estado real del checkpoint.
+  6. **Pendientes explícitos (NO ejecutados):**
+     - Validación visual/interactiva en Preview autenticado (**OBS-01**): **pendiente**.
+     - Validación empírica en PostgreSQL 17 de la migración aditiva (**OBS-02**): **pendiente**.
+     - Migración `supabase/migrations/20261126040000_m09_p1_v_portal_creation_progress.sql`: **local, no aplicada y fuera del commit**.
+     - Integración a `main` y cambios en Production / Supabase / Valentina Viñas Carroll (`Vestido de Gala`): **no ejecutados / sin cambios**.
+- **Anterior avance (M09 P1.4 — Auditoría y Optimización Responsive del Portal Cliente — `PASS` local):**
   1. **Optimización responsive en `src/components/clients/dossier/DossierPortalTab.tsx` (reutilizando `usePortalResponsive`):**
      - **R-01 / R-02 (Doble Candado por Creación):** reorganización vertical en móvil (`< 768 px`) para `creationHeaderRow` (`Visible:` ancho completo con `space-between`) y `subSwitchesRow` (3 filas apiladas `space-between` para `Bocetos`, `Telas / Materiales`, `Pruebas / Fitting`), manteniendo distribución horizontal con `flexWrap` en tablet/escritorio.
      - **R-03 / R-04 / R-06 (Tarjetas, Identidad, Ciclo de Vida e Invitaciones):** padding compacto móvil (`14 px` vs `18 px`), cabeceras con `minWidth: 0, flexShrink: 1`, `identityRow` apilado en móvil, 3 botones de ciclo de vida (`Activar Acceso` / `Suspender` / `Revocar`) en ancho completo móvil (`paddingVertical: 10`), `inviteButton` ancho completo en móvil y `invitationInfoCol` con `minWidth: 0`.

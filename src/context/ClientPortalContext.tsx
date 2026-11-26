@@ -149,6 +149,8 @@ export const ClientPortalProvider: React.FC<{ children: React.ReactNode }> = ({ 
             }).catch(() => undefined);
         }
         loggedTelemetryKeysRef.current.clear();
+        setDashboard(null);
+        setUiError(null);
         await signOut();
     }, [dashboard, signOut]);
 
